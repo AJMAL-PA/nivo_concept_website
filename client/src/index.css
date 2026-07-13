@@ -1,0 +1,5 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* React app wrapper — no extra styles, everything comes from original CSS */

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Nivo Concepts" />
+  <link rel="icon" href="/images/nivo_concepts_logo_cropped.png" type="image/png" sizes="32x32 192x192" />
+  <title>Nivo Concepts</title>
+
+  <!-- Original CSS (pixel-perfect preservation) -->
+  <link id="bootstrap" href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="/css/plugins.css" rel="stylesheet" type="text/css" />
+  <link href="/css/swiper.css" rel="stylesheet" type="text/css" />
+  <link href="/css/style.css" rel="stylesheet" type="text/css" />
+  <link href="/css/coloring.css" rel="stylesheet" type="text/css" />
+  <link id="colors" href="/css/colors/scheme-01.css" rel="stylesheet" type="text/css" />
+
+  <!-- Vendor JS loaded before React so window.$ is available in useEffect -->
+  <script src="/vendors.js"></script>
+  <script src="/swiper.js"></script>
+
+  <!-- Premium Font Imports & Overrides -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" rel="stylesheet">
+  <style>
+    body, p, span, a, li, input, textarea, button, div, .timer {
+      font-family: 'Roboto Flex', sans-serif !important;
+    }
+    h1, h2, h3, h4, h5, h6, .subtitle, .nivo-logo {
+      font-family: 'Luxtra Text Book', 'Roboto Flex', sans-serif !important;
+    }
+    /* Curved edges for all cards, containers, steps, and visual blocks */
+    .rounded-1,
+    .hover,
+    .de-step,
+    .bg-light,
+    .bg-dark,
+    .bg-white,
+    .de_count,
+    .bg-color-op-1,
+    .item,
+    .accordion-section {
+      border-radius: 16px !important;
+      overflow: hidden !important;
+    }
+    /* Ensure all images inside cards, carousels, and grids follow the curve */
+    .hover img,
+    .rounded-1 img,
+    .item img,
+    .relative img,
+    .owl-carousel img {
+      border-radius: 16px !important;
+    }
+    /* Keep hero banners, page headers, and background slides sharp and edgy */
+    section.jarallax,
+    section.jarallax img,
+    .jarallax,
+    .jarallax-img,
+    .swiper,
+    .swiper-inner,
+    .swiper-slide,
+    .sw-overlay {
+      border-radius: 0px !important;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
