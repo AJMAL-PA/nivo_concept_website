@@ -19,7 +19,7 @@ const ArchitecturalDesign = () => {
 
       {/* Page Header */}
       <section className="bg-dark text-light relative jarallax">
-        <img src="/images/background/interior.jpeg" className="jarallax-img" alt="" />
+        <img src="/images/background/luxury_architectural_hero.png" className="jarallax-img" alt="Architectural Design" />
         <div className="container relative z-2">
           <div className="row gy-4 gx-5 align-items-center">
             <div className="col-md-8">
@@ -55,13 +55,13 @@ const ArchitecturalDesign = () => {
             </div>
 
             <div className="col-lg-5">
-              <div className="bg-dark text-light p-5 rounded-1 wow fadeInUp" data-wow-delay=".8s" style={{ border: '1px solid rgba(175, 155, 130, 0.25)' }}>
-                <h3 className="mb-3 text-white">Service Highlights</h3>
-                <ul className="list-unstyled">
+              <div className="text-light p-5 rounded-1 wow fadeInUp" data-wow-delay=".8s" style={{ backgroundColor: '#C3AF9B', border: '1px solid rgba(255, 255, 255, 0.25)', boxShadow: '0 8px 25px rgba(0, 0, 0, 0.08)' }}>
+                <h3 className="mb-4 text-white" style={{ fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>Service Highlights</h3>
+                <ul className="list-unstyled mb-0">
                   {['Custom residential villa designs', 'Commercial structural layouts', 'High-end 3D walkthrough models', 'Energy-efficient floor planning', 'Site integration & elevations', 'Zoning approval documentation'].map((item, idx) => (
-                    <li key={idx} className="mb-2 d-flex align-items-center">
-                      <i className="fas fa-check-circle id-color me-3"></i>
-                      <span>{item}</span>
+                    <li key={idx} className="mb-3 d-flex align-items-center">
+                      <i className="fas fa-check-circle me-3" style={{ color: '#231f1d', fontSize: '18px' }}></i>
+                      <span style={{ color: '#ffffff', fontWeight: 500, fontSize: '15px' }}>{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -86,15 +86,22 @@ const ArchitecturalDesign = () => {
           <div className="row g-4">
             {cards.map((card, i) => (
               <div key={i} className="col-md-4 wow fadeInUp" data-wow-delay={`${i * 0.15}s`}>
-                <div className="bg-white p-5 rounded-1 h-100 relative overflow-hidden border border-light-subtle shadow-sm transition-all hover-translate-y">
+                <div 
+                  className="p-5 rounded-1 h-100 relative overflow-hidden border border-light-subtle shadow-sm transition-all hover-translate-y text-light"
+                  style={{
+                    backgroundImage: `linear-gradient(180deg, rgba(20, 16, 14, 0.65) 0%, rgba(15, 12, 10, 0.92) 100%), url('/images/services/${(i % 6) + 1}.webp')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                >
                   <div className="d-flex justify-content-between align-items-center mb-4">
-                    <div className="w-70px h-70px rounded-1 bg-dark text-light fs-32 d-flex align-items-center justify-content-center">
-                      <i className={`fa-solid ${card.icon}`}></i>
+                    <div className="w-70px h-70px rounded-1 text-light fs-32 d-flex align-items-center justify-content-center flex-shrink-0" style={{ backgroundColor: '#C3AF9B', boxShadow: '0 4px 12px rgba(0,0,0,0.25)' }}>
+                      <i className={`fa-solid ${card.icon}`} style={{ color: '#ffffff' }}></i>
                     </div>
-                    <span className="fs-18 fw-600 text-muted" style={{ opacity: 0.5 }}>{card.num}</span>
+                    <span className="fs-18 fw-600 text-white" style={{ opacity: 0.8 }}>{card.num}</span>
                   </div>
-                  <h3 className="fs-24 mb-3">{card.title}</h3>
-                  <p className="mb-0 text-muted fs-15" style={{ lineHeight: '1.6' }}>{card.desc}</p>
+                  <h3 className="fs-24 mb-3 text-white" style={{ fontWeight: 700 }}>{card.title}</h3>
+                  <p className="mb-0 fs-15" style={{ color: 'rgba(255, 255, 255, 0.85)', lineHeight: '1.6' }}>{card.desc}</p>
                 </div>
               </div>
             ))}

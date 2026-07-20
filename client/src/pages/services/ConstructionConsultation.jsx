@@ -10,7 +10,7 @@ const ConstructionConsultation = () => {
 
       {/* Page Header */}
       <section className="bg-dark text-light relative jarallax">
-        <img src="/images/background/interior.jpeg" className="jarallax-img" alt="" />
+        <img src="/images/background/luxury_architectural_hero.png" className="jarallax-img" alt="Construction Consultation" />
         <div className="container relative z-2">
           <div className="row gy-4 gx-5 align-items-center">
             <div className="col-md-8">
@@ -60,7 +60,7 @@ const ConstructionConsultation = () => {
                   <li><Link to="/services/architectural-design">Architectural Design</Link></li>
                 </ul>
               </div>
-              <div className="bg-dark text-light rounded-1 p-4">
+              <div className="text-light rounded-1 p-4" style={{ backgroundColor: '#C3AF9B' }}>
                 <h4>Need a Consultation?</h4>
                 <p>Book a free consultation with our design team today.</p>
                 <Link to="/consultation" className="btn-main fx-slide"><span>Free Consultation</span></Link>

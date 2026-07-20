@@ -51,7 +51,7 @@ const Contact = () => {
 
       {/* Page Header */}
       <section className="bg-dark text-light relative jarallax">
-        <img src="/images/background/interior.jpeg" className="jarallax-img" alt="" />
+        <img src="/images/background/luxury_interior_hero.png" className="jarallax-img" alt="Contact Us" />
         <div className="container relative z-2">
           <div className="row gy-4 gx-5 align-items-center">
             <div className="col-md-8">

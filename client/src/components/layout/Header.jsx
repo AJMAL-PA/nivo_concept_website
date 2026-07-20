@@ -336,23 +336,35 @@ const Header = () => {
           padding: 0 !important;
         }
 
+        #mainmenu li ul.nivo-dropdown-menu li a,
+        #mainmenu.nivo-nav-pill li ul.nivo-dropdown-menu li a,
+        #mainmenu li li a,
         .nivo-dropdown-menu li a {
           display: block !important;
           padding: 10px 20px !important;
-          font-size: 13px !important;
-          color: rgba(255, 245, 235, 0.85) !important;
+          font-size: 12px !important;
+          font-weight: 600 !important;
+          letter-spacing: 0.08em !important;
+          text-transform: uppercase !important;
+          color: #ffffff !important;
+          opacity: 1 !important;
           text-decoration: none !important;
           transition: background 0.2s ease, color 0.2s ease !important;
           white-space: nowrap !important;
-          border-radius: 0 !important;
+          border-radius: 6px !important;
           height: auto !important;
           text-align: left !important;
           justify-content: flex-start !important;
+          margin: 2px 6px !important;
         }
 
+        #mainmenu li ul.nivo-dropdown-menu li a:hover,
+        #mainmenu.nivo-nav-pill li ul.nivo-dropdown-menu li a:hover,
+        #mainmenu li li a:hover,
         .nivo-dropdown-menu li a:hover {
-          background: rgba(210, 185, 155, 0.25) !important;
-          color: rgba(255, 255, 255, 1) !important;
+          background: rgba(255, 255, 255, 0.18) !important;
+          color: #ffffff !important;
+          opacity: 1 !important;
         }
 
         /* Mobile hamburger */
@@ -469,7 +481,7 @@ const Header = () => {
                 <ul className="nivo-dropdown-menu">
                   {link.dropdown.map((subLink) => (
                     <li key={subLink.to}>
-                      <Link to={subLink.to}>
+                      <Link to={subLink.to} style={{ color: '#ffffff', opacity: 1 }}>
                         {subLink.label}
                       </Link>
                     </li>

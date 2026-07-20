@@ -5,7 +5,7 @@ const Footer = () => {
     <>
       <style>{`
         footer.nivo-footer {
-          background-color: #A09691 !important; /* Taupe color */
+          background-color: #C3AF9B !important; /* Brand Beige color */
           color: #231f1d !important;
           padding: 80px 0 0 0 !important;
           font-family: 'Roboto Flex', sans-serif !important;
@@ -147,10 +147,10 @@ const Footer = () => {
           <div className="row g-4 justify-content-between">
             
             {/* Column 1: Logo & Subscribe */}
-            <div className="col-lg-3 col-md-6 ps-md-5">
+            <div className="col-lg-3 col-md-6">
               <div className="widget">
-                <img src="/images/nivo_concepts_logo.png" className="w-170px mb-3" alt="Nivo Concepts" />
-                <p className="fs-14 opacity-75 mb-4">Refined Interiors & Premium Construction</p>
+                <img src="/images/nivo_concepts_logo.png" className="mb-3" alt="Nivo Concepts" style={{ height: '80px', width: 'auto', objectFit: 'contain', display: 'block', filter: 'brightness(0)', opacity: 1 }} />
+                <p className="fs-14 mb-4" style={{ color: '#ffffff', opacity: 1, fontWeight: 500 }}>Refined Interiors & Premium Construction</p>
                 
                 <h2 className="hs-5">Subscribe Now</h2>
                 <div className="subscribe-input-wrap">

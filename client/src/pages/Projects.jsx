@@ -21,7 +21,7 @@ const Projects = () => {
 
       {/* Page Header */}
       <section className="bg-dark text-light relative jarallax">
-        <img src="/images/background/interior.jpeg" className="jarallax-img" alt="" />
+        <img src="/images/background/commercial_bg.png" className="jarallax-img" alt="Projects" />
         <div className="container relative z-2">
           <div className="row gy-4 gx-5 align-items-center">
             <div className="col-md-8">
