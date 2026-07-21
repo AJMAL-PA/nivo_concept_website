@@ -5,15 +5,16 @@ const Footer = () => {
     <>
       <style>{`
         footer.nivo-footer {
-          background-color: #C3AF9B !important; /* Brand Beige color */
-          color: #231f1d !important;
+          background-color: var(--footer-bg, #C3AF9B) !important;
+          color: var(--footer-text, #231f1d) !important;
           padding: 80px 0 0 0 !important;
           font-family: 'Roboto Flex', sans-serif !important;
+          transition: background-color 0.3s ease, color 0.3s ease !important;
         }
         footer.nivo-footer h2,
         footer.nivo-footer h3,
         footer.nivo-footer .hs-5 {
-          color: #1a1615 !important;
+          color: var(--footer-heading, #1a1615) !important;
           font-weight: 700 !important;
           font-size: 16px !important;
           text-transform: uppercase !important;
@@ -22,13 +23,25 @@ const Footer = () => {
           margin-top: 0 !important;
         }
         footer.nivo-footer a {
-          color: rgba(26, 22, 21, 0.8) !important;
+          color: var(--footer-text, rgba(26, 22, 21, 0.8)) !important;
           text-decoration: none !important;
           transition: color 0.25s ease !important;
           font-size: 14px !important;
         }
         footer.nivo-footer a:hover {
           color: #000000 !important;
+        }
+        [data-theme="dark"] footer.nivo-footer a:hover {
+          color: #ffffff !important;
+        }
+        footer.nivo-footer .footer-tagline {
+          color: var(--footer-heading, #ffffff) !important;
+          opacity: 0.9;
+          font-weight: 500;
+        }
+        footer.nivo-footer .footer-contact-icon {
+          color: var(--footer-heading, #1a1615) !important;
+          width: 14px;
         }
         footer.nivo-footer .widget {
           margin-bottom: 30px !important;
@@ -57,12 +70,15 @@ const Footer = () => {
           margin-bottom: 15px;
           max-width: 240px;
         }
+        footer.nivo-footer .subscribe-input-wrap i {
+          color: var(--footer-heading, #1a1615) !important;
+        }
         footer.nivo-footer .subscribe-input-wrap input {
           background: transparent !important;
           border: none !important;
           outline: none !important;
           width: 100% !important;
-          color: #1a1615 !important;
+          color: var(--footer-heading, #1a1615) !important;
           font-size: 14px !important;
           padding: 0 0 0 8px !important;
         }
@@ -80,7 +96,7 @@ const Footer = () => {
           text-transform: uppercase !important;
           letter-spacing: 0.05em !important;
           cursor: pointer !important;
-          transition: background 0.25s ease !important;
+          transition: background 0.25s ease, color 0.25s ease !important;
         }
         footer.nivo-footer .btn-subscribe:hover {
           background: #231f1d !important;
@@ -125,19 +141,28 @@ const Footer = () => {
         footer.nivo-footer .subfooter {
           background: rgba(0, 0, 0, 0.08) !important;
           border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
-          color: rgba(26, 22, 21, 0.7) !important;
+          color: var(--footer-text, rgba(26, 22, 21, 0.7)) !important;
           padding: 20px 0 !important;
           margin-top: 40px !important;
           font-size: 13px !important;
         }
         footer.nivo-footer .subfooter-links a {
           font-size: 13px !important;
-          color: rgba(26, 22, 21, 0.75) !important;
+          color: var(--footer-text, rgba(26, 22, 21, 0.75)) !important;
           text-decoration: none !important;
           margin: 0 4px !important;
         }
         footer.nivo-footer .subfooter-links a:hover {
           color: #000000 !important;
+        }
+        [data-theme="dark"] footer.nivo-footer .subfooter-links a:hover {
+          color: #ffffff !important;
+        }
+        footer.nivo-footer .footer-logo-img {
+          filter: brightness(0);
+        }
+        [data-theme="dark"] footer.nivo-footer .footer-logo-img {
+          filter: brightness(0) invert(1) !important;
         }
       `}</style>
 
@@ -149,12 +174,11 @@ const Footer = () => {
             {/* Column 1: Logo & Subscribe */}
             <div className="col-lg-3 col-md-6">
               <div className="widget">
-                <img src="/images/nivo_concepts_logo.png" className="mb-3" alt="Nivo Concepts" style={{ height: '80px', width: 'auto', objectFit: 'contain', display: 'block', filter: 'brightness(0)', opacity: 1 }} />
-                <p className="fs-14 mb-4" style={{ color: '#ffffff', opacity: 1, fontWeight: 500 }}>Refined Interiors & Premium Construction</p>
+                <img src="/images/nivo_concepts_logo.png" className="mb-4 footer-logo-img" alt="Nivo Concepts" style={{ height: '80px', width: 'auto', objectFit: 'contain', display: 'block', opacity: 1 }} />
                 
                 <h2 className="hs-5">Subscribe Now</h2>
                 <div className="subscribe-input-wrap">
-                  <i className="fa fa-envelope" style={{ color: 'rgba(26, 22, 21, 0.7)' }}></i>
+                  <i className="fa fa-envelope"></i>
                   <input type="email" placeholder="Enter your Email" />
                 </div>
                 <button className="btn-subscribe">Subscribe</button>
@@ -208,11 +232,11 @@ const Footer = () => {
                 <h2 className="hs-5">Contact Us</h2>
                 <ul style={{ padding: 0, margin: 0, listStyle: 'none' }}>
                   <li style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px', fontSize: '14px' }}>
-                    <i className="fa fa-phone" style={{ color: '#1a1615', width: '14px' }}></i>
+                    <i className="fa fa-phone footer-contact-icon"></i>
                     <span>+91 94007 88258</span>
                   </li>
                   <li style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', fontSize: '14px' }}>
-                    <i className="fa fa-envelope" style={{ color: '#1a1615', width: '14px' }}></i>
+                    <i className="fa fa-envelope footer-contact-icon"></i>
                     <span>nivoconcepts@gmail.com</span>
                   </li>
                 </ul>
@@ -255,3 +279,4 @@ const Footer = () => {
 };
 
 export default Footer;
+

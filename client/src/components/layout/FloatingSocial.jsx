@@ -49,10 +49,20 @@ const FloatingSocial = () => {
           transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
         }
 
+        [data-theme="dark"] .floating-main-btn {
+          background: #C3AF9B !important;
+          color: #12100e !important;
+        }
+
         .floating-main-btn.over-footer {
           background: #ffffff !important; /* Switch to WHITE ONLY when over footer */
           color: #1a1615 !important;
           box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        [data-theme="dark"] .floating-main-btn.over-footer {
+          background: #ffffff !important;
+          color: #12100e !important;
         }
 
         .floating-main-btn:hover {

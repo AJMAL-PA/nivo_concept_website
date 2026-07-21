@@ -55,13 +55,13 @@ const Construction = () => {
             </div>
 
             <div className="col-lg-5">
-              <div className="text-light p-5 rounded-1 wow fadeInUp" data-wow-delay=".8s" style={{ backgroundColor: '#C3AF9B', border: '1px solid rgba(255, 255, 255, 0.25)', boxShadow: '0 8px 25px rgba(0, 0, 0, 0.08)' }}>
+              <div className="text-light p-5 rounded-1 wow fadeInUp service-highlight-box" data-wow-delay=".8s" style={{ backgroundColor: '#C3AF9B', border: '1px solid rgba(255, 255, 255, 0.25)', boxShadow: '0 8px 25px rgba(0, 0, 0, 0.08)' }}>
                 <h3 className="mb-4 text-white" style={{ fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>Service Highlights</h3>
                 <ul className="list-unstyled mb-0">
                   {['Luxury villa building expertise', 'Advanced commercial steel framing', 'Seismic-compliant foundation works', 'Full MEP utility integration plans', 'Routine site security audits', 'Turnkey building handovers'].map((item, idx) => (
                     <li key={idx} className="mb-3 d-flex align-items-center">
-                      <i className="fas fa-check-circle me-3" style={{ color: '#231f1d', fontSize: '18px' }}></i>
-                      <span style={{ color: '#ffffff', fontWeight: 500, fontSize: '15px' }}>{item}</span>
+                      <i className="fas fa-check-circle me-3" style={{ fontSize: '18px' }}></i>
+                      <span style={{ fontWeight: 500, fontSize: '15px' }}>{item}</span>
                     </li>
                   ))}
                 </ul>

@@ -26,7 +26,7 @@ Table of content:
   /* body font */
   --body-font: "Google Sans", Helvetica, Arial, sans-serif;
   --body-font-size: 16px;
-  --body-font-color: rgba(52, 31, 22, .75);
+  --body-font-color: var(--text-main, rgba(52, 31, 22, .75));
   --body-font-color-bg-dark: rgba(255, 255, 255, .8);
   --body-font-weight: 400;
   --body-font-letter-spacing: -0.16px;
@@ -34,7 +34,7 @@ Table of content:
   /* heading font */
   --heading-font: "Google Sans", Helvetica, Arial, sans-serif;  
   --heading-font-weight: 400;
-  --heading-font-color: #341F16;
+  --heading-font-color: var(--text-main, #341F16);
   --heading-font-color-bg-dark: #ffffff;
   --heading-text-transform: uppercase;
   /* alternatif font */

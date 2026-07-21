@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import FloatingSocial from './components/layout/FloatingSocial';
@@ -50,36 +51,38 @@ const AppLayout = ({ children }) => (
 
 const App = () => {
   return (
-    <BrowserRouter>
-      {/* Single global page-transition overlay — no more per-page white flash */}
-      <Preloader />
-      <ScrollToTop />
-      <AppLayout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/services/interiors" element={<Interiors />} />
-          <Route path="/services/construction" element={<Construction />} />
-          <Route path="/services/consultation-service" element={<ConsultationService />} />
-          <Route path="/services/architectural-design" element={<ArchitecturalDesign />} />
-          <Route path="/service-single" element={<ServiceSingle />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/projects/commercial" element={<CommercialProjects />} />
-          <Route path="/projects/residential" element={<ResidentialProjects />} />
-          <Route path="/project-single" element={<ProjectSingle />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog-single" element={<BlogSingle />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/testimonials" element={<Testimonials />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/consultation" element={<Consultation />} />
-          {/* 404 fallback */}
-          <Route path="*" element={<Home />} />
-        </Routes>
-      </AppLayout>
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        {/* Single global page-transition overlay — no more per-page white flash */}
+        <Preloader />
+        <ScrollToTop />
+        <AppLayout>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/services/interiors" element={<Interiors />} />
+            <Route path="/services/construction" element={<Construction />} />
+            <Route path="/services/consultation-service" element={<ConsultationService />} />
+            <Route path="/services/architectural-design" element={<ArchitecturalDesign />} />
+            <Route path="/service-single" element={<ServiceSingle />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/commercial" element={<CommercialProjects />} />
+            <Route path="/projects/residential" element={<ResidentialProjects />} />
+            <Route path="/project-single" element={<ProjectSingle />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog-single" element={<BlogSingle />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/testimonials" element={<Testimonials />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/consultation" element={<Consultation />} />
+            {/* 404 fallback */}
+            <Route path="*" element={<Home />} />
+          </Routes>
+        </AppLayout>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 };
 

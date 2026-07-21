@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import useScrollHeader from '../../hooks/useScrollHeader';
+import { useTheme } from '../../context/ThemeContext';
 
 const NAV_LINKS = [
   { label: 'Home', to: '/' },
@@ -29,6 +30,7 @@ const NAV_LINKS = [
 
 const Header = () => {
   const location = useLocation();
+  const { theme, toggleTheme, isDark } = useTheme();
   useScrollHeader();
   const navRef = useRef(null);
 
@@ -123,6 +125,12 @@ const Header = () => {
           padding: 6px 32px;
         }
 
+        [data-theme="dark"] header.nivo-header.scrolled,
+        [data-theme="dark"] header.nivo-header.smaller.scrolled {
+          background: rgba(18, 16, 14, 0.95) !important;
+          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5) !important;
+        }
+
         /* Logo */
         .nivo-logo {
           display: flex;
@@ -179,6 +187,12 @@ const Header = () => {
           border-color: rgba(185, 167, 151, 0.5) !important;
         }
 
+        [data-theme="dark"] #mainmenu.nivo-nav-pill,
+        [data-theme="dark"] .nivo-header.scrolled #mainmenu.nivo-nav-pill {
+          background: rgba(30, 26, 23, 0.9) !important;
+          border-color: rgba(255, 255, 255, 0.15) !important;
+        }
+
         #mainmenu.nivo-nav-pill li {
           margin: 0 !important;
           padding: 0 !important;
@@ -229,6 +243,11 @@ const Header = () => {
           pointer-events: none !important;
         }
 
+        [data-theme="dark"] .nivo-nav-hover-indicator {
+          background: rgba(195, 175, 155, 0.25) !important;
+          border-color: rgba(195, 175, 155, 0.4) !important;
+        }
+
         /* CTA button */
         .nivo-cta {
           display: inline-flex;
@@ -256,6 +275,16 @@ const Header = () => {
           border-color: rgb(185, 167, 151); /* Beige */
           color: #ffffff;
           transform: translateY(-1px);
+        }
+        [data-theme="dark"] .nivo-cta {
+          background: var(--primary-color) !important;
+          border-color: var(--primary-color) !important;
+          color: #12100e !important;
+        }
+        [data-theme="dark"] .nivo-cta:hover {
+          background: #d6c3b0 !important;
+          border-color: #d6c3b0 !important;
+          color: #12100e !important;
         }
         .nivo-cta-arrow {
           display: inline-flex;
@@ -493,11 +522,39 @@ const Header = () => {
           <div className="nivo-nav-hover-indicator" style={hoverStyle} />
         </ul>
 
-        {/* CTA Button */}
-        <Link to="/contact" className="nivo-cta">
-          GET A QUOTE
-          <span className="nivo-cta-arrow">↗</span>
-        </Link>
+        {/* Header Right Actions */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {/* Theme Switch Icon-Only Button */}
+          <button
+            onClick={toggleTheme}
+            className="nivo-theme-toggle-pill"
+            aria-label="Toggle dark/light theme"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              border: isDark ? '1px solid rgba(195, 175, 155, 0.4)' : '1px solid rgba(26, 22, 21, 0.25)',
+              background: isDark ? '#231f1d' : '#ffffff',
+              color: isDark ? '#f5f0eb' : '#1a1615',
+              cursor: 'pointer',
+              boxShadow: '0 2px 10px rgba(0,0,0,0.12)',
+              transition: 'all 0.3s ease',
+              padding: 0
+            }}
+            title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          >
+            <i className={`fa-solid ${isDark ? 'fa-sun' : 'fa-moon'}`} style={{ color: isDark ? '#ffca28' : '#231f1d', fontSize: '18px' }}></i>
+          </button>
+
+          {/* CTA Button */}
+          <Link to="/contact" className="nivo-cta">
+            GET A QUOTE
+            <span className="nivo-cta-arrow">↗</span>
+          </Link>
+        </div>
 
         {/* Mobile hamburger */}
         <button
@@ -548,6 +605,31 @@ const Header = () => {
             )}
           </div>
         ))}
+        
+        {/* Mobile Theme Toggle Button */}
+        <button
+          onClick={toggleTheme}
+          aria-label="Toggle dark/light theme"
+          title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '44px',
+            height: '44px',
+            borderRadius: '50%',
+            border: '1px solid rgba(255, 255, 255, 0.3)',
+            background: isDark ? '#ffffff' : '#231f1d',
+            color: isDark ? '#1a1615' : '#ffffff',
+            cursor: 'pointer',
+            marginTop: '15px',
+            marginBottom: '10px',
+            padding: 0
+          }}
+        >
+          <i className={`fa-solid ${isDark ? 'fa-sun' : 'fa-moon'}`} style={{ color: isDark ? '#f5a623' : '#ffca28', fontSize: '18px' }}></i>
+        </button>
+
         <Link
           to="/contact"
           className="nivo-cta"
