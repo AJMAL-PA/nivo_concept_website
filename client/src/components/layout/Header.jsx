@@ -127,8 +127,33 @@ const Header = () => {
 
         [data-theme="dark"] header.nivo-header.scrolled,
         [data-theme="dark"] header.nivo-header.smaller.scrolled {
-          background: rgba(18, 16, 14, 0.95) !important;
-          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5) !important;
+          background: rgba(18, 16, 14, 0.65) !important;
+          backdrop-filter: blur(20px) saturate(180%) !important;
+          -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35) !important;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        }
+
+        /* Before Scrolling (Transparent Header): Show Light (White) Logo, Hide Dark (Gold) Logo */
+        [data-theme="dark"] .nivo-header:not(.scrolled) .nivo-logo .logo-light,
+        .dark-scheme .nivo-header:not(.scrolled) .nivo-logo .logo-light {
+          display: block !important;
+        }
+
+        [data-theme="dark"] .nivo-header:not(.scrolled) .nivo-logo .logo-dark,
+        .dark-scheme .nivo-header:not(.scrolled) .nivo-logo .logo-dark {
+          display: none !important;
+        }
+
+        /* After Scrolling (Glassmorphic Header): Show Dark (Gold) Logo, Hide Light (White) Logo */
+        [data-theme="dark"] .nivo-header.scrolled .nivo-logo .logo-light,
+        .dark-scheme .nivo-header.scrolled .nivo-logo .logo-light {
+          display: none !important;
+        }
+
+        [data-theme="dark"] .nivo-header.scrolled .nivo-logo .logo-dark,
+        .dark-scheme .nivo-header.scrolled .nivo-logo .logo-dark {
+          display: block !important;
         }
 
         /* Logo */
@@ -187,10 +212,16 @@ const Header = () => {
           border-color: rgba(185, 167, 151, 0.5) !important;
         }
 
-        [data-theme="dark"] #mainmenu.nivo-nav-pill,
+        [data-theme="dark"] #mainmenu.nivo-nav-pill {
+          background: rgba(30, 26, 23, 0.5) !important;
+          backdrop-filter: blur(12px) saturate(160%) !important;
+          -webkit-backdrop-filter: blur(12px) saturate(160%) !important;
+          border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+
         [data-theme="dark"] .nivo-header.scrolled #mainmenu.nivo-nav-pill {
-          background: rgba(30, 26, 23, 0.9) !important;
-          border-color: rgba(255, 255, 255, 0.15) !important;
+          background: rgba(36, 32, 28, 0.55) !important;
+          border-color: rgba(255, 255, 255, 0.08) !important;
         }
 
         #mainmenu.nivo-nav-pill li {
