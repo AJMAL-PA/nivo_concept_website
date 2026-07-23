@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   fetchProjects, 
   createProject, 
@@ -286,42 +287,53 @@ const Admin = () => {
   // Login view
   if (!isAuthenticated) {
     return (
-      <main className="admin-login-layout" style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-main)' }}>
-        <div className="card p-5 shadow-lg border-0" style={{ maxWidth: '420px', width: '100%', borderRadius: '16px', background: 'var(--bg-card)' }}>
+      <main className="admin-login-layout d-flex align-items-center justify-content-center" style={{ minHeight: '100vh', background: '#080706', padding: '20px' }}>
+        <div className="cyber-panel p-5" style={{ maxWidth: '440px', width: '100%', border: '1px solid rgba(195, 175, 155, 0.2)' }}>
           <div className="text-center mb-4">
-            <h2 className="fs-32 font-bold uppercase tracking-wider mb-2">NIVO CONCEPTS</h2>
-            <p className="text-muted fs-14">Portfolio Control Center</p>
+            <div className="d-flex align-items-center justify-content-center mb-3">
+              <span className="pulse-orb me-2"></span>
+              <span style={{ fontSize: '11px', fontFamily: 'monospace', letterSpacing: '0.2em', color: '#0df' }}>SYSTEM ONLINE</span>
+            </div>
+            <h2 className="fs-28 font-bold uppercase tracking-widest mb-1 text-white" style={{ letterSpacing: '0.15em' }}>NIVO [CORE]</h2>
+            <p className="fs-12 text-uppercase font-bold tracking-wider mb-0" style={{ color: '#C3AF9B' }}>Decentralized Control Interface</p>
           </div>
           
-          {errorMsg && <div className="alert alert-danger py-2 fs-13 mb-3 text-center">{errorMsg}</div>}
+          {errorMsg && (
+            <div className="alert alert-danger py-2 fs-12 mb-3 text-center border-0 rounded-0" style={{ background: 'rgba(255, 77, 79, 0.1)', color: '#ff4d4f', borderLeft: '3px solid #ff4d4f' }}>
+              [ERROR] {errorMsg}
+            </div>
+          )}
           
           <form onSubmit={handleLogin}>
             <div className="mb-3">
-              <label className="form-label fs-13 font-semibold uppercase tracking-wider mb-2" style={{ display: 'block' }}>Admin Username</label>
+              <label className="form-label fs-11 font-bold uppercase tracking-wider mb-2 text-muted" style={{ display: 'block' }}>// Operator Username</label>
               <input 
                 type="text" 
-                className="form-control text-center font-semibold" 
-                placeholder="Username" 
+                className="form-control text-center" 
+                placeholder="OPERATOR_ID" 
                 value={username} 
                 onChange={(e) => setUsername(e.target.value)} 
-                style={{ fontSize: '15px' }}
+                required
               />
             </div>
             <div className="mb-4">
-              <label className="form-label fs-13 font-semibold uppercase tracking-wider mb-2" style={{ display: 'block' }}>Admin Passcode</label>
+              <label className="form-label fs-11 font-bold uppercase tracking-wider mb-2 text-muted" style={{ display: 'block' }}>// Access Decryptor Passcode</label>
               <input 
                 type="password" 
                 className="form-control text-center" 
                 placeholder="••••••••" 
                 value={passcode} 
                 onChange={(e) => setPasscode(e.target.value)} 
-                style={{ fontSize: '18px', tracking: '0.2em' }}
+                required
               />
             </div>
-            <button type="submit" className="btn-main w-100 py-3 font-semibold uppercase tracking-wide">
-              Access Panel
+            <button type="submit" className="btn-main w-100 py-3 mt-2">
+              Authenticate Operator
             </button>
           </form>
+          <div className="mt-4 text-center">
+            <span style={{ fontSize: '9px', fontFamily: 'monospace', color: 'rgba(255,255,255,0.25)' }}>SECURE QUANTUM LINK v2.4.9</span>
+          </div>
         </div>
       </main>
     );
@@ -329,30 +341,41 @@ const Admin = () => {
 
   // Dashboard / Management Panel View
   return (
-    <main style={{ minHeight: '90vh', background: 'var(--bg-main)', paddingTop: '130px', paddingBottom: '80px' }}>
-      <div className="container">
+    <main className="admin-login-layout" style={{ minHeight: '100vh', background: '#080706', padding: '40px 0' }}>
+      <div className="container px-md-5">
         
         {/* Header block */}
-        <div className="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3">
+        <div className="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3 border-bottom pb-4" style={{ borderColor: 'rgba(195, 175, 155, 0.15)' }}>
           <div>
-            <h1 className="fs-36 mb-0 font-bold uppercase tracking-wider">Admin Panel</h1>
-            <p className="text-muted fs-14 mb-0">Manage projects and portfolio items dynamically</p>
+            <div className="d-flex align-items-center gap-2 mb-1">
+              <span className="pulse-orb"></span>
+              <span style={{ fontSize: '11px', fontFamily: 'monospace', color: '#0df', letterSpacing: '0.15em' }}>SESSION ACTIVE [OP: {username}]</span>
+            </div>
+            <h1 className="fs-32 mb-0 font-bold uppercase tracking-widest text-white">[ ADMIN PANEL ]</h1>
           </div>
-          <button onClick={handleLogout} className="btn-main px-4 py-2" style={{ fontSize: '13px' }}>
-            Logout
-          </button>
+          <Link to="/" className="btn-cyber-outline px-4 py-2" style={{ fontSize: '11px', textDecoration: 'none' }}>
+            Live Site
+          </Link>
         </div>
 
         {/* Notifications */}
-        {errorMsg && <div className="alert alert-danger mb-4 py-3 border-0 rounded-3 shadow-sm">{errorMsg}</div>}
-        {successMsg && <div className="alert alert-success mb-4 py-3 border-0 rounded-3 shadow-sm">{successMsg}</div>}
+        {errorMsg && (
+          <div className="alert alert-danger mb-4 py-3 border-0 rounded-0 shadow-sm" style={{ background: 'rgba(255, 77, 79, 0.1)', color: '#ff4d4f', borderLeft: '4px solid #ff4d4f' }}>
+            [SYSTEM WARNING] {errorMsg}
+          </div>
+        )}
+        {successMsg && (
+          <div className="alert alert-success mb-4 py-3 border-0 rounded-0 shadow-sm" style={{ background: 'rgba(15, 230, 110, 0.1)', color: '#0fe670', borderLeft: '4px solid #0fe670' }}>
+            [SYSTEM REPORT] {successMsg}
+          </div>
+        )}
 
         <div className="row g-4">
           
           {/* Navigation Sidebar */}
           <div className="col-lg-3">
-            <div className="p-4 rounded-3 border" style={{ background: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
-              <h5 className="uppercase tracking-wider font-bold mb-3 fs-13 text-muted">Navigation</h5>
+            <div className="cyber-panel p-4">
+              <h5 className="uppercase tracking-widest font-bold mb-3 fs-11 text-muted">// INDEX SYSTEM</h5>
               <div className="d-flex flex-column gap-2">
                 <button 
                   onClick={() => setActiveTab('dashboard')} 
@@ -381,22 +404,22 @@ const Admin = () => {
             
             {/* Tab 1: Dashboard Panel */}
             {activeTab === 'dashboard' && (
-              <div className="p-5 rounded-3 border shadow-sm" style={{ background: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
-                <h3 className="uppercase tracking-wider font-bold mb-4 fs-20">Portfolio Summary</h3>
+              <div className="cyber-panel p-5">
+                <h3 className="uppercase tracking-wider font-bold mb-4 fs-20 text-white">// DATABASE SUMMARY</h3>
                 <div className="row g-4">
                   <div className="col-md-6">
-                    <div className="p-4 rounded-3 text-center border bg-light-card">
+                    <div className="cyber-metric-card text-center">
                       <h4 className="text-muted uppercase tracking-wider fs-12 font-bold mb-2">Total Projects</h4>
-                      <h2 className="fs-48 font-bold mb-2 text-primary">{projectsList.length}</h2>
+                      <h2 className="fs-48 font-bold mb-3" style={{ color: '#C3AF9B', fontFamily: 'monospace' }}>{projectsList.length}</h2>
                       <button onClick={() => { setActiveTab('projects'); resetProjectForm(); }} className="btn-main py-1.5 px-3 fs-11 uppercase font-semibold">
                         Add Project
                       </button>
                     </div>
                   </div>
                   <div className="col-md-6">
-                    <div className="p-4 rounded-3 text-center border bg-light-card">
+                    <div className="cyber-metric-card text-center">
                       <h4 className="text-muted uppercase tracking-wider fs-12 font-bold mb-2">Gallery Showcase</h4>
-                      <h2 className="fs-48 font-bold mb-2 text-primary">{galleryList.length}</h2>
+                      <h2 className="fs-48 font-bold mb-3" style={{ color: '#C3AF9B', fontFamily: 'monospace' }}>{galleryList.length}</h2>
                       <button onClick={() => setActiveTab('gallery')} className="btn-main py-1.5 px-3 fs-11 uppercase font-semibold">
                         Add Photo
                       </button>
@@ -411,8 +434,8 @@ const Admin = () => {
               <div className="d-flex flex-column gap-4">
                 
                 {/* Form to Add/Edit Projects */}
-                <div className="p-4 rounded-3 border shadow-sm" style={{ background: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
-                  <h3 className="uppercase tracking-wider font-bold mb-4 fs-18">
+                <div className="cyber-panel p-4">
+                  <h3 className="uppercase tracking-wider font-bold mb-4 fs-18 text-white">
                     {editingProject ? `Edit Project: ${editingProject.title}` : 'Add New Portfolio Project'}
                   </h3>
                   
@@ -421,7 +444,7 @@ const Admin = () => {
                       
                       {/* Title */}
                       <div className="col-md-6">
-                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">Project Title *</label>
+                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">// Project Title *</label>
                         <input 
                           type="text" 
                           className="form-control" 
@@ -434,9 +457,9 @@ const Admin = () => {
 
                       {/* Main Category */}
                       <div className="col-md-6">
-                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">Project Category (Residential or Commercial) *</label>
+                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">// Project Category *</label>
                         <div className="d-flex gap-4 mt-2">
-                          <label className="d-flex align-items-center gap-2 font-semibold fs-14">
+                          <label className="d-flex align-items-center gap-2 font-semibold fs-14 text-white cursor-pointer">
                             <input 
                               type="radio" 
                               name="projectCategory" 
@@ -446,7 +469,7 @@ const Admin = () => {
                             />
                             Residential
                           </label>
-                          <label className="d-flex align-items-center gap-2 font-semibold fs-14">
+                          <label className="d-flex align-items-center gap-2 font-semibold fs-14 text-white cursor-pointer">
                             <input 
                               type="radio" 
                               name="projectCategory" 
@@ -461,7 +484,7 @@ const Admin = () => {
 
                       {/* Main Cover Image */}
                       <div className="col-md-6">
-                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">Main Cover Image Path / URL</label>
+                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">// Main Cover Image Path / URL</label>
                         <input 
                           type="text" 
                           className="form-control" 
@@ -479,7 +502,7 @@ const Admin = () => {
 
                       {/* Other Tags */}
                       <div className="col-md-6">
-                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">Tags (comma-separated, e.g. Luxury, Custom, Glass)</label>
+                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">// Tags (comma-separated)</label>
                         <input 
                           type="text" 
                           className="form-control" 
@@ -491,34 +514,34 @@ const Admin = () => {
 
                       {/* Overview details */}
                       <div className="col-md-3">
-                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">Client</label>
+                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">// Client</label>
                         <input type="text" className="form-control" placeholder="e.g. Private Residence" value={projectForm.client} onChange={(e) => handleProjectChange('client', e.target.value)} />
                       </div>
                       <div className="col-md-3">
-                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">Location</label>
-                        <input type="text" className="form-control" placeholder="e.g. New York, NY" value={projectForm.location} onChange={(e) => handleProjectChange('location', e.target.value)} />
+                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">// Location</label>
+                        <input type="text" className="form-control" placeholder="e.g. Calicut, Kerala" value={projectForm.location} onChange={(e) => handleProjectChange('location', e.target.value)} />
                       </div>
                       <div className="col-md-3">
-                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">Area</label>
+                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">// Area</label>
                         <input type="text" className="form-control" placeholder="e.g. 5,000 sq ft" value={projectForm.area} onChange={(e) => handleProjectChange('area', e.target.value)} />
                       </div>
                       <div className="col-md-3">
-                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">Year</label>
+                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">// Year</label>
                         <input type="text" className="form-control" placeholder="e.g. 2025" value={projectForm.year} onChange={(e) => handleProjectChange('year', e.target.value)} />
                       </div>
 
                       <div className="col-md-4">
-                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">Style</label>
+                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">// Style</label>
                         <input type="text" className="form-control" placeholder="e.g. Minimalist Contemporary" value={projectForm.style} onChange={(e) => handleProjectChange('style', e.target.value)} />
                       </div>
                       <div className="col-md-4">
-                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">Duration</label>
+                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">// Duration</label>
                         <input type="text" className="form-control" placeholder="e.g. 10 months" value={projectForm.duration} onChange={(e) => handleProjectChange('duration', e.target.value)} />
                       </div>
 
                       {/* Description */}
                       <div className="col-12">
-                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">Project Description Overview</label>
+                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">// Project Description Overview</label>
                         <textarea 
                           rows="3" 
                           className="form-control" 
@@ -530,7 +553,7 @@ const Admin = () => {
 
                       {/* Detail Gallery Images */}
                       <div className="col-12">
-                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">Gallery Images (comma-separated URLs)</label>
+                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">// Gallery Images (comma-separated URLs)</label>
                         <input 
                           type="text" 
                           className="form-control" 
@@ -552,7 +575,7 @@ const Admin = () => {
                       <button type="submit" className="btn-main px-4 py-2 font-semibold uppercase tracking-wide" disabled={loading}>
                         {editingProject ? 'Save Updates' : 'Add Project'}
                       </button>
-                      <button type="button" onClick={resetProjectForm} className="btn-main bg-dark border px-4 py-2 font-semibold uppercase tracking-wide">
+                      <button type="button" onClick={resetProjectForm} className="btn-cyber-outline px-4 py-2 font-semibold uppercase tracking-wide">
                         Reset Form
                       </button>
                     </div>
@@ -560,8 +583,8 @@ const Admin = () => {
                 </div>
 
                 {/* List of projects */}
-                <div className="p-4 rounded-3 border shadow-sm" style={{ background: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
-                  <h3 className="uppercase tracking-wider font-bold mb-4 fs-18">Current Project Portfolio</h3>
+                <div className="cyber-panel p-4">
+                  <h3 className="uppercase tracking-wider font-bold mb-4 fs-18 text-white">// CURRENT PROJECT PORTFOLIO</h3>
                   <div className="table-responsive">
                     <table className="table table-align-middle" style={{ color: 'inherit' }}>
                       <thead>
@@ -577,21 +600,21 @@ const Admin = () => {
                         {projectsList.map((proj) => (
                           <tr key={proj.id} className="fs-14 border-bottom">
                             <td>
-                              <img src={proj.img} alt={proj.title} style={{ width: '50px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
+                              <img src={proj.img} alt={proj.title} style={{ width: '50px', height: '40px', objectFit: 'cover', borderRadius: '2px' }} />
                             </td>
-                            <td className="font-semibold">{proj.title}</td>
+                            <td className="font-semibold text-white">{proj.title}</td>
                             <td>
-                              <span className="badge p-2 bg-blur text-uppercase fs-10" style={{ color: 'var(--text-main)' }}>
+                              <span className="badge py-1.5 px-2.5 cyber-tag text-uppercase fs-9">
                                 {proj.tags[0] || 'Unassigned'}
                               </span>
                             </td>
                             <td>{proj.year || '-'}</td>
                             <td>
                               <div className="d-flex gap-2">
-                                <button onClick={() => startEditProject(proj)} className="btn-table-edit btn-sm px-3 py-1 fs-12 font-bold uppercase text-primary border rounded">
+                                <button onClick={() => startEditProject(proj)} className="btn btn-outline-light btn-sm px-3 py-1 fs-11 uppercase font-bold" style={{ borderColor: 'rgba(255,255,255,0.25)', borderRadius: '2px', color: '#fff' }}>
                                   Edit
                                 </button>
-                                <button onClick={() => handleDeleteProject(proj.id)} className="btn-table-delete btn-sm px-3 py-1 fs-12 font-bold uppercase text-danger border rounded">
+                                <button onClick={() => handleDeleteProject(proj.id)} className="btn btn-outline-danger btn-sm px-3 py-1 fs-11 uppercase font-bold" style={{ borderColor: 'rgba(255, 77, 79, 0.4)', color: '#ff4d4f', borderRadius: '2px' }}>
                                   Delete
                                 </button>
                               </div>
@@ -611,12 +634,12 @@ const Admin = () => {
               <div className="d-flex flex-column gap-4">
                 
                 {/* Form to Add Photo */}
-                <div className="p-4 rounded-3 border shadow-sm" style={{ background: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
-                  <h3 className="uppercase tracking-wider font-bold mb-4 fs-18">Add Gallery Image</h3>
+                <div className="cyber-panel p-4">
+                  <h3 className="uppercase tracking-wider font-bold mb-4 fs-18 text-white">// ADD GALLERY IMAGE</h3>
                   <form onSubmit={handleGallerySubmit}>
                     <div className="row g-3">
                       <div className="col-md-6">
-                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">Image Caption / Title</label>
+                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">// Image Caption / Title</label>
                         <input 
                           type="text" 
                           className="form-control" 
@@ -627,11 +650,12 @@ const Admin = () => {
                       </div>
 
                       <div className="col-md-6">
-                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">Category Dropdown *</label>
+                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">// Category Dropdown *</label>
                         <select 
                           className="form-control" 
                           value={galleryForm.category}
                           onChange={(e) => setGalleryForm({ ...galleryForm, category: e.target.value })}
+                          style={{ height: '45px' }}
                         >
                           <option value="Residential">Residential</option>
                           <option value="Commercial">Commercial</option>
@@ -641,7 +665,7 @@ const Admin = () => {
                       </div>
 
                       <div className="col-12">
-                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">Image Path / URL *</label>
+                        <label className="form-label font-semibold fs-12 uppercase tracking-wide">// Image Path / URL *</label>
                         <input 
                           type="text" 
                           className="form-control" 
@@ -666,18 +690,39 @@ const Admin = () => {
                 </div>
 
                 {/* List of Photos */}
-                <div className="p-4 rounded-3 border shadow-sm" style={{ background: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
-                  <h3 className="uppercase tracking-wider font-bold mb-4 fs-18">Current Gallery Images</h3>
+                <div className="cyber-panel p-4">
+                  <h3 className="uppercase tracking-wider font-bold mb-4 fs-18 text-white">// CURRENT GALLERY IMAGES</h3>
                   <div className="row g-3">
                     {galleryList.map((item) => (
-                      <div key={item.id} className="col-md-4 col-sm-6">
-                        <div className="border rounded p-2 text-center" style={{ background: 'var(--bg-card)' }}>
-                          <img src={item.img} alt={item.title} style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '4px' }} className="mb-2" />
-                          <h5 className="fs-13 font-semibold text-truncate mb-1">{item.title || 'Untitled'}</h5>
-                          <span className="badge bg-blur text-uppercase fs-9 py-1 px-2 mb-2" style={{ color: 'var(--text-main)' }}>{item.category}</span>
-                          <button onClick={() => handleDeleteGallery(item.id)} className="btn-main bg-dark border-danger text-danger w-100 py-1 fs-11 uppercase font-bold" style={{ borderColor: '#ff4d4f' }}>
-                            Delete
-                          </button>
+                      <div key={item.id} className="col-md-4 col-sm-6 d-flex">
+                        <div className="cyber-metric-card p-3 text-center d-flex flex-column align-items-center justify-content-between h-100 w-100">
+                          <div className="w-100">
+                            <img src={item.img} alt={item.title} style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '2px' }} className="mb-3" />
+                            <h5 className="fs-13 font-semibold text-truncate mb-2 text-white">{item.title || 'Untitled'}</h5>
+                          </div>
+                          <div className="w-100">
+                            <div className="mb-3">
+                              <span className="badge py-1.5 px-2.5 cyber-tag text-uppercase fs-9" style={{ display: 'inline-block' }}>{item.category}</span>
+                            </div>
+                            <button 
+                              onClick={() => handleDeleteGallery(item.id)} 
+                              className="btn btn-outline-danger btn-sm" 
+                              style={{ 
+                                borderColor: 'rgba(255, 77, 79, 0.4)', 
+                                color: '#ff4d4f', 
+                                borderRadius: '2px',
+                                display: 'block',
+                                width: '100%',
+                                boxSizing: 'border-box',
+                                float: 'none',
+                                position: 'relative',
+                                margin: '0',
+                                padding: '6px 12px'
+                              }}
+                            >
+                              Delete Item
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -695,57 +740,168 @@ const Admin = () => {
 
       {/* Styled Dashboard Components */}
       <style>{`
-        .btn-sidebar {
-          background: transparent;
-          border: none;
-          color: var(--text-main);
-          width: 100%;
-          transition: all 0.25s ease;
+        body {
+          background-color: #080706 !important;
         }
-        .btn-sidebar:hover {
-          background: rgba(195, 175, 155, 0.12);
-          color: var(--primary-color);
+
+        .cyber-panel {
+          background: rgba(22, 19, 17, 0.4) !important;
+          backdrop-filter: blur(16px);
+          border: 1px solid rgba(195, 175, 155, 0.12) !important;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(195, 175, 155, 0.03);
+          position: relative;
+          border-radius: 4px;
         }
-        .btn-sidebar.active-sidebar-tab {
-          background: var(--primary-color) !important;
-          color: #12100e !important;
+
+        /* Bracket corner decorations */
+        .cyber-panel::before, .cyber-panel::after {
+          content: '';
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          border-color: #C3AF9B;
+          border-style: solid;
+          pointer-events: none;
         }
-        .bg-light-card {
-          background: rgba(195, 175, 155, 0.05);
-          border-color: rgba(195, 175, 155, 0.15) !important;
+        .cyber-panel::before {
+          top: -1px;
+          left: -1px;
+          border-width: 1px 0 0 1px;
         }
+        .cyber-panel::after {
+          bottom: -1px;
+          right: -1px;
+          border-width: 0 1px 1px 0;
+        }
+
+        .pulse-orb {
+          width: 8px;
+          height: 8px;
+          background-color: #0df;
+          border-radius: 50%;
+          box-shadow: 0 0 10px #0df;
+          display: inline-block;
+          animation: pulse 1.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+          0% { transform: scale(0.9); opacity: 0.5; }
+          100% { transform: scale(1.3); opacity: 1; }
+        }
+
         .form-control {
-          background-color: var(--bg-card);
-          color: var(--text-main);
-          border: 1px solid var(--border-color);
-          border-radius: 6px;
-          padding: 8px 12px;
+          background-color: rgba(10, 8, 7, 0.8) !important;
+          color: #e6e4e2 !important;
+          border: 1px solid rgba(195, 175, 155, 0.25) !important;
+          border-radius: 2px !important;
+          font-family: 'Outfit', monospace;
+          padding: 10px 14px;
           transition: all 0.3s ease;
         }
         .form-control:focus {
-          border-color: var(--primary-color);
-          box-shadow: 0 0 0 2px rgba(195, 175, 155, 0.2);
-          background-color: var(--bg-card);
-          color: var(--text-main);
+          border-color: #C3AF9B !important;
+          box-shadow: 0 0 8px rgba(195, 175, 155, 0.3) !important;
+          background-color: rgba(10, 8, 7, 0.9) !important;
         }
-        select.form-control {
-          height: auto;
+
+        .btn-sidebar {
+          background: rgba(0, 0, 0, 0.3);
+          border: 1px solid rgba(195, 175, 155, 0.08);
+          color: #a5a29f;
+          width: 100%;
+          border-radius: 2px;
+          padding: 12px 16px;
+          font-family: 'Outfit', sans-serif;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          transition: all 0.3s ease;
+          position: relative;
         }
+        .btn-sidebar:hover {
+          color: #ffffff;
+          border-color: rgba(195, 175, 155, 0.25);
+          background: rgba(195, 175, 155, 0.05);
+        }
+        .btn-sidebar.active-sidebar-tab {
+          border-color: #C3AF9B !important;
+          color: #C3AF9B !important;
+          background: rgba(195, 175, 155, 0.08) !important;
+          box-shadow: inset -4px 0 0 #C3AF9B !important;
+        }
+
         .table {
-          background: transparent;
+          color: #e6e4e2 !important;
         }
         .table th {
-          border-bottom: 2px solid var(--border-color) !important;
+          border-bottom: 2px solid rgba(195, 175, 155, 0.2) !important;
+          color: #C3AF9B !important;
+          font-family: 'Outfit', sans-serif;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          font-size: 11px;
           padding: 12px 8px;
         }
         .table td {
-          padding: 12px 8px;
+          border-bottom: 1px solid rgba(195, 175, 155, 0.1) !important;
           vertical-align: middle;
-          border-bottom: 1px solid var(--border-color) !important;
+          padding: 14px 8px;
+        }
+
+        .btn-main {
+          background: #C3AF9B !important;
+          color: #0e0d0c !important;
+          border: 1px solid #C3AF9B !important;
+          font-weight: 700 !important;
+          text-transform: uppercase !important;
+          letter-spacing: 0.1em !important;
+          transition: all 0.3s ease !important;
+          border-radius: 2px !important;
+        }
+        .btn-main:hover {
+          background: transparent !important;
+          color: #C3AF9B !important;
+          box-shadow: 0 0 12px rgba(195, 175, 155, 0.4) !important;
+        }
+
+        .btn-cyber-outline {
+          background: transparent;
+          color: #e6e4e2;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          transition: all 0.3s ease;
+          border-radius: 2px;
+        }
+        .btn-cyber-outline:hover {
+          border-color: #e6e4e2;
+          background: rgba(255, 255, 255, 0.05);
+          box-shadow: 0 0 10px rgba(255, 255, 255, 0.08);
+        }
+
+        .cyber-tag {
+          background: rgba(195, 175, 155, 0.08);
+          border: 1px solid rgba(195, 175, 155, 0.18);
+          color: #C3AF9B;
+          font-family: monospace;
+          border-radius: 2px;
+        }
+
+        .cyber-metric-card {
+          background: rgba(0, 0, 0, 0.25);
+          border: 1px solid rgba(195, 175, 155, 0.08);
+          border-radius: 2px;
+          padding: 24px;
+          transition: all 0.3s ease;
+        }
+        .cyber-metric-card:hover {
+          border-color: #C3AF9B;
+          box-shadow: 0 4px 20px rgba(195, 175, 155, 0.03);
         }
       `}</style>
     </main>
   );
-};
+}
 
 export default Admin;

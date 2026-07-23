@@ -3,12 +3,26 @@ import { Link } from 'react-router-dom';
 import usePluginInit from '../hooks/usePluginInit';
 
 const testimonials = [
-  { quote: 'They turned our dream villa design into a structural masterpiece. The turnkey construction process was flawless.', author: 'Anna L., Paris', avatar: '/images/testimonial/1.webp' },
-  { quote: 'Their construction consultation and architectural planning saved us time and budget. Outstanding professionalism.', author: 'Michael H., Toronto', avatar: '/images/testimonial/2.webp' },
-  { quote: 'From the concrete foundations to the premium interior styling, they delivered perfection.', author: 'Nadia R., Dubai', avatar: '/images/testimonial/3.webp' },
-  { quote: 'A top-tier team for commercial construction. Our office headquarters looks magnificent.', author: 'Tom S., Los Angeles', avatar: '/images/testimonial/4.webp' },
-  { quote: 'Excellent project management and material curation. Highly recommended for custom home building.', author: 'Elise K., Amsterdam', avatar: '/images/testimonial/5.webp' },
-  { quote: 'The 3D visualizations matched the final built structure exactly. Truly creative and precise.', author: 'David M., Singapore', avatar: '/images/testimonial/6.webp' },
+  {
+    quote: 'Extremely happy with the redesign of my residence by NIVO Concepts. The team truly understood my requirements and transformed my home beautifully. Their attention to detail, creativity, and professionalism were impressive throughout the process.',
+    author: 'sufiyan pt'
+  },
+  {
+    quote: 'Working with NIVO Concepts has been an outstanding experience. Their design team brings exceptional creativity, clarity, and precision to every project. Detailing and drawings provided by NIVO are always well-structured and practical, making execution smooth. They are one of the most reliable design partners we have worked with.',
+    author: 'Muhammed Unais'
+  },
+  {
+    quote: 'One of the best architecture firms in Calicut! We approached them for designing our dream home, and the experience was amazing. Their team is highly professional, and their PMC support made the entire process stress-free. Highly recommended for quality work!',
+    author: 'sagar sivan'
+  },
+  {
+    quote: 'NIVO gave us a stunning modern front elevation and made sure the interiors matched our vibe. Very happy with the final output. They are known for beautiful home designs in Kerala for a reason.',
+    author: 'mhd shahil'
+  },
+  {
+    quote: 'Best architecture firm in Calicut! NIVO CONCEPTS designed our home just the way we imagined. Clean layout, beautiful interiors, and smart planning. The team was very helpful from start to finish. Highly recommend for anyone looking for custom home design in Kerala.',
+    author: 'Sinan TM'
+  }
 ];
 
 const Testimonials = () => {
@@ -48,14 +62,27 @@ const Testimonials = () => {
         <div className="container">
           <div className="row g-4">
             {testimonials.map((t, i) => (
-              <div key={i} className="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay={`${i * 0.15}s`}>
-                <div className="bg-light rounded-1 p-4">
-                  <span className="d-stars d-block mb-3">
-                    {[...Array(5)].map((_, s) => <i key={s} className="icofont-star"></i>)}
-                  </span>
-                  <p className="mb-4">"{t.quote}"</p>
+              <div key={i} className="col-lg-6 col-md-6 d-flex wow fadeInUp" data-wow-delay={`${i * 0.15}s`}>
+                <div className="nivo-testimonial-card" style={{ width: '100%' }}>
+                  <div>
+                    <span className="d-stars d-block mb-3">
+                      {[...Array(5)].map((_, s) => <i key={s} className="icofont-star" style={{ color: '#ffb606' }}></i>)}
+                    </span>
+                    <p className="mb-4">"{t.quote}"</p>
+                  </div>
                   <div className="d-flex align-items-center">
-                    <img src={t.avatar} className="w-40px circle me-3" alt={t.author} />
+                    <div className="d-flex align-items-center justify-content-center me-3" style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '50%',
+                      backgroundColor: 'var(--border-color, rgba(0, 0, 0, 0.05))',
+                      border: '1px solid var(--border-color, rgba(0, 0, 0, 0.08))',
+                      color: 'var(--primary-color, #C3AF9B)',
+                      fontSize: '16px',
+                      flexShrink: 0
+                    }}>
+                      <i className="icofont-user"></i>
+                    </div>
                     <span><strong>{t.author}</strong></span>
                   </div>
                 </div>

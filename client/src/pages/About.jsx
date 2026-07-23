@@ -46,10 +46,26 @@ const team = [
 ];
 
 const testimonials = [
-  { quote: "They turned our dream villa design into a structural masterpiece. The turnkey construction process was flawless.", author: "Anna L., Paris" },
-  { quote: "Their construction consultation and architectural planning saved us time and budget. Outstanding professionalism.", author: "Michael H., Toronto" },
-  { quote: "From the concrete foundations to the premium interior styling, they delivered perfection.", author: "Nadia R., Dubai" },
-  { quote: "A top-tier team for commercial construction. Our office headquarters looks magnificent.", author: "Tom S., Los Angeles" },
+  {
+    quote: 'Extremely happy with the redesign of my residence by NIVO Concepts. The team truly understood my requirements and transformed my home beautifully. Their attention to detail, creativity, and professionalism were impressive throughout the process.',
+    author: 'sufiyan pt'
+  },
+  {
+    quote: 'Working with NIVO Concepts has been an outstanding experience. Their design team brings exceptional creativity, clarity, and precision to every project. Detailing and drawings provided by NIVO are always well-structured and practical, making execution smooth. They are one of the most reliable design partners we have worked with.',
+    author: 'Muhammed Unais'
+  },
+  {
+    quote: 'One of the best architecture firms in Calicut! We approached them for designing our dream home, and the experience was amazing. Their team is highly professional, and their PMC support made the entire process stress-free. Highly recommended for quality work!',
+    author: 'sagar sivan'
+  },
+  {
+    quote: 'NIVO gave us a stunning modern front elevation and made sure the interiors matched our vibe. Very happy with the final output. They are known for beautiful home designs in Kerala for a reason.',
+    author: 'mhd shahil'
+  },
+  {
+    quote: 'Best architecture firm in Calicut! NIVO CONCEPTS designed our home just the way we imagined. Clean layout, beautiful interiors, and smart planning. The team was very helpful from start to finish. Highly recommend for anyone looking for custom home design in Kerala.',
+    author: 'Sinan TM'
+  }
 ];
 
 const About = () => {

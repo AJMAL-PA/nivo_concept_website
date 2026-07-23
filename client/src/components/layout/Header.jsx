@@ -510,8 +510,71 @@ const Header = () => {
             display: flex;
           }
           .nivo-header {
-            padding: 12px 20px;
+            padding: 8px 16px !important;
           }
+          .nivo-logo {
+            margin-left: 0 !important;
+            margin-top: 0 !important;
+          }
+          .nivo-logo img {
+            height: 52px !important;
+          }
+          /* Prevent page titles from overlapping mobile logo/header */
+          main > section:first-of-type.jarallax {
+            padding-top: 135px !important;
+          }
+        }
+
+        /* Mobile full-screen navigation dropdown styling */
+        .mobile-dropdown-menu {
+          max-height: 0;
+          overflow: hidden;
+          opacity: 0;
+          display: flex !important;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+          margin-top: 0;
+          margin-bottom: 0;
+          transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease, margin 0.35s ease;
+          pointer-events: none;
+        }
+
+        .mobile-dropdown-trigger {
+          transition: all 0.3s ease;
+        }
+
+        .mobile-dropdown-trigger:hover .mobile-dropdown-menu,
+        .mobile-dropdown-trigger:focus-within .mobile-dropdown-menu {
+          max-height: 250px;
+          opacity: 1;
+          pointer-events: auto;
+          margin-top: 10px;
+          margin-bottom: 15px;
+        }
+
+        .mobile-dropdown-trigger i {
+          transition: transform 0.3s ease;
+        }
+
+        .mobile-dropdown-trigger:hover i,
+        .mobile-dropdown-trigger:focus-within i {
+          transform: rotate(180deg);
+        }
+
+        /* Dark mode compatibility for mobile nav */
+        [data-theme="dark"] .nivo-mobile-nav {
+          background: rgba(18, 16, 14, 0.98) !important;
+        }
+        [data-theme="dark"] .nivo-mobile-nav a {
+          color: rgba(255, 255, 255, 0.8) !important;
+        }
+        [data-theme="dark"] .nivo-mobile-nav a:hover,
+        [data-theme="dark"] .nivo-mobile-nav a.nav-active {
+          color: #ffffff !important;
+        }
+        [data-theme="dark"] .nivo-mobile-nav .nivo-mobile-close {
+          color: rgba(255, 255, 255, 0.85) !important;
         }
       `}</style>
 
@@ -535,7 +598,7 @@ const Header = () => {
                 onClick={link.dropdown ? (e) => e.preventDefault() : undefined}
                 className={isActive(link.to) || (link.dropdown && link.dropdown.some(d => isActive(d.to))) ? 'nav-active' : ''}
               >
-                {link.label} {link.dropdown && <span className="dropdown-caret">▼</span>}
+                {link.label} {link.dropdown && <i className="fa-solid fa-chevron-down ms-2" style={{ fontSize: '10px', opacity: 0.8 }}></i>}
               </Link>
               {link.dropdown && (
                 <ul className="nivo-dropdown-menu">
@@ -610,17 +673,17 @@ const Header = () => {
           ✕
         </button>
         {NAV_LINKS.map((link) => (
-          <div key={link.to} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+          <div key={link.to} className={link.dropdown ? 'mobile-dropdown-trigger' : ''} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
             <Link
               to={link.dropdown ? '#' : link.to}
               className={isActive(link.to) || (link.dropdown && link.dropdown.some(d => isActive(d.to))) ? 'nav-active' : ''}
               onClick={link.dropdown ? (e) => e.preventDefault() : () => document.getElementById('nivo-mobile-nav').classList.remove('open')}
               style={{ fontWeight: link.dropdown ? '600' : 'normal' }}
             >
-              {link.label}
+              {link.label} {link.dropdown && <i className="fa-solid fa-chevron-down ms-2" style={{ fontSize: '12px', verticalAlign: 'middle', opacity: 0.7 }}></i>}
             </Link>
             {link.dropdown && (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginTop: '2px', marginBottom: '6px' }}>
+              <div className="mobile-dropdown-menu">
                 {link.dropdown.map((subLink) => (
                   <Link
                     key={subLink.to}

@@ -40,15 +40,24 @@ const ScrollToTop = () => {
   return null;
 };
 
-const AppLayout = ({ children }) => (
-  <>
-    <Header />
-    <ExtraWrap />
-    {children}
-    <FloatingSocial />
-    <Footer />
-  </>
-);
+const AppLayout = ({ children }) => {
+  const location = useLocation();
+  const isAdmin = location.pathname.toLowerCase().startsWith('/admin');
+
+  if (isAdmin) {
+    return <>{children}</>;
+  }
+
+  return (
+    <>
+      <Header />
+      <ExtraWrap />
+      {children}
+      <FloatingSocial />
+      <Footer />
+    </>
+  );
+};
 
 const App = () => {
   return (

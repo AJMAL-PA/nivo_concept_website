@@ -59,39 +59,24 @@ const staticProjects = [
 
 const testimonials = [
   {
-    quote: "Nivo Concepts transformed our home beyond our imagination. Every detail was handled with extraordinary care — the craftsmanship is simply outstanding. We couldn't be happier.",
-    author: 'Rachel Parker',
-    role: 'Homeowner, Dubai',
-    avatar: '/images/testimonial/1.webp',
-    rating: 5
+    quote: 'Extremely happy with the redesign of my residence by NIVO Concepts. The team truly understood my requirements and transformed my home beautifully. Their attention to detail, creativity, and professionalism were impressive throughout the process.',
+    author: 'sufiyan pt'
   },
   {
-    quote: "Outstanding commercial build from start to finish. The team's professionalism, attention to timelines, and commitment to quality exceeded our expectations. Highly recommend to any business.",
-    author: 'Emily Chen',
-    role: 'CEO, Vertex Group',
-    avatar: '/images/testimonial/2.webp',
-    rating: 4
+    quote: 'Working with NIVO Concepts has been an outstanding experience. Their design team brings exceptional creativity, clarity, and precision to every project. Detailing and drawings provided by NIVO are always well-structured and practical, making execution smooth. They are one of the most reliable design partners we have worked with.',
+    author: 'Muhammed Unais'
   },
   {
-    quote: "We've worked with several firms, but Nivo Concepts is by far the best. The integration of design and construction was seamless, and the ongoing support has been exceptional. Worth every penny.",
-    author: 'David Kim',
-    role: 'Operations Director, GlobalTech',
-    avatar: '/images/testimonial/3.webp',
-    rating: 5
+    quote: 'One of the best architecture firms in Calicut! We approached them for designing our dream home, and the experience was amazing. Their team is highly professional, and their PMC support made the entire process stress-free. Highly recommended for quality work!',
+    author: 'sagar sivan'
   },
   {
-    quote: "Their construction consultation and architectural planning saved us time and budget. Outstanding professionalism and structural designs.",
-    author: 'Michael H.',
-    role: 'Real Estate Developer',
-    avatar: '/images/testimonial/4.webp',
-    rating: 5
+    quote: 'NIVO gave us a stunning modern front elevation and made sure the interiors matched our vibe. Very happy with the final output. They are known for beautiful home designs in Kerala for a reason.',
+    author: 'mhd shahil'
   },
   {
-    quote: "From the concrete foundations to the premium turnkey interior styling, they delivered absolute perfection on schedule.",
-    author: 'Nadia R.',
-    role: 'Villa Owner',
-    avatar: '/images/testimonial/5.webp',
-    rating: 5
+    quote: 'Best architecture firm in Calicut! NIVO CONCEPTS designed our home just the way we imagined. Clean layout, beautiful interiors, and smart planning. The team was very helpful from start to finish. Highly recommend for anyone looking for custom home design in Kerala.',
+    author: 'Sinan TM'
   }
 ];
 
@@ -158,6 +143,34 @@ const Home = () => {
       }
     }
   }, [projectsList]);
+
+  // Custom initializer for Testimonials Carousel to support sliding transition
+  useEffect(() => {
+    if (window.jQuery) {
+      const $ = window.jQuery;
+      const $carousel = $('#testimonials-carousel-slide');
+      if ($carousel.length) {
+        if ($carousel.data('owl.carousel')) {
+          $carousel.owlCarousel('destroy');
+        }
+        $carousel.owlCarousel({
+          loop: true,
+          margin: 30,
+          nav: false,
+          dots: true,
+          autoplay: true,
+          autoplayTimeout: 4000,
+          autoplayHoverPause: true,
+          smartSpeed: 800,
+          responsive: {
+            1000: { items: 3 },
+            600: { items: 2 },
+            0: { items: 1 }
+          }
+        }).trigger('play.owl.autoplay', [4000]);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -338,49 +351,63 @@ const Home = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="px-md-5 px-lg-5">
-        <div className="container">
-          <div className="row mb-4 align-items-center justify-content-between">
-            <div className="col-lg-5 wow fadeIn" data-wow-delay=".2s">
+      <section className="text-light jarallax">
+        <img src="/images/background/1.webp" className="jarallax-img" alt="" />
+        <div className="sw-overlay op-6"></div>
+        <div className="container relative z-2">
+          <div className="row justify-content-center text-center mb-4">
+            <div className="col-md-6">
               <div className="subtitle">Testimonials</div>
-              <h2 className="mb-0">What Our Clients Say</h2>
-            </div>
-            <div className="col-lg-4 d-flex justify-content-end align-items-center">
-              <div className="de-custom-nav d-flex" data-target="#testimonials-carousel">
-                <div className="d-prev circle me-2"></div>
-                <div className="d-next circle"></div>
-              </div>
             </div>
           </div>
-
           <div className="row">
             <div className="col-lg-12">
-              <div id="testimonials-carousel" className="owl-carousel owl-theme owl-3-cols wow fadeIn" data-wow-delay=".4s">
+              <div id="testimonials-carousel-slide" className="owl-carousel owl-theme">
                 {testimonials.map((t, i) => (
                   <div key={i} className="item p-2">
-                    <div className="nivo-testimonial-card">
-                      <div>
-                        <div className="d-flex justify-content-between align-items-center mb-3">
-                          <div className="nivo-testimonial-stars">
-                            {[...Array(5)].map((_, s) => (
-                              <i key={s} className={`fa-solid fa-star ${s < t.rating ? 'active-star' : 'inactive-star'}`}></i>
-                            ))}
-                          </div>
-                          <div className="nivo-testimonial-quote-icon">
-                            <i className="fa-solid fa-quote-right"></i>
-                          </div>
+                    <div className="nivo-testimonial-card text-center" style={{ width: '100%', boxSizing: 'border-box' }}>
+                      <div className="d-flex flex-column align-items-center mb-3" style={{ width: '100%' }}>
+                        <div className="nivo-testimonial-stars mb-3">
+                          {[...Array(5)].map((_, s) => (
+                            <i key={s} className="fa-solid fa-star active-star" style={{ color: '#ffb606', fontSize: '16px' }}></i>
+                          ))}
                         </div>
-                        <p className="nivo-testimonial-text">"{t.quote}"</p>
+                        <p style={{
+                          color: 'rgba(255, 255, 255, 0.9)',
+                          fontSize: '15px',
+                          lineHeight: '1.7',
+                          fontStyle: 'normal',
+                          marginBottom: '0',
+                          fontWeight: '400',
+                          width: '100%',
+                          textAlign: 'center',
+                          whiteSpace: 'normal',
+                          overflowWrap: 'break-word',
+                          wordBreak: 'break-word'
+                        }}>{t.quote}</p>
                       </div>
-                      
+
                       <div>
-                        <div className="nivo-testimonial-divider"></div>
-                        <div className="d-flex align-items-center">
-                          <img src={t.avatar} className="nivo-testimonial-avatar circle me-3" alt={t.author} />
-                          <div>
-                            <h4 className="nivo-testimonial-author mb-0">{t.author}</h4>
-                            <span className="nivo-testimonial-role">{t.role}</span>
+                        <div style={{
+                          width: '40px',
+                          height: '1px',
+                          backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                          margin: '0 auto 20px auto'
+                        }}></div>
+                        
+                        <div className="d-flex flex-column align-items-center">
+                          <div className="d-flex align-items-center justify-content-center mb-2" style={{
+                            width: '50px',
+                            height: '50px',
+                            borderRadius: '50%',
+                            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                            border: '1px solid rgba(255, 255, 255, 0.15)',
+                            color: '#C3AF9B',
+                            fontSize: '20px'
+                          }}>
+                            <i className="fa-solid fa-user"></i>
                           </div>
+                          <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff' }}>{t.author}</span>
                         </div>
                       </div>
                     </div>
@@ -393,7 +420,7 @@ const Home = () => {
       </section>
 
       {/* Projects Section */}
-      <section className="pb-0 px-md-5 px-lg-5" style={{ paddingBottom: 0 }}>
+      <section className="px-md-5 px-lg-5">
         <div className="container">
           <div className="row mb-3 g-4 align-items-center justify-content-between">
             <div className="col-lg-4 wow fadeIn" data-wow-delay=".2s">
@@ -443,7 +470,7 @@ const Home = () => {
       </section>
 
       {/* Process Steps */}
-      <section className="pt-0 px-md-5 px-lg-5">
+      <section className="px-md-5 px-lg-5">
         <div className="container">
           <div className="row justify-content-center">
             {[
@@ -452,7 +479,7 @@ const Home = () => {
               { icon: 'fa-tools', title: 'Execution', text: 'We bring the design to life with quality materials, skilled work, and precise project management.', delay: '.9s' },
               { icon: 'fa-home', title: 'Final Reveal', text: 'Your completed space is delivered beautifully finished, ready to enjoy with comfort and style.', delay: '1.2s', last: true },
             ].map((step, i) => (
-              <div key={i} className="col-6 col-md-3 wow fadeInRight" data-wow-delay={step.delay}>
+              <div key={i} className="col-12 col-sm-6 col-md-3 wow fadeInRight" data-wow-delay={step.delay}>
                 <div className="de-step-card">
                   <div className="de-step-icon">
                     <i className={`fas ${step.icon} fa-2x`}></i>
