@@ -25,6 +25,7 @@ import ArchitecturalDesign from './pages/services/ArchitecturalDesign';
 import CommercialProjects from './pages/projects/CommercialProjects';
 import ResidentialProjects from './pages/projects/ResidentialProjects';
 import Gallery from './pages/Gallery';
+import Admin from './pages/Admin';
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -70,7 +71,9 @@ const App = () => {
             <Route path="/projects/commercial" element={<CommercialProjects />} />
             <Route path="/projects/residential" element={<ResidentialProjects />} />
             <Route path="/project-single" element={<ProjectSingle />} />
+            <Route path="/project-single/:id" element={<ProjectSingle />} />
             <Route path="/gallery" element={<Gallery />} />
+            <Route path="/admin" element={<Admin />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog-single" element={<BlogSingle />} />
             <Route path="/faq" element={<FAQ />} />

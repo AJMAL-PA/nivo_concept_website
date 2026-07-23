@@ -1,23 +1,42 @@
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
+import { fetchProjects } from '../services/api';
 import usePluginInit from '../hooks/usePluginInit';
 
-const projects = [
-  { title: 'Luxurious Oceanside Villa Build', img: '/images/projects-wide/4.webp', tags: ['Residential', 'Turnkey Construction', 'Luxury'] },
-  { title: 'Contemporary Corporate Headquarters', img: '/images/projects-wide/1.webp', tags: ['Commercial', 'Steel Frame', 'Office Space'] },
-  { title: 'Premium Retail Plaza Development', img: '/images/projects-wide/2.webp', tags: ['Commercial', 'Glass Architecture', 'Retail'] },
-  { title: 'Modern Hillside Family Estate', img: '/images/projects-wide/5.webp', tags: ['Residential', 'Custom Home', 'Concrete'] },
-  { title: 'Turnkey Double-Story Penthouse Fit-Out', img: '/images/projects-wide/3.webp', tags: ['Residential', 'Interior Design', 'Penthouse'] },
-  { title: 'High-End Restaurant Design & Build', img: '/images/projects-wide/6.webp', tags: ['Commercial', 'Hospitality', 'Interior'] },
+const staticProjects = [
+  { id: '1', title: 'Luxurious Oceanside Villa Build', img: '/images/projects-wide/4.webp', tags: ['Residential', 'Turnkey Construction', 'Luxury'] },
+  { id: '2', title: 'Contemporary Corporate Headquarters', img: '/images/projects-wide/1.webp', tags: ['Commercial', 'Steel Frame', 'Office Space'] },
+  { id: '3', title: 'Premium Retail Plaza Development', img: '/images/projects-wide/2.webp', tags: ['Commercial', 'Glass Architecture', 'Retail'] },
+  { id: '4', title: 'Modern Hillside Family Estate', img: '/images/projects-wide/5.webp', tags: ['Residential', 'Custom Home', 'Concrete'] },
+  { id: '5', title: 'Turnkey Double-Story Penthouse Fit-Out', img: '/images/projects-wide/3.webp', tags: ['Residential', 'Interior Design', 'Penthouse'] },
+  { id: '6', title: 'High-End Restaurant Design & Build', img: '/images/projects-wide/6.webp', tags: ['Commercial', 'Hospitality', 'Interior'] },
 ];
 
 const Projects = () => {
   usePluginInit();
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        const res = await fetchProjects();
+        // Check if server returns absolute uploads path and prepend server URL if necessary,
+        // but since uploads serve at root /uploads on same backend port we use them as is.
+        setProjects(res.data.length > 0 ? res.data : staticProjects);
+      } catch (err) {
+        console.error(err);
+        setProjects(staticProjects);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProjects();
+  }, []);
 
   return (
     <main>
       <a href="#" id="back-to-top"></a>
-
 
       {/* Page Header */}
       <section className="bg-dark text-light relative jarallax">
@@ -46,31 +65,38 @@ const Projects = () => {
       {/* Projects Grid */}
       <section className="px-md-5 px-lg-5">
         <div className="container">
-          <div className="row g-4">
-            {projects.map((proj, i) => (
-              <div key={i} className="col-lg-6 wow fadeInUp" data-wow-delay={`${i * 0.15}s`}>
-                <div className="hover">
-                  <div className="relative overflow-hidden">
-                    <Link to="/project-single" className="d-block hover relative text-light">
-                      <img src="/images/misc/up-right-arrow.webp" className="abs w-80px p-20 z-2 top-0 end-0 p-4 hover-op-1" alt="" />
-                      <div className="abs w-50 z-4 p-4 mb-0">
-                        <h2 className="fs-36">{proj.title}</h2>
-                      </div>
-                      <div className="relative overflow-hidden rounded-1">
-                        <img src={proj.img} className="w-100 hover-scale-1-2" alt={proj.title} />
-                      </div>
-                      <div className="gradient-edge-top op-5 h-70"></div>
-                      <div className="extra-text abs lh-1 m-4 bottom-0 z-4 d-flex">
-                        {proj.tags.map((tag, t) => (
-                          <div key={t} className="bg-blur p-2 me-2">{tag}</div>
-                        ))}
-                      </div>
-                    </Link>
+          {loading ? (
+            <div className="text-center py-5">
+              <div className="spinner-border text-primary" role="status"></div>
+              <p className="mt-3">Loading projects...</p>
+            </div>
+          ) : (
+            <div className="row g-4">
+              {projects.map((proj, i) => (
+                <div key={proj.id || i} className="col-lg-6 wow fadeInUp" data-wow-delay={`${i * 0.15}s`}>
+                  <div className="hover">
+                    <div className="relative overflow-hidden">
+                      <Link to={`/project-single/${proj.id}`} className="d-block hover relative text-light">
+                        <img src="/images/misc/up-right-arrow.webp" className="abs w-80px p-20 z-2 top-0 end-0 p-4 hover-op-1" alt="" />
+                        <div className="abs w-50 z-4 p-4 mb-0">
+                          <h2 className="fs-36">{proj.title}</h2>
+                        </div>
+                        <div className="relative overflow-hidden rounded-1">
+                          <img src={proj.img} className="w-100 hover-scale-1-2" alt={proj.title} style={{ aspectRatio: '16/10', objectFit: 'cover' }} />
+                        </div>
+                        <div className="gradient-edge-top op-5 h-70"></div>
+                        <div className="extra-text abs lh-1 m-4 bottom-0 z-4 d-flex">
+                          {proj.tags.map((tag, t) => (
+                            <div key={t} className="bg-blur p-2 me-2">{tag}</div>
+                          ))}
+                        </div>
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </main>

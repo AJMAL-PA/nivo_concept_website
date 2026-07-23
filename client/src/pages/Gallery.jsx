@@ -1,7 +1,9 @@
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { fetchGallery } from '../services/api';
 import usePluginInit from '../hooks/usePluginInit';
 
-const galleryImages = [
+const staticGalleryImages = [
   { img: '/images/projects-wide/1.webp', title: 'Contemporary Office Architecture', category: 'Commercial' },
   { img: '/images/projects-wide/2.webp', title: 'Luxury Penthouse Fit-Out', category: 'Interiors' },
   { img: '/images/projects-wide/3.webp', title: 'Scandinavian Styled Kitchen', category: 'Interiors' },
@@ -15,6 +17,23 @@ const galleryImages = [
 
 const Gallery = () => {
   usePluginInit();
+  const [galleryItems, setGalleryItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadGallery = async () => {
+      try {
+        const res = await fetchGallery();
+        setGalleryItems(res.data.length > 0 ? res.data : staticGalleryImages);
+      } catch (err) {
+        console.error(err);
+        setGalleryItems(staticGalleryImages);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadGallery();
+  }, []);
 
   return (
     <main>
@@ -47,21 +66,28 @@ const Gallery = () => {
       {/* Gallery Grid */}
       <section className="px-md-5 px-lg-5">
         <div className="container">
-          <div className="row g-4">
-            {galleryImages.map((item, i) => (
-              <div key={i} className="col-lg-4 col-md-6">
-                <div className="hover relative overflow-hidden rounded-1 group">
-                  <div className="relative overflow-hidden rounded-1 wow scaleIn" data-wow-delay={`${i * 0.1}s`}>
-                    <img src={item.img} className="w-100 hover-scale-1-2 transition-transform duration-500" alt={item.title} />
-                    <div className="abs top-0 start-0 w-100 h-100 bg-dark op-0 hover-op-6 transition-all duration-300 d-flex flex-column justify-content-end p-4 text-light z-2">
-                      <div className="bg-blur p-2 align-self-start mb-2 text-uppercase fs-11 tracking-wide">{item.category}</div>
-                      <h3 className="fs-20 mb-0 font-semibold">{item.title}</h3>
+          {loading ? (
+            <div className="text-center py-5">
+              <div className="spinner-border text-primary" role="status"></div>
+              <p className="mt-3">Loading gallery...</p>
+            </div>
+          ) : (
+            <div className="row g-4">
+              {galleryItems.map((item, i) => (
+                <div key={item.id || i} className="col-lg-4 col-md-6">
+                  <div className="hover relative overflow-hidden rounded-1 group">
+                    <div className="relative overflow-hidden rounded-1 wow scaleIn" data-wow-delay={`${i * 0.1}s`}>
+                      <img src={item.img} className="w-100 hover-scale-1-2 transition-transform duration-500" alt={item.title} style={{ height: '260px', objectFit: 'cover' }} />
+                      <div className="abs top-0 start-0 w-100 h-100 bg-dark op-0 hover-op-6 transition-all duration-300 d-flex flex-column justify-content-end p-4 text-light z-2">
+                        <div className="bg-blur p-2 align-self-start mb-2 text-uppercase fs-11 tracking-wide">{item.category}</div>
+                        <h3 className="fs-20 mb-0 font-semibold">{item.title}</h3>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </main>

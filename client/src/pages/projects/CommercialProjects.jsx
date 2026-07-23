@@ -1,17 +1,37 @@
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { fetchProjects } from '../../services/api';
 import usePluginInit from '../../hooks/usePluginInit';
 
-const commercialProjects = [
-  { title: 'Modern Corporate Office Headquarters', img: '/images/projects-wide/1.webp', tags: ['Office Space', 'Luxury', 'High-Rise'] },
-  { title: 'Premium Retail Plaza Concept', img: '/images/projects-wide/2.webp', tags: ['Retail', 'Glass Architecture', 'Turnkey'] },
-  { title: 'Sophisticated Restaurant Interior & Build', img: '/images/projects-wide/3.webp', tags: ['Hospitality', 'Warm Lighting', 'Bespoke'] },
-  { title: 'Executive Coworking Lounge', img: '/images/projects-wide/4.webp', tags: ['Shared Workspace', 'Modernist', 'Acoustic Panels'] },
-  { title: 'Luxury Hotel Lobby Renovation', img: '/images/projects-wide/5.webp', tags: ['Hotel', 'Premium Marble', 'Timeless'] },
-  { title: 'High-End Showroom Construction', img: '/images/projects-wide/6.webp', tags: ['Commercial', 'Minimalist', 'Steel Frame'] },
+const staticCommercialProjects = [
+  { id: '2', title: 'Modern Corporate Office Headquarters', img: '/images/projects-wide/1.webp', tags: ['Office Space', 'Luxury', 'High-Rise'] },
+  { id: '3', title: 'Premium Retail Plaza Concept', img: '/images/projects-wide/2.webp', tags: ['Retail', 'Glass Architecture', 'Turnkey'] },
+  { id: '6', title: 'Sophisticated Restaurant Interior & Build', img: '/images/projects-wide/3.webp', tags: ['Hospitality', 'Warm Lighting', 'Bespoke'] },
+  { id: '7', title: 'Executive Coworking Lounge', img: '/images/projects-wide/4.webp', tags: ['Shared Workspace', 'Modernist', 'Acoustic Panels'] },
+  { id: '8', title: 'Luxury Hotel Lobby Renovation', img: '/images/projects-wide/5.webp', tags: ['Hotel', 'Premium Marble', 'Timeless'] },
+  { id: '9', title: 'High-End Showroom Construction', img: '/images/projects-wide/6.webp', tags: ['Commercial', 'Minimalist', 'Steel Frame'] },
 ];
 
 const CommercialProjects = () => {
   usePluginInit();
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadCommercial = async () => {
+      try {
+        const res = await fetchProjects();
+        const filtered = res.data.filter(proj => proj.tags[0] === 'Commercial');
+        setProjects(filtered.length > 0 ? filtered : staticCommercialProjects);
+      } catch (err) {
+        console.error(err);
+        setProjects(staticCommercialProjects);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadCommercial();
+  }, []);
 
   return (
     <main>
@@ -45,31 +65,38 @@ const CommercialProjects = () => {
       {/* Projects Grid */}
       <section className="px-md-5 px-lg-5">
         <div className="container">
-          <div className="row g-4">
-            {commercialProjects.map((proj, i) => (
-              <div key={i} className="col-lg-6 wow fadeInUp" data-wow-delay={`${i * 0.15}s`}>
-                <div className="hover">
-                  <div className="relative overflow-hidden">
-                    <Link to="/project-single" className="d-block hover relative text-light">
-                      <img src="/images/misc/up-right-arrow.webp" className="abs w-80px p-20 z-2 top-0 end-0 p-4 hover-op-1" alt="" />
-                      <div className="abs w-50 z-4 p-4 mb-0">
-                        <h2 className="fs-36">{proj.title}</h2>
-                      </div>
-                      <div className="relative overflow-hidden rounded-1">
-                        <img src={proj.img} className="w-100 hover-scale-1-2" alt={proj.title} />
-                      </div>
-                      <div className="gradient-edge-top op-5 h-70"></div>
-                      <div className="extra-text abs lh-1 m-4 bottom-0 z-4 d-flex">
-                        {proj.tags.map((tag, t) => (
-                          <div key={t} className="bg-blur p-2 me-2">{tag}</div>
-                        ))}
-                      </div>
-                    </Link>
+          {loading ? (
+            <div className="text-center py-5">
+              <div className="spinner-border text-primary" role="status"></div>
+              <p className="mt-3">Loading projects...</p>
+            </div>
+          ) : (
+            <div className="row g-4">
+              {projects.map((proj, i) => (
+                <div key={proj.id || i} className="col-lg-6 wow fadeInUp" data-wow-delay={`${i * 0.15}s`}>
+                  <div className="hover">
+                    <div className="relative overflow-hidden">
+                      <Link to={`/project-single/${proj.id}`} className="d-block hover relative text-light">
+                        <img src="/images/misc/up-right-arrow.webp" className="abs w-80px p-20 z-2 top-0 end-0 p-4 hover-op-1" alt="" />
+                        <div className="abs w-50 z-4 p-4 mb-0">
+                          <h2 className="fs-36">{proj.title}</h2>
+                        </div>
+                        <div className="relative overflow-hidden rounded-1">
+                          <img src={proj.img} className="w-100 hover-scale-1-2" alt={proj.title} style={{ aspectRatio: '16/10', objectFit: 'cover' }} />
+                        </div>
+                        <div className="gradient-edge-top op-5 h-70"></div>
+                        <div className="extra-text abs lh-1 m-4 bottom-0 z-4 d-flex">
+                          {proj.tags && proj.tags.map((tag, t) => (
+                            <div key={t} className="bg-blur p-2 me-2">{tag}</div>
+                          ))}
+                        </div>
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </main>

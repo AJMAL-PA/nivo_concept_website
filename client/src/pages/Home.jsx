@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
+import { fetchProjects } from '../services/api';
 import usePluginInit from '../hooks/usePluginInit';
 
 const CountUp = ({ to, speed = 2000 }) => {
@@ -45,24 +46,53 @@ const services = [
   { title: 'Architectural Design', img: '/images/services/3.webp', to: '/services/architectural-design' },
 ];
 
-const projects = [
-  { title: 'Luxurious Oceanside Villa Build', img: '/images/projects-wide/4.webp', tags: ['Residential', 'Turnkey Construction', 'Luxury'] },
-  { title: 'Contemporary Corporate Headquarters', img: '/images/projects-wide/1.webp', tags: ['Commercial', 'Steel Frame', 'Office Space'] },
-  { title: 'Premium Retail Plaza Development', img: '/images/projects-wide/2.webp', tags: ['Commercial', 'Glass Architecture', 'Retail'] },
-  { title: 'Modern Hillside Family Estate', img: '/images/projects-wide/5.webp', tags: ['Residential', 'Custom Home', 'Concrete'] },
-  { title: 'Turnkey Double-Story Penthouse Fit-Out', img: '/images/projects-wide/3.webp', tags: ['Residential', 'Interior Design', 'Penthouse'] },
-  { title: 'High-End Restaurant Design & Build', img: '/images/projects-wide/6.webp', tags: ['Commercial', 'Hospitality', 'Interior'] },
-  { title: 'Metropolitan Cultural Center Build', img: '/images/projects-wide/1.webp', tags: ['Commercial', 'Public Space', 'Steel Frame'] },
-  { title: 'High-End Eco-Friendly Villa', img: '/images/projects-wide/2.webp', tags: ['Residential', 'Eco-Friendly', 'Luxury'] },
+const staticProjects = [
+  { id: '1', title: 'Luxurious Oceanside Villa Build', img: '/images/projects-wide/4.webp', tags: ['Residential', 'Turnkey Construction', 'Luxury'] },
+  { id: '2', title: 'Contemporary Corporate Headquarters', img: '/images/projects-wide/1.webp', tags: ['Commercial', 'Steel Frame', 'Office Space'] },
+  { id: '3', title: 'Premium Retail Plaza Development', img: '/images/projects-wide/2.webp', tags: ['Commercial', 'Glass Architecture', 'Retail'] },
+  { id: '4', title: 'Modern Hillside Family Estate', img: '/images/projects-wide/5.webp', tags: ['Residential', 'Custom Home', 'Concrete'] },
+  { id: '5', title: 'Turnkey Double-Story Penthouse Fit-Out', img: '/images/projects-wide/3.webp', tags: ['Residential', 'Interior Design', 'Penthouse'] },
+  { id: '6', title: 'High-End Restaurant Design & Build', img: '/images/projects-wide/6.webp', tags: ['Commercial', 'Hospitality', 'Interior'] },
+  { id: '7', title: 'Metropolitan Cultural Center Build', img: '/images/projects-wide/1.webp', tags: ['Commercial', 'Public Space', 'Steel Frame'] },
+  { id: '8', title: 'High-End Eco-Friendly Villa', img: '/images/projects-wide/2.webp', tags: ['Residential', 'Eco-Friendly', 'Luxury'] },
 ];
 
 const testimonials = [
-  { quote: 'They turned our dream villa design into a structural masterpiece. The turnkey construction process was flawless.', author: 'Anna L., Paris', avatar: '/images/testimonial/1.webp' },
-  { quote: 'Their construction consultation and architectural planning saved us time and budget. Outstanding professionalism.', author: 'Michael H., Toronto', avatar: '/images/testimonial/2.webp' },
-  { quote: 'From the concrete foundations to the premium interior styling, they delivered perfection.', author: 'Nadia R., Dubai', avatar: '/images/testimonial/3.webp' },
-  { quote: 'A top-tier team for commercial construction. Our office headquarters looks magnificent.', author: 'Tom S., Los Angeles', avatar: '/images/testimonial/4.webp' },
-  { quote: 'Excellent project management and material curation. Highly recommended for custom home building.', author: 'Elise K., Amsterdam', avatar: '/images/testimonial/5.webp' },
-  { quote: 'The 3D visualizations matched the final built structure exactly. Truly creative and precise.', author: 'David M., Singapore', avatar: '/images/testimonial/6.webp' },
+  {
+    quote: "Nivo Concepts transformed our home beyond our imagination. Every detail was handled with extraordinary care — the craftsmanship is simply outstanding. We couldn't be happier.",
+    author: 'Rachel Parker',
+    role: 'Homeowner, Dubai',
+    avatar: '/images/testimonial/1.webp',
+    rating: 5
+  },
+  {
+    quote: "Outstanding commercial build from start to finish. The team's professionalism, attention to timelines, and commitment to quality exceeded our expectations. Highly recommend to any business.",
+    author: 'Emily Chen',
+    role: 'CEO, Vertex Group',
+    avatar: '/images/testimonial/2.webp',
+    rating: 4
+  },
+  {
+    quote: "We've worked with several firms, but Nivo Concepts is by far the best. The integration of design and construction was seamless, and the ongoing support has been exceptional. Worth every penny.",
+    author: 'David Kim',
+    role: 'Operations Director, GlobalTech',
+    avatar: '/images/testimonial/3.webp',
+    rating: 5
+  },
+  {
+    quote: "Their construction consultation and architectural planning saved us time and budget. Outstanding professionalism and structural designs.",
+    author: 'Michael H.',
+    role: 'Real Estate Developer',
+    avatar: '/images/testimonial/4.webp',
+    rating: 5
+  },
+  {
+    quote: "From the concrete foundations to the premium turnkey interior styling, they delivered absolute perfection on schedule.",
+    author: 'Nadia R.',
+    role: 'Villa Owner',
+    avatar: '/images/testimonial/5.webp',
+    rating: 5
+  }
 ];
 
 const faqs = [
@@ -84,6 +114,50 @@ const blogs = [
 
 const Home = () => {
   usePluginInit();
+  const [projectsList, setProjectsList] = useState([]);
+
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        const res = await fetchProjects();
+        setProjectsList(res.data.length > 0 ? res.data : staticProjects);
+      } catch (err) {
+        console.error(err);
+        setProjectsList(staticProjects);
+      }
+    };
+    loadProjects();
+  }, []);
+
+  // Custom initializer for Owl Carousel to support dynamic projects list
+  useEffect(() => {
+    if (projectsList.length > 0 && window.jQuery) {
+      const $ = window.jQuery;
+      const $carousel = $('#projects-carousel');
+      if ($carousel.length) {
+        // Destroy old instance if it exists
+        if ($carousel.data('owl.carousel')) {
+          $carousel.owlCarousel('destroy');
+        }
+        // Initialize carousel
+        $carousel.owlCarousel({
+          center: false, loop: true, margin: 30, nav: false, dots: false,
+          responsive: { 1000: { items: 2 }, 600: { items: 2 }, 0: { items: 1 } }
+        });
+        
+        // Bind custom navigation controls
+        $('.de-custom-nav[data-target="#projects-carousel"]').each(function () {
+          const target = $($(this).data('target'));
+          $(this).find('.d-next').off('click').on('click', function () {
+            target.trigger('next.owl.carousel');
+          });
+          $(this).find('.d-prev').off('click').on('click', function () {
+            target.trigger('prev.owl.carousel');
+          });
+        });
+      }
+    }
+  }, [projectsList]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -264,25 +338,51 @@ const Home = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="text-light jarallax">
-        <img src="/images/background/1.webp" className="jarallax-img" alt="" />
-        <div className="sw-overlay op-6"></div>
-        <div className="container relative z-2">
-          <div className="row g-4 justify-content-center">
-            <div className="col-md-4">
+      <section className="px-md-5 px-lg-5">
+        <div className="container">
+          <div className="row mb-4 align-items-center justify-content-between">
+            <div className="col-lg-5 wow fadeIn" data-wow-delay=".2s">
               <div className="subtitle">Testimonials</div>
+              <h2 className="mb-0">What Our Clients Say</h2>
             </div>
-            <div className="col-md-7">
-              <div className="owl-single-dots owl-carousel owl-theme">
+            <div className="col-lg-4 d-flex justify-content-end align-items-center">
+              <div className="de-custom-nav d-flex" data-target="#testimonials-carousel">
+                <div className="d-prev circle me-2"></div>
+                <div className="d-next circle"></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-lg-12">
+              <div id="testimonials-carousel" className="owl-carousel owl-theme owl-3-cols wow fadeIn" data-wow-delay=".4s">
                 {testimonials.map((t, i) => (
-                  <div key={i} className="item">
-                    <span className="d-stars d-block mb-3">
-                      {[...Array(5)].map((_, s) => <i key={s} className="icofont-star"></i>)}
-                    </span>
-                    <h2 className="mb-4">"{t.quote}"</h2>
-                    <div className="d-flex align-items-center">
-                      <img src={t.avatar} className="w-40px circle me-3" alt={t.author} style={{ objectFit: 'cover' }} />
-                      <span><strong>{t.author}</strong></span>
+                  <div key={i} className="item p-2">
+                    <div className="nivo-testimonial-card">
+                      <div>
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                          <div className="nivo-testimonial-stars">
+                            {[...Array(5)].map((_, s) => (
+                              <i key={s} className={`fa-solid fa-star ${s < t.rating ? 'active-star' : 'inactive-star'}`}></i>
+                            ))}
+                          </div>
+                          <div className="nivo-testimonial-quote-icon">
+                            <i className="fa-solid fa-quote-right"></i>
+                          </div>
+                        </div>
+                        <p className="nivo-testimonial-text">"{t.quote}"</p>
+                      </div>
+                      
+                      <div>
+                        <div className="nivo-testimonial-divider"></div>
+                        <div className="d-flex align-items-center">
+                          <img src={t.avatar} className="nivo-testimonial-avatar circle me-3" alt={t.author} />
+                          <div>
+                            <h4 className="nivo-testimonial-author mb-0">{t.author}</h4>
+                            <span className="nivo-testimonial-role">{t.role}</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -313,11 +413,11 @@ const Home = () => {
             </div>
             <div className="col-lg-12">
               <div id="projects-carousel" className="owl-carousel owl-theme owl-2-cols">
-                {projects.map((proj, i) => (
-                  <div key={i} className="item">
+                {projectsList.map((proj, i) => (
+                  <div key={proj.id || i} className="item">
                     <div className="hover">
                       <div className="relative overflow-hidden">
-                        <Link to="/project-single" className="d-block hover relative text-light">
+                        <Link to={`/project-single/${proj.id}`} className="d-block hover relative text-light">
                           <img src="/images/misc/up-right-arrow.webp" className="abs w-80px p-20 z-2 top-0 end-0 p-4 hover-op-1" alt="" />
                           <div className="abs w-50 z-4 p-4 mb-0">
                             <h2 className="fs-36">{proj.title}</h2>
@@ -327,7 +427,7 @@ const Home = () => {
                           </div>
                           <div className="gradient-edge-top op-5 h-70"></div>
                           <div className="extra-text abs lh-1 m-4 bottom-0 z-4 d-flex">
-                            {proj.tags.map((tag, t) => (
+                            {proj.tags && proj.tags.map((tag, t) => (
                               <div key={t} className="bg-blur p-2 me-2">{tag}</div>
                             ))}
                           </div>
@@ -352,12 +452,14 @@ const Home = () => {
               { icon: 'fa-tools', title: 'Execution', text: 'We bring the design to life with quality materials, skilled work, and precise project management.', delay: '.9s' },
               { icon: 'fa-home', title: 'Final Reveal', text: 'Your completed space is delivered beautifully finished, ready to enjoy with comfort and style.', delay: '1.2s', last: true },
             ].map((step, i) => (
-              <div key={i} className={`col-6 col-md-3 de-step ${!step.last ? 'de-step-arrow' : ''} wow fadeInRight`} data-wow-delay={step.delay}>
-                <div className="de-step-icon">
-                  <i className={`fas ${step.icon} fa-2x`}></i>
+              <div key={i} className="col-6 col-md-3 wow fadeInRight" data-wow-delay={step.delay}>
+                <div className="de-step-card">
+                  <div className="de-step-icon">
+                    <i className={`fas ${step.icon} fa-2x`}></i>
+                  </div>
+                  <h2 className="hs-4">{step.title}</h2>
+                  <p>{step.text}</p>
                 </div>
-                <h2 className="hs-4">{step.title}</h2>
-                <p>{step.text}</p>
               </div>
             ))}
           </div>
@@ -411,7 +513,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-    </main>
+     </main>
   );
 };
 

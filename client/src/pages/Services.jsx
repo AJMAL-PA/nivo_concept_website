@@ -79,12 +79,14 @@ const Services = () => {
               { icon: 'fa-tools', title: 'Structure & Build', text: 'We execute the structure using premium audited materials and certified structural engineers.' },
               { icon: 'fa-home', title: 'Turnkey Delivery', text: 'Your completed residence or commercial facility is handed over in a ready-to-use condition.', last: true },
             ].map((step, i) => (
-              <div key={i} className={`col-6 col-md-3 de-step ${!step.last ? 'de-step-arrow' : ''} wow fadeInRight`} data-wow-delay={`${(i + 1) * 0.3}s`}>
-                <div className="de-step-icon">
-                  <i className={`fas ${step.icon} fa-2x`}></i>
+              <div key={i} className="col-6 col-md-3 wow fadeInRight" data-wow-delay={`${(i + 1) * 0.3}s`}>
+                <div className="de-step-card">
+                  <div className="de-step-icon">
+                    <i className={`fas ${step.icon} fa-2x`}></i>
+                  </div>
+                  <h2 className="hs-4">{step.title}</h2>
+                  <p>{step.text}</p>
                 </div>
-                <h2 className="hs-4">{step.title}</h2>
-                <p>{step.text}</p>
               </div>
             ))}
           </div>

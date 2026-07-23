@@ -451,4 +451,293 @@ body.dark-scheme,
   backdrop-filter: blur(8px);
 }
 
+/* Premium Process Steps (Cards) Styling */
+.de-step-card {
+  text-align: center !important;
+  padding: 40px 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  position: relative !important;
+  background-color: #ffffff !important;
+  border: 1px solid rgba(195, 175, 155, 0.25) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03) !important;
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  height: 100% !important;
+}
+
+[data-theme="dark"] .de-step-card,
+.dark-scheme .de-step-card {
+  background-color: var(--bg-card, #1c1816) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4) !important;
+}
+
+.de-step-card:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: 0 16px 35px rgba(195, 175, 155, 0.2) !important;
+  border-color: rgba(195, 175, 155, 0.55) !important;
+}
+
+[data-theme="dark"] .de-step-card:hover,
+.dark-scheme .de-step-card:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.de-step-icon {
+  width: 84px !important;
+  height: 84px !important;
+  border-radius: 50% !important;
+  background-color: var(--primary-color, #C3AF9B) !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-bottom: 24px !important;
+  box-shadow: 0 6px 15px rgba(195, 175, 155, 0.15) !important;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.de-step-icon i {
+  font-size: 26px !important;
+  color: #ffffff !important;
+  line-height: 1 !important;
+}
+
+.de-step-card:hover .de-step-icon {
+  background-color: #d6c3b0 !important;
+  transform: scale(1.05) !important;
+}
+
+.de-step-card h2,
+.de-step-card h2.hs-4 {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  margin-bottom: 12px !important;
+  margin-top: 0 !important;
+  color: var(--heading-font-color, #341F16) !important;
+  transition: color 0.3s ease !important;
+}
+
+[data-theme="dark"] .de-step-card h2,
+.dark-scheme .de-step-card h2 {
+  color: #ffffff !important;
+}
+
+.de-step-card p {
+  font-size: 14px !important;
+  line-height: 1.7 !important;
+  color: var(--body-font-color, rgba(52, 31, 22, 0.75)) !important;
+  margin: 0 !important;
+  transition: color 0.3s ease !important;
+}
+
+[data-theme="dark"] .de-step-card p,
+.dark-scheme .de-step-card p {
+  color: var(--text-muted, #a8a098) !important;
+}
+
+/* Hide default connector line/arrow to achieve clean visual aesthetics */
+.de-step-arrow::after,
+.de-step::after {
+  content: none !important;
+  background: none !important;
+}
+
+/* New Premium Service Cards (Screenshot Style) */
+.nivo-service-card-new {
+  display: block !important;
+  background: #f4f0eb !important; /* Elegant light off-white background */
+  border-radius: 16px !important;
+  padding: 40px 30px !important;
+  min-height: 300px !important;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06) !important;
+  border: 1px solid rgba(195, 175, 155, 0.15) !important;
+  text-decoration: none !important;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  text-align: left !important;
+}
+
+[data-theme="dark"] .nivo-service-card-new,
+.dark-scheme .nivo-service-card-new {
+  background: rgba(28, 24, 21, 0.9) !important; /* Translucent dark brown card background */
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.45) !important;
+}
+
+.nivo-service-card-new:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: 0 25px 50px rgba(195, 175, 155, 0.22) !important;
+  border-color: var(--primary-color) !important;
+  background: #ffffff !important;
+}
+
+[data-theme="dark"] .nivo-service-card-new:hover,
+.dark-scheme .nivo-service-card-new:hover {
+  background: #231f1d !important;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6) !important;
+}
+
+.service-icon-wrap-new {
+  width: 48px !important;
+  height: 48px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  margin-bottom: 24px !important;
+  transition: all 0.3s ease !important;
+}
+
+.service-icon-wrap-new i {
+  font-size: 28px !important;
+  color: var(--primary-color, #C3AF9B) !important;
+}
+
+.service-title-new {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 22px !important;
+  font-weight: 500 !important;
+  color: #1a1615 !important;
+  margin-bottom: 16px !important;
+  text-transform: none !important;
+  transition: color 0.3s ease !important;
+}
+
+[data-theme="dark"] .service-title-new,
+.dark-scheme .service-title-new {
+  color: #ffffff !important;
+}
+
+.service-desc-new {
+  font-size: 14px !important;
+  line-height: 1.7 !important;
+  color: rgba(26, 22, 21, 0.75) !important;
+  margin: 0 !important;
+  transition: color 0.3s ease !important;
+}
+
+[data-theme="dark"] .service-desc-new,
+.dark-scheme .service-desc-new {
+  color: var(--text-muted, #a8a098) !important;
+}
+
+/* Premium Testimonial Cards (Screenshot Style) */
+.nivo-testimonial-card {
+  background-color: var(--bg-card, #ffffff) !important;
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.08)) !important;
+  border-radius: 16px !important;
+  padding: 35px 28px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03) !important;
+  min-height: 310px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.nivo-testimonial-card:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0 16px 35px rgba(195, 175, 155, 0.18) !important;
+  border-color: rgba(195, 175, 155, 0.45) !important;
+}
+
+[data-theme="dark"] .nivo-testimonial-card,
+.dark-scheme .nivo-testimonial-card {
+  background-color: var(--bg-card, #1c1816) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .nivo-testimonial-card:hover,
+.dark-scheme .nivo-testimonial-card:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+.nivo-testimonial-stars {
+  display: flex !important;
+  gap: 4px !important;
+}
+
+.nivo-testimonial-stars i.active-star {
+  color: var(--primary-color, #C3AF9B) !important;
+  font-size: 14px !important;
+}
+
+.nivo-testimonial-stars i.inactive-star {
+  color: rgba(185, 167, 151, 0.3) !important;
+  font-size: 14px !important;
+}
+
+[data-theme="dark"] .nivo-testimonial-stars i.inactive-star,
+.dark-scheme .nivo-testimonial-stars i.inactive-star {
+  color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.nivo-testimonial-quote-icon i {
+  color: rgba(195, 175, 155, 0.25) !important;
+  font-size: 24px !important;
+}
+
+[data-theme="dark"] .nivo-testimonial-quote-icon i,
+.dark-scheme .nivo-testimonial-quote-icon i {
+  color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.nivo-testimonial-text {
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+  color: var(--body-font-color, rgba(52, 31, 22, 0.75)) !important;
+  margin-top: 15px !important;
+  margin-bottom: 25px !important;
+  font-style: normal !important;
+  flex-grow: 1 !important;
+}
+
+[data-theme="dark"] .nivo-testimonial-text,
+.dark-scheme .nivo-testimonial-text {
+  color: var(--text-main, #f3efe9) !important;
+}
+
+.nivo-testimonial-divider {
+  width: 100% !important;
+  height: 1px !important;
+  background-color: var(--border-color, rgba(0, 0, 0, 0.08)) !important;
+  margin-bottom: 15px !important;
+}
+
+.nivo-testimonial-avatar {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+}
+
+.nivo-testimonial-author {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: var(--heading-font-color, #341F16) !important;
+}
+
+[data-theme="dark"] .nivo-testimonial-author,
+.dark-scheme .nivo-testimonial-author {
+  color: #ffffff !important;
+}
+
+.nivo-testimonial-role {
+  font-size: 12px !important;
+  color: var(--text-muted, #606060) !important;
+  display: block !important;
+  margin-top: 2px !important;
+}
+
+[data-theme="dark"] .nivo-testimonial-role,
+.dark-scheme .nivo-testimonial-role {
+  color: var(--text-muted, #a8a098) !important;
+}
+
 
