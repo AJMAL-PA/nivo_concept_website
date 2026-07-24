@@ -39,6 +39,69 @@ const CountUp = ({ to, speed = 2000 }) => {
   return <span ref={elementRef}>{count}</span>;
 };
 
+const VideoSection = () => {
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <section 
+      ref={sectionRef}
+      aria-label="section" 
+      className="p-0 relative overflow-hidden" 
+      style={{ aspectRatio: '16/9', width: '100%', background: '#000', position: 'relative' }}
+    >
+      {isIntersecting ? (
+        <div style={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden' }}>
+          <iframe
+            src="https://www.youtube.com/embed/C6rf51uHWJg?autoplay=1&mute=1&loop=1&playlist=C6rf51uHWJg&controls=0&showinfo=0&rel=0&playsinline=1&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0"
+            title="NIVO Concept Video"
+            style={{
+              position: 'absolute',
+              top: '-10%',
+              left: '-10%',
+              width: '120%',
+              height: '120%',
+              border: 'none',
+              pointerEvents: 'none'
+            }}
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+          ></iframe>
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 5, background: 'transparent' }} />
+        </div>
+      ) : (
+        <div 
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundImage: "url('/images/background/2.webp')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            minHeight: '250px'
+          }}
+        />
+      )}
+    </section>
+  );
+};
+
 const services = [
   { title: 'Interiors', img: '/images/services/4.webp', to: '/services/interiors' },
   { title: 'Construction', img: '/images/services/1.webp', to: '/services/construction' },
@@ -494,23 +557,7 @@ const Home = () => {
       </section>
 
       {/* Video Section */}
-      <section aria-label="section" className="p-0 relative overflow-hidden">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-lg-12">
-              <a className="d-block hover popup-youtube" href="https://www.youtube.com/watch?v=C6rf51uHWJg" data-bottom-top="transform: scale(1);" data-top-bottom="transform: scale(1.5);">
-                <div className="relative overflow-hidden">
-                  <div className="absolute start-0 w-100 abs-middle fs-36 text-white text-center z-2">
-                    <div className="player bg-dark border-0 circle wow scaleIn"><span></span></div>
-                  </div>
-                  <div className="absolute w-100 h-100 top-0 bg-dark hover-op-05"></div>
-                  <img src="/images/background/2.webp" className="w-100" alt="" />
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      <VideoSection />
 
       {/* FAQ Section */}
       <section className="pt-0 px-md-5 px-lg-5">
