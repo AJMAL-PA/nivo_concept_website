@@ -59,11 +59,11 @@ const ExtraWrap = () => {
         <p>Transform your home, office, or commercial space with professional interior design services tailored to your vision and lifestyle.</p>
 
         <div className="social-icons">
-          <a href="#"><i className="fa-brands fa-facebook-f"></i></a>
-          <a href="#"><i className="fa-brands fa-x-twitter"></i></a>
-          <a href="#"><i className="fa-brands fa-instagram"></i></a>
-          <a href="#"><i className="fa-brands fa-youtube"></i></a>
-          <a href="#"><i className="fa-brands fa-whatsapp"></i></a>
+          <a href="https://www.facebook.com/share/1M5sLgUxx1/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer"><i className="fa-brands fa-facebook-f"></i></a>
+          {/* <a href="#"><i className="fa-brands fa-x-twitter"></i></a> */}
+          <a href="https://www.instagram.com/nivo.concepts?igsh=aTEzMHBmNjMxcTJj&utm_source=qr" target="_blank" rel="noopener noreferrer"><i className="fa-brands fa-instagram"></i></a>
+          {/* <a href="#"><i className="fa-brands fa-youtube"></i></a> */}
+          <a href="https://wa.me/919400788258" target="_blank" rel="noopener noreferrer"><i className="fa-brands fa-whatsapp"></i></a>
         </div>
       </div>
     </div>

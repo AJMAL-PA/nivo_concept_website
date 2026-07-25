@@ -139,10 +139,10 @@ const FloatingSocial = () => {
           <a href="https://wa.me/919400788258" target="_blank" rel="noopener noreferrer" className={`floating-item whatsapp ${isOverFooter ? 'over-footer' : ''}`} title="WhatsApp">
             <i className="fa-brands fa-whatsapp"></i>
           </a>
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className={`floating-item instagram ${isOverFooter ? 'over-footer' : ''}`} title="Instagram">
+          <a href="https://www.instagram.com/nivo.concepts?igsh=aTEzMHBmNjMxcTJj&utm_source=qr" target="_blank" rel="noopener noreferrer" className={`floating-item instagram ${isOverFooter ? 'over-footer' : ''}`} title="Instagram">
             <i className="fa-brands fa-instagram"></i>
           </a>
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className={`floating-item facebook ${isOverFooter ? 'over-footer' : ''}`} title="Facebook">
+          <a href="https://www.facebook.com/share/1M5sLgUxx1/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className={`floating-item facebook ${isOverFooter ? 'over-footer' : ''}`} title="Facebook">
             <i className="fa-brands fa-facebook-f"></i>
           </a>
           <a href="mailto:nivoconcepts@gmail.com" className={`floating-item email ${isOverFooter ? 'over-footer' : ''}`} title="Email">
