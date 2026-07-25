@@ -48,7 +48,7 @@ const team = [
   { name: 'Harshina', role: '3D Visualizer', img: '/images/team/harshina.jpg' },
   { name: 'Abin', role: '3D Visualizer', img: '/images/team/abin.jpg' },
   { name: 'Aishwarya', role: '2D Draftsperson', img: '/images/team/aishwarya.jpg' },
-  { name: 'Ufaida', role: '3D Visualizer', img: '/images/team/ufaida.png' },
+  { name: 'Ufaida', role: '3D Visualizer', img: '/images/team/ufaida.jpg' },
   { name: 'Sreejish', role: 'Project Manager', img: '/images/team/sreejish.jpg' },
   { name: 'Sameer', role: 'Detail Drawing', img: '/images/team/sameer.jpg' },
 ];
@@ -255,7 +255,7 @@ const About = () => {
                         <div className="col-sm-6">
                           <img 
                             src={member.img} 
-                            style={{ height: '280px', objectFit: 'cover', objectPosition: 'top', width: '100%', display: 'block' }} 
+                            style={{ height: '280px', objectFit: 'contain', objectPosition: 'center', width: '100%', display: 'block' }} 
                             alt={member.name} 
                           />
                         </div>

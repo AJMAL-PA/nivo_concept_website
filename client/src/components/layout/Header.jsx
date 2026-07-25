@@ -446,9 +446,20 @@ const Header = () => {
           display: block;
           width: 20px;
           height: 2px;
-          background: rgba(60, 42, 28, 0.75);
+          background: #ffffff !important;
           border-radius: 2px;
           transition: all 0.3s ease;
+        }
+
+        /* Scrolled Header (Light theme background): Dark bars for contrast */
+        .nivo-header.scrolled .nivo-hamburger span {
+          background: rgba(60, 42, 28, 0.85) !important;
+        }
+
+        /* Dark Theme overrides: Always white bars */
+        [data-theme="dark"] .nivo-hamburger span,
+        [data-theme="dark"] .nivo-header.scrolled .nivo-hamburger span {
+          background: #ffffff !important;
         }
 
         /* Mobile nav */
