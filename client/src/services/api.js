@@ -7,8 +7,8 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' }
 });
 
-export const sendContact = (data) => api.post('/contact', data);
-export const sendConsultation = (data) => api.post('/consultation', data);
+// export const sendContact = (data) => api.post('/contact', data);
+// export const sendConsultation = (data) => api.post('/consultation', data);
 
 // Project Endpoints
 export const fetchProjects = () => api.get('/projects');

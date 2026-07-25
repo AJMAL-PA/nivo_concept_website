@@ -3,15 +3,6 @@ import { Link } from 'react-router-dom';
 import { fetchProjects } from '../services/api';
 import usePluginInit from '../hooks/usePluginInit';
 
-const staticProjects = [
-  { id: '1', title: 'Luxurious Oceanside Villa Build', img: '/images/projects-wide/4.webp', tags: ['Residential', 'Turnkey Construction', 'Luxury'] },
-  { id: '2', title: 'Contemporary Corporate Headquarters', img: '/images/projects-wide/1.webp', tags: ['Commercial', 'Steel Frame', 'Office Space'] },
-  { id: '3', title: 'Premium Retail Plaza Development', img: '/images/projects-wide/2.webp', tags: ['Commercial', 'Glass Architecture', 'Retail'] },
-  { id: '4', title: 'Modern Hillside Family Estate', img: '/images/projects-wide/5.webp', tags: ['Residential', 'Custom Home', 'Concrete'] },
-  { id: '5', title: 'Turnkey Double-Story Penthouse Fit-Out', img: '/images/projects-wide/3.webp', tags: ['Residential', 'Interior Design', 'Penthouse'] },
-  { id: '6', title: 'High-End Restaurant Design & Build', img: '/images/projects-wide/6.webp', tags: ['Commercial', 'Hospitality', 'Interior'] },
-];
-
 const Projects = () => {
   usePluginInit();
   const [projects, setProjects] = useState([]);
@@ -23,10 +14,10 @@ const Projects = () => {
         const res = await fetchProjects();
         // Check if server returns absolute uploads path and prepend server URL if necessary,
         // but since uploads serve at root /uploads on same backend port we use them as is.
-        setProjects(res.data.length > 0 ? res.data : staticProjects);
+        setProjects(res.data || []);
       } catch (err) {
         console.error(err);
-        setProjects(staticProjects);
+        setProjects([]);
       } finally {
         setLoading(false);
       }

@@ -39,10 +39,18 @@ const CountUp = ({ to, speed = 2000 }) => {
 };
 
 const team = [
-  { name: 'Anna Charline', role: 'Lead Architect', img: '/images/team/2.webp' },
-  { name: 'John Smith', role: 'Structural Engineer', img: '/images/team/3.webp' },
-  { name: 'Sophia Lee', role: 'Interior Fit-Out Specialist', img: '/images/team/4.webp' },
-  { name: 'Marcus Bell', role: 'Construction Project Manager', img: '/images/team/5.webp' },
+  { name: 'Lazim', role: 'CEO & Founder', img: '/images/team/lazim.jpg' },
+  { name: 'Sinan Ali', role: 'Managing Partner & Chief Consultant', img: '/images/team/sinan.jpg' },
+  { name: 'Badaru Zaman', role: 'Chief Designer (Architect)', img: '/images/team/badaru.jpg' },
+  { name: 'Athira', role: 'Admin', img: '/images/team/athira.jpg' },
+  { name: 'Lamiya', role: 'Permission Drawing', img: '/images/team/lamiya.jpg' },
+  { name: 'Fasna', role: '3D Visualizer', img: '/images/team/fasna.jpg' },
+  { name: 'Harshina', role: '3D Visualizer', img: '/images/team/harshina.jpg' },
+  { name: 'Abin', role: '3D Visualizer', img: '/images/team/abin.jpg' },
+  { name: 'Aishwarya', role: '2D Draftsperson', img: '/images/team/aishwarya.jpg' },
+  { name: 'Ufaida', role: '3D Visualizer', img: '/images/team/ufaida.png' },
+  { name: 'Sreejish', role: 'Project Manager', img: '/images/team/sreejish.jpg' },
+  { name: 'Sameer', role: 'Detail Drawing', img: '/images/team/sameer.jpg' },
 ];
 
 const testimonials = [
@@ -70,6 +78,59 @@ const testimonials = [
 
 const About = () => {
   usePluginInit();
+
+  useEffect(() => {
+    const $ = window.jQuery;
+    let timer;
+    if ($ && $.fn.owlCarousel) {
+      timer = setTimeout(() => {
+        const $carousel = $('#team-carousel');
+        if ($carousel.length) {
+          if ($carousel.data('owl.carousel')) {
+            $carousel.owlCarousel('destroy');
+          }
+          $carousel.owlCarousel({
+            center: false,
+            loop: true,
+            margin: 30,
+            nav: false,
+            dots: false,
+            autoplay: true,
+            autoplayTimeout: 4000,
+            autoplayHoverPause: true,
+            smartSpeed: 800,
+            responsive: {
+              1000: { items: 2 },
+              600: { items: 2 },
+              0: { items: 1 }
+            }
+          }).trigger('play.owl.autoplay', [4000]);
+
+          // Bind custom navigation controls
+          $('.de-custom-nav[data-target="#team-carousel"]').each(function () {
+            const target = $($(this).data('target'));
+            $(this).find('.d-next').off('click').on('click', function () {
+              target.trigger('next.owl.carousel');
+            });
+            $(this).find('.d-prev').off('click').on('click', function () {
+              target.trigger('prev.owl.carousel');
+            });
+          });
+        }
+      }, 150);
+    }
+
+    return () => {
+      clearTimeout(timer);
+      const $ = window.jQuery;
+      if ($ && $.fn.owlCarousel) {
+        const $carousel = $('#team-carousel');
+        if ($carousel.length && $carousel.data('owl.carousel')) {
+          $carousel.owlCarousel('destroy');
+        }
+      }
+    };
+  }, []);
 
   return (
     <main>
@@ -186,13 +247,17 @@ const About = () => {
         <div className="container">
           <div className="row g-4">
             <div className="col-lg-12">
-              <div id="team-carousel" className="owl-2-cols owl-carousel owl-theme wow fadeIn" data-wow-delay=".2s">
+              <div id="team-carousel" className="owl-carousel owl-theme wow fadeIn" data-wow-delay=".2s">
                 {team.map((member, i) => (
                   <div key={i} className="item">
                     <div className="bg-light rounded-1 overflow-hidden">
                       <div className="row g-0 align-items-center">
                         <div className="col-sm-6">
-                          <img src={member.img} className="w-100" alt={member.name} />
+                          <img 
+                            src={member.img} 
+                            style={{ height: '280px', objectFit: 'cover', objectPosition: 'top', width: '100%', display: 'block' }} 
+                            alt={member.name} 
+                          />
                         </div>
                         <div className="col-sm-6">
                           <div className="p-3 text-center">

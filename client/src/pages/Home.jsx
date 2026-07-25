@@ -61,10 +61,10 @@ const VideoSection = () => {
   }, []);
 
   return (
-    <section 
+    <section
       ref={sectionRef}
-      aria-label="section" 
-      className="p-0 relative overflow-hidden" 
+      aria-label="section"
+      className="p-0 relative overflow-hidden"
       style={{ aspectRatio: '16/9', width: '100%', background: '#000', position: 'relative' }}
     >
       {isIntersecting ? (
@@ -87,7 +87,7 @@ const VideoSection = () => {
           <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 5, background: 'transparent' }} />
         </div>
       ) : (
-        <div 
+        <div
           style={{
             width: '100%',
             height: '100%',
@@ -107,17 +107,6 @@ const services = [
   { title: 'Construction', img: '/images/services/1.webp', to: '/services/construction' },
   { title: 'Consultation', img: '/images/services/2.webp', to: '/services/consultation-service' },
   { title: 'Architectural Design', img: '/images/services/3.webp', to: '/services/architectural-design' },
-];
-
-const staticProjects = [
-  { id: '1', title: 'Luxurious Oceanside Villa Build', img: '/images/projects-wide/4.webp', tags: ['Residential', 'Turnkey Construction', 'Luxury'] },
-  { id: '2', title: 'Contemporary Corporate Headquarters', img: '/images/projects-wide/1.webp', tags: ['Commercial', 'Steel Frame', 'Office Space'] },
-  { id: '3', title: 'Premium Retail Plaza Development', img: '/images/projects-wide/2.webp', tags: ['Commercial', 'Glass Architecture', 'Retail'] },
-  { id: '4', title: 'Modern Hillside Family Estate', img: '/images/projects-wide/5.webp', tags: ['Residential', 'Custom Home', 'Concrete'] },
-  { id: '5', title: 'Turnkey Double-Story Penthouse Fit-Out', img: '/images/projects-wide/3.webp', tags: ['Residential', 'Interior Design', 'Penthouse'] },
-  { id: '6', title: 'High-End Restaurant Design & Build', img: '/images/projects-wide/6.webp', tags: ['Commercial', 'Hospitality', 'Interior'] },
-  { id: '7', title: 'Metropolitan Cultural Center Build', img: '/images/projects-wide/1.webp', tags: ['Commercial', 'Public Space', 'Steel Frame'] },
-  { id: '8', title: 'High-End Eco-Friendly Villa', img: '/images/projects-wide/2.webp', tags: ['Residential', 'Eco-Friendly', 'Luxury'] },
 ];
 
 const testimonials = [
@@ -168,10 +157,10 @@ const Home = () => {
     const loadProjects = async () => {
       try {
         const res = await fetchProjects();
-        setProjectsList(res.data.length > 0 ? res.data : staticProjects);
+        setProjectsList(res.data || []);
       } catch (err) {
         console.error(err);
-        setProjectsList(staticProjects);
+        setProjectsList([]);
       }
     };
     loadProjects();
@@ -192,7 +181,7 @@ const Home = () => {
           center: false, loop: true, margin: 30, nav: false, dots: false,
           responsive: { 1000: { items: 2 }, 600: { items: 2 }, 0: { items: 1 } }
         });
-        
+
         // Bind custom navigation controls
         $('.de-custom-nav[data-target="#projects-carousel"]').each(function () {
           const target = $($(this).data('target'));
@@ -239,7 +228,7 @@ const Home = () => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       if (scrollY > 900) return; // Skip logic when scrolled past the hero section
-      
+
       const elements = document.querySelectorAll('.swiper-inner');
       const scale = 1 + (scrollY * 0.00065); // Scales more aggressively for a stronger zoom effect
       elements.forEach(el => {
@@ -457,7 +446,7 @@ const Home = () => {
                           backgroundColor: 'rgba(255, 255, 255, 0.2)',
                           margin: '0 auto 20px auto'
                         }}></div>
-                        
+
                         <div className="d-flex flex-column align-items-center">
                           <div className="d-flex align-items-center justify-content-center mb-2" style={{
                             width: '50px',
@@ -557,7 +546,7 @@ const Home = () => {
       </section>
 
       {/* Video Section */}
-      <VideoSection />
+      {/* <VideoSection /> */}
 
       {/* FAQ Section */}
       <section className="pt-0 px-md-5 px-lg-5">
@@ -587,7 +576,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-     </main>
+    </main>
   );
 };
 

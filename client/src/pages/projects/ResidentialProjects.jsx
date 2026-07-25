@@ -3,15 +3,6 @@ import { Link } from 'react-router-dom';
 import { fetchProjects } from '../../services/api';
 import usePluginInit from '../../hooks/usePluginInit';
 
-const staticResidentialProjects = [
-  { id: '4', title: 'Luxury Minimalist Oceanside Villa', img: '/images/projects-wide/4.webp', tags: ['Villa', 'Private Residence', 'Contemporary'] },
-  { id: '5', title: 'Scandinavian Styled Modern Apartment', img: '/images/projects-wide/5.webp', tags: ['Apartment', 'Nordic Style', 'Space Planning'] },
-  { id: '10', title: 'Rustic Country House Estate', img: '/images/projects-wide/6.webp', tags: ['Estate', 'Natural Materials', 'Traditional'] },
-  { id: '11', title: 'Elegant Hillside Family Manor', img: '/images/projects-wide/1.webp', tags: ['Manor', 'Family Home', 'Bespoke Finishing'] },
-  { id: '12', title: 'Turnkey Double-Story City Penthouse', img: '/images/projects-wide/2.webp', tags: ['Penthouse', 'Panoramic Views', 'Turnkey'] },
-  { id: '13', title: 'Timeless Mid-Century Brick Residence', img: '/images/projects-wide/3.webp', tags: ['Residential', 'Retro Modern', 'Brick & Steel'] },
-];
-
 const ResidentialProjects = () => {
   usePluginInit();
   const [projects, setProjects] = useState([]);
@@ -21,11 +12,11 @@ const ResidentialProjects = () => {
     const loadResidential = async () => {
       try {
         const res = await fetchProjects();
-        const filtered = res.data.filter(proj => proj.tags[0] === 'Residential');
-        setProjects(filtered.length > 0 ? filtered : staticResidentialProjects);
+        const filtered = (res.data || []).filter(proj => proj.tags && proj.tags[0] === 'Residential');
+        setProjects(filtered);
       } catch (err) {
         console.error(err);
-        setProjects(staticResidentialProjects);
+        setProjects([]);
       } finally {
         setLoading(false);
       }

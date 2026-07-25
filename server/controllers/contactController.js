@@ -1,4 +1,3 @@
-const transporter = require('../config/mailer');
 
 // Contact form handler
 const sendContact = async (req, res) => {
@@ -13,16 +12,17 @@ const sendContact = async (req, res) => {
   }
 
   try {
-    await transporter.sendMail({
-      from: `"Intrio Contact" <${process.env.MAIL_USER}>`,
-      to: process.env.MAIL_TO || process.env.MAIL_USER,
-      replyTo: `${name} <${email}>`,
-      subject: 'New Contact Message — Intrio',
-      text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nMessage: ${message}`
-    });
+    // Log submission to console since email option is disabled
+    console.log('--- New Contact Form Submission (Email Disabled) ---');
+    console.log(`Name: ${name}`);
+    console.log(`Email: ${email}`);
+    console.log(`Phone: ${phone}`);
+    console.log(`Message: ${message}`);
+    console.log('--------------------------------------------------');
+
     return res.json({ success: true, message: 'sent' });
   } catch (err) {
-    console.error('Mail error:', err);
+    console.error('Contact handler error:', err);
     return res.status(500).json({ success: false, message: 'failed' });
   }
 };
@@ -36,24 +36,20 @@ const sendConsultation = async (req, res) => {
   }
 
   try {
-    await transporter.sendMail({
-      from: `"Intrio Consultation" <${process.env.MAIL_USER}>`,
-      to: process.env.MAIL_TO || process.env.MAIL_USER,
-      replyTo: `${name} <${email}>`,
-      subject: 'New Consultation Request — Intrio',
-      text: [
-        `Name: ${name}`,
-        `Email: ${email}`,
-        `Phone: ${phone}`,
-        `Preferred Date: ${date || 'Not specified'}`,
-        `Preferred Time: ${time || 'Not specified'}`,
-        `Service: ${service || 'Not specified'}`,
-        `Message: ${message || 'None'}`
-      ].join('\n')
-    });
+    // Log submission to console since email option is disabled
+    console.log('--- New Consultation Request (Email Disabled) ---');
+    console.log(`Name: ${name}`);
+    console.log(`Email: ${email}`);
+    console.log(`Phone: ${phone}`);
+    console.log(`Date: ${date || 'Not specified'}`);
+    console.log(`Time: ${time || 'Not specified'}`);
+    console.log(`Service: ${service || 'Not specified'}`);
+    console.log(`Message: ${message || 'None'}`);
+    console.log('------------------------------------------------');
+
     return res.json({ success: true, message: 'sent' });
   } catch (err) {
-    console.error('Mail error:', err);
+    console.error('Consultation handler error:', err);
     return res.status(500).json({ success: false, message: 'failed' });
   }
 };

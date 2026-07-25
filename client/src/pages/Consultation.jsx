@@ -2,12 +2,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import usePluginInit from '../hooks/usePluginInit';
-import { sendConsultation } from '../services/api';
 
 const Consultation = () => {
   usePluginInit();
 
-  const [form, setForm] = useState({ name: '', email: '', phone: '', date: '', time: '', service: '', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', date: '', service: '', message: '' });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(null);
 
@@ -24,15 +23,22 @@ const Consultation = () => {
     setErrors({ ...errors, [field]: false });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const errs = validate();
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
+
     setStatus('sending');
     try {
-      const res = await sendConsultation(form);
-      setStatus(res.data.message === 'sent' ? 'sent' : 'failed');
+      const phoneNumber = '919400788258'; // +91 94007 88258 without spaces/symbols
+      const messageText = `Hello Nivo Concepts,\n\nI would like to request a free consultation. Here are my details:\n*Name:* ${form.name}\n*Email:* ${form.email}\n*Phone:* ${form.phone}\n*Preferred Date:* ${form.date || 'Not specified'}\n*Service:* ${form.service || 'Not specified'}\n*Message:* ${form.message || 'None'}`;
+      const encodedMessage = encodeURIComponent(messageText);
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+      
+      window.open(whatsappUrl, '_blank');
+      setStatus('sent');
+      setForm({ name: '', email: '', phone: '', date: '', service: '', message: '' });
     } catch {
       setStatus('failed');
     }

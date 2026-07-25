@@ -4,9 +4,42 @@ const cors = require('cors');
 const contactRoutes = require('./routes/contactRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const path = require('path');
+const connectDB = require('./config/db');
+const Project = require('./models/Project');
+const GalleryItem = require('./models/GalleryItem');
+const dbMock = require('./utils/db');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Connect to MongoDB
+connectDB().then(() => {
+  seedData();
+});
+
+async function seedData() {
+  try {
+    const projectCount = await Project.countDocuments();
+    if (projectCount === 0) {
+      console.log('Seeding projects...');
+      const mockProjects = dbMock.getProjects();
+      const projectsToSeed = mockProjects.map(({ id, ...rest }) => rest);
+      await Project.insertMany(projectsToSeed);
+      console.log('Projects seeded successfully.');
+    }
+
+    const galleryCount = await GalleryItem.countDocuments();
+    if (galleryCount === 0) {
+      console.log('Seeding gallery items...');
+      const mockGallery = dbMock.getGallery();
+      const galleryToSeed = mockGallery.map(({ id, ...rest }) => rest);
+      await GalleryItem.insertMany(galleryToSeed);
+      console.log('Gallery items seeded successfully.');
+    }
+  } catch (error) {
+    console.error('Error seeding data:', error);
+  }
+}
 
 // Middleware
 app.use(cors({

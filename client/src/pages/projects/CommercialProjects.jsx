@@ -3,15 +3,6 @@ import { Link } from 'react-router-dom';
 import { fetchProjects } from '../../services/api';
 import usePluginInit from '../../hooks/usePluginInit';
 
-const staticCommercialProjects = [
-  { id: '2', title: 'Modern Corporate Office Headquarters', img: '/images/projects-wide/1.webp', tags: ['Office Space', 'Luxury', 'High-Rise'] },
-  { id: '3', title: 'Premium Retail Plaza Concept', img: '/images/projects-wide/2.webp', tags: ['Retail', 'Glass Architecture', 'Turnkey'] },
-  { id: '6', title: 'Sophisticated Restaurant Interior & Build', img: '/images/projects-wide/3.webp', tags: ['Hospitality', 'Warm Lighting', 'Bespoke'] },
-  { id: '7', title: 'Executive Coworking Lounge', img: '/images/projects-wide/4.webp', tags: ['Shared Workspace', 'Modernist', 'Acoustic Panels'] },
-  { id: '8', title: 'Luxury Hotel Lobby Renovation', img: '/images/projects-wide/5.webp', tags: ['Hotel', 'Premium Marble', 'Timeless'] },
-  { id: '9', title: 'High-End Showroom Construction', img: '/images/projects-wide/6.webp', tags: ['Commercial', 'Minimalist', 'Steel Frame'] },
-];
-
 const CommercialProjects = () => {
   usePluginInit();
   const [projects, setProjects] = useState([]);
@@ -21,11 +12,11 @@ const CommercialProjects = () => {
     const loadCommercial = async () => {
       try {
         const res = await fetchProjects();
-        const filtered = res.data.filter(proj => proj.tags[0] === 'Commercial');
-        setProjects(filtered.length > 0 ? filtered : staticCommercialProjects);
+        const filtered = (res.data || []).filter(proj => proj.tags && proj.tags[0] === 'Commercial');
+        setProjects(filtered);
       } catch (err) {
         console.error(err);
-        setProjects(staticCommercialProjects);
+        setProjects([]);
       } finally {
         setLoading(false);
       }

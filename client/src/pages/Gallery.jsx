@@ -3,18 +3,6 @@ import { Link } from 'react-router-dom';
 import { fetchGallery } from '../services/api';
 import usePluginInit from '../hooks/usePluginInit';
 
-const staticGalleryImages = [
-  { img: '/images/projects-wide/1.webp', title: 'Contemporary Office Architecture', category: 'Commercial' },
-  { img: '/images/projects-wide/2.webp', title: 'Luxury Penthouse Fit-Out', category: 'Interiors' },
-  { img: '/images/projects-wide/3.webp', title: 'Scandinavian Styled Kitchen', category: 'Interiors' },
-  { img: '/images/projects-wide/4.webp', title: 'Oceanside Villa Exterior', category: 'Residential' },
-  { img: '/images/projects-wide/5.webp', title: 'Modern Hillside Estate', category: 'Residential' },
-  { img: '/images/projects-wide/6.webp', title: 'Premium Restaurant Fit-Out', category: 'Commercial' },
-  { img: '/images/services/1.webp', title: 'Minimalist Master Suite', category: 'Interiors' },
-  { img: '/images/services/2.webp', title: 'Glass Office Headquarters', category: 'Commercial' },
-  { img: '/images/services/3.webp', title: 'Modern Villa Blueprint Rendering', category: 'Architectural' },
-];
-
 const Gallery = () => {
   usePluginInit();
   const [galleryItems, setGalleryItems] = useState([]);
@@ -24,10 +12,10 @@ const Gallery = () => {
     const loadGallery = async () => {
       try {
         const res = await fetchGallery();
-        setGalleryItems(res.data.length > 0 ? res.data : staticGalleryImages);
+        setGalleryItems(res.data || []);
       } catch (err) {
         console.error(err);
-        setGalleryItems(staticGalleryImages);
+        setGalleryItems([]);
       } finally {
         setLoading(false);
       }
@@ -78,7 +66,7 @@ const Gallery = () => {
                   <div className="hover relative overflow-hidden rounded-1 group">
                     <div className="relative overflow-hidden rounded-1 wow scaleIn" data-wow-delay={`${i * 0.1}s`}>
                       <img src={item.img} className="w-100 hover-scale-1-2 transition-transform duration-500" alt={item.title} style={{ height: '260px', objectFit: 'cover' }} />
-                      <div className="abs top-0 start-0 w-100 h-100 bg-dark op-0 hover-op-6 transition-all duration-300 d-flex flex-column justify-content-end p-4 text-light z-2">
+                      <div className="abs top-0 start-0 w-100 h-100 bg-dark hover-op-6 transition-all duration-300 d-flex flex-column justify-content-end p-4 text-light z-2">
                         <div className="bg-blur p-2 align-self-start mb-2 text-uppercase fs-11 tracking-wide">{item.category}</div>
                         <h3 className="fs-20 mb-0 font-semibold">{item.title}</h3>
                       </div>

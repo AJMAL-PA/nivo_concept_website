@@ -451,6 +451,14 @@ body.dark-scheme,
   backdrop-filter: blur(8px);
 }
 
+/* Custom Hover Opacity for Gallery Overlay */
+.hover-op-6 {
+  opacity: 0 !important;
+}
+.hover:hover .hover-op-6 {
+  opacity: 0.6 !important;
+}
+
 /* Premium Process Steps (Cards) Styling */
 .de-step-card {
   text-align: center !important;

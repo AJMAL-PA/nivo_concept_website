@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import usePluginInit from '../hooks/usePluginInit';
-import { sendContact as sendContactAPI } from '../services/api';
+
 
 const offices = [
   { 
@@ -16,20 +16,19 @@ const offices = [
 const Contact = () => {
   usePluginInit();
 
-  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
+  const [form, setForm] = useState({ name: '', phone: '', message: '' });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(null); // 'sent' | 'failed' | 'sending'
 
   const validate = () => {
     const errs = {};
     if (!form.name.trim()) errs.name = true;
-    if (!form.email.trim() || !form.email.includes('@')) errs.email = true;
     if (!form.phone.trim()) errs.phone = true;
     if (!form.message.trim()) errs.message = true;
     return errs;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const errs = validate();
     setErrors(errs);
@@ -37,8 +36,14 @@ const Contact = () => {
 
     setStatus('sending');
     try {
-      const res = await sendContactAPI(form);
-      setStatus(res.data.message === 'sent' ? 'sent' : 'failed');
+      const phoneNumber = '919400788258'; // +91 94007 88258 without spaces/symbols
+      const messageText = `Hello Nivo Concepts,\n\nI would like to contact you. Here are my details:\n*Name:* ${form.name}\n*Phone:* ${form.phone}\n*Message:* ${form.message}`;
+      const encodedMessage = encodeURIComponent(messageText);
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+      
+      window.open(whatsappUrl, '_blank');
+      setStatus('sent');
+      setForm({ name: '', phone: '', message: '' });
     } catch {
       setStatus('failed');
     }
@@ -122,10 +127,6 @@ const Contact = () => {
                         <div className="field-set mb-3">
                           <input type="text" name="Name" id="name" className={`form-control${errors.name ? ' error_input' : ''}`} placeholder="Your Name"
                             value={form.name} onChange={e => { setForm({ ...form, name: e.target.value }); setErrors({ ...errors, name: false }); }} />
-                        </div>
-                        <div className="field-set mb-3">
-                          <input type="text" name="Email" id="email" className={`form-control${errors.email ? ' error_input' : ''}`} placeholder="Your Email"
-                            value={form.email} onChange={e => { setForm({ ...form, email: e.target.value }); setErrors({ ...errors, email: false }); }} />
                         </div>
                         <div className="field-set mb-3">
                           <input type="text" name="phone" id="phone" className={`form-control${errors.phone ? ' error_input' : ''}`} placeholder="Your Phone"
