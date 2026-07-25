@@ -380,7 +380,7 @@ const Admin = () => {
           {/* Navigation Sidebar */}
           <div className="col-lg-3">
             <div className="cyber-panel p-4">
-              <h5 className="uppercase tracking-widest font-bold mb-3 fs-11 text-muted">System Menu</h5>
+              <h5 className="uppercase tracking-widest font-bold mb-3 fs-11 text-muted"> INDEX SYSTEM</h5>
               <div className="d-flex flex-column gap-2">
                 <button 
                   onClick={() => setActiveTab('dashboard')} 
