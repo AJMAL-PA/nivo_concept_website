@@ -7,9 +7,19 @@ const Footer = () => {
         footer.nivo-footer {
           background-color: var(--footer-bg, #C3AF9B) !important;
           color: var(--footer-text, #231f1d) !important;
-          padding: 80px 0 0 0 !important;
+          padding: 80px 24px 0 24px !important;
           font-family: 'Roboto Flex', sans-serif !important;
           transition: background-color 0.3s ease, color 0.3s ease !important;
+        }
+        @media (min-width: 768px) {
+          footer.nivo-footer {
+            padding: 80px 48px 0 48px !important;
+          }
+        }
+        @media (min-width: 1200px) {
+          footer.nivo-footer {
+            padding: 80px 80px 0 80px !important;
+          }
         }
         footer.nivo-footer h2,
         footer.nivo-footer h3,
@@ -145,6 +155,20 @@ const Footer = () => {
           padding: 20px 0 !important;
           margin-top: 40px !important;
           font-size: 13px !important;
+          margin-left: -24px !important;
+          margin-right: -24px !important;
+        }
+        @media (min-width: 768px) {
+          footer.nivo-footer .subfooter {
+            margin-left: -48px !important;
+            margin-right: -48px !important;
+          }
+        }
+        @media (min-width: 1200px) {
+          footer.nivo-footer .subfooter {
+            margin-left: -80px !important;
+            margin-right: -80px !important;
+          }
         }
         footer.nivo-footer .subfooter-links a {
           font-size: 13px !important;
@@ -258,16 +282,9 @@ const Footer = () => {
         {/* Subfooter */}
         <div className="subfooter">
           <div className="container">
-            <div className="row align-items-center">
-              <div className="col-md-6 text-md-start text-center mb-md-0 mb-2">
+            <div className="row">
+              <div className="col-md-12 text-center">
                 2026 &copy; Nivo Concepts. All Rights Reserved.
-              </div>
-              <div className="col-md-6 text-md-end text-center subfooter-links">
-                <Link to="/faq">FAQ</Link>
-                <span style={{ margin: '0 4px', opacity: 0.5 }}>|</span>
-                <Link to="/privacy">Privacy Policy</Link>
-                <span style={{ margin: '0 4px', opacity: 0.5 }}>|</span>
-                <Link to="/terms">Terms & Condition</Link>
               </div>
             </div>
           </div>
