@@ -620,8 +620,8 @@ const Admin = () => {
                     />
                     <span className="text-muted fs-10 d-block mt-1">Recommended: Landscape (16:10 or 16:9), e.g., 1280x800 px or 1920x1080 px.</span>
                     <div className="mt-2">
-                      <label className="btn-main py-1 px-3 fs-10 uppercase font-semibold cursor-pointer">
-                        Upload File
+                      <label className="btn-main p-0 d-inline-flex align-items-center justify-content-center cursor-pointer" style={{ borderRadius: '50%', width: '36px', height: '36px' }} title="Upload Main Image">
+                        <i className="fa fa-upload fs-14"></i>
                         <input type="file" onChange={(e) => handleFileUpload(e, 'project-main')} style={{ display: 'none' }} accept="image/*" />
                       </label>
                     </div>
@@ -687,8 +687,8 @@ const Admin = () => {
                     />
                     <span className="text-muted fs-10 d-block mt-1">Recommended: Landscape or square format (4:3, 3:2, or 1:1), e.g., 800x600 px or 800x800 px.</span>
                     <div className="mt-2">
-                      <label className="btn-main py-1 px-3 fs-10 uppercase font-semibold cursor-pointer">
-                        Upload Add-on Image
+                      <label className="btn-main p-0 d-inline-flex align-items-center justify-content-center cursor-pointer" style={{ borderRadius: '50%', width: '36px', height: '36px' }} title="Upload Add-on Image">
+                        <i className="fa fa-upload fs-14"></i>
                         <input type="file" onChange={(e) => handleFileUpload(e, 'project-extra')} style={{ display: 'none' }} accept="image/*" />
                       </label>
                     </div>
@@ -761,8 +761,8 @@ const Admin = () => {
                     />
                     <span className="text-muted fs-10 d-block mt-1">Recommended: Landscape orientation (4:3 or 3:2), e.g., 800x600 px.</span>
                     <div className="mt-2">
-                      <label className="btn-main py-1 px-3 fs-10 uppercase font-semibold cursor-pointer">
-                        Upload File
+                      <label className="btn-main p-0 d-inline-flex align-items-center justify-content-center cursor-pointer" style={{ borderRadius: '50%', width: '36px', height: '36px' }} title="Upload Gallery Image">
+                        <i className="fa fa-upload fs-14"></i>
                         <input type="file" onChange={(e) => handleFileUpload(e, 'gallery')} style={{ display: 'none' }} accept="image/*" />
                       </label>
                     </div>
