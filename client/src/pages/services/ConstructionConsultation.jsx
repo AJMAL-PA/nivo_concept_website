@@ -63,7 +63,7 @@ const ConstructionConsultation = () => {
               <div className="text-light rounded-1 p-4" style={{ backgroundColor: '#C3AF9B' }}>
                 <h4>Need a Consultation?</h4>
                 <p>Book a free consultation with our design team today.</p>
-                <Link to="/consultation" className="btn-main fx-slide"><span>Free Consultation</span></Link>
+                <Link to="/contact" className="btn-main fx-slide"><span>Free Consultation</span></Link>
               </div>
             </div>
           </div>

@@ -188,7 +188,7 @@ const ArchitecturalDesign = () => {
                 Whether you need floor blueprints, exterior facade elevation rendering, 3D structure walkthroughs, or municipal permits drafting, NIVO Concepts is here.
               </p>
               <div className="wow fadeInUp" data-wow-delay=".3s">
-                <Link to="/consultation" className="btn-main" style={{ textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, padding: '14px 32px' }}>
+                <Link to="/contact" className="btn-main" style={{ textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, padding: '14px 32px' }}>
                   Let’s Build Beautiful Spaces Together
                 </Link>
               </div>
