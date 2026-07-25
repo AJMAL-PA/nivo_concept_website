@@ -21,7 +21,7 @@ const Preloader = () => {
     clearTimeout(fadeTimer.current);
 
     if (isFirst.current) {
-      // First mount (page open / refresh): keep preloader visible for 8 seconds
+      // First mount (page open / refresh): keep preloader visible for 3 seconds
       isFirst.current = false;
       
       hideTimer.current = setTimeout(() => {
@@ -30,7 +30,7 @@ const Preloader = () => {
           setVisible(false);
           setFading(false);
         }, 400);
-      }, 8000); // 8 seconds visible duration on first load
+      }, 3000); // 3 seconds visible duration on first load
     } else {
       // Route change transition: show overlay immediately
       setFading(false);
