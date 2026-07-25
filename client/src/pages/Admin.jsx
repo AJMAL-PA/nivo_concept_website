@@ -798,6 +798,9 @@ const Admin = () => {
           padding: 10px 14px;
           transition: all 0.3s ease;
         }
+        .form-label {
+          color: #ffffff !important;
+        }
         .form-control:focus {
           border-color: #C3AF9B !important;
           box-shadow: 0 0 8px rgba(195, 175, 155, 0.3) !important;
