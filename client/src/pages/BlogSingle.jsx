@@ -76,8 +76,8 @@ const BlogSingle = () => {
               </div>
               <div className="bg-dark text-light rounded-1 p-4">
                 <h4>Start Your Project</h4>
-                <p>Ready to create your perfect space? Book a free consultation.</p>
-                <Link to="/consultation" className="btn-main fx-slide"><span>Free Consultation</span></Link>
+                <p>Ready to create your perfect space? Get in touch with us today.</p>
+                <Link to="/contact" className="btn-main fx-slide"><span>Contact Us</span></Link>
               </div>
             </div>
           </div>

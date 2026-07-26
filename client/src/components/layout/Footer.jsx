@@ -188,6 +188,42 @@ const Footer = () => {
         [data-theme="dark"] footer.nivo-footer .footer-logo-img {
           filter: brightness(0) invert(1) !important;
         }
+
+        @media (max-width: 767px) {
+          footer.nivo-footer {
+            text-align: center !important;
+          }
+          footer.nivo-footer .footer-logo-img {
+            margin: 0 auto 24px auto !important;
+          }
+          footer.nivo-footer .subscribe-input-wrap {
+            margin: 0 auto 16px auto !important;
+            max-width: 320px;
+          }
+          footer.nivo-footer .btn-subscribe {
+            margin: 0 auto !important;
+            display: block !important;
+          }
+          footer.nivo-footer .social-icons {
+            justify-content: center !important;
+            display: flex !important;
+            gap: 12px !important;
+            margin-top: 15px !important;
+          }
+          footer.nivo-footer .social-icons a {
+            float: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+          }
+          footer.nivo-footer ul {
+            padding: 0 !important;
+            list-style: none !important;
+          }
+          footer.nivo-footer ul li {
+            justify-content: center !important;
+          }
+        }
       `}</style>
 
       {/* footer begin */}
@@ -230,7 +266,7 @@ const Footer = () => {
                 <ul>
                   <li><Link to="/projects">Projects</Link></li>
                   <li><Link to="/gallery">Gallery</Link></li>
-                  <li><Link to="/consultation">Consultation</Link></li>
+                  <li><Link to="/contact">Contact Us</Link></li>
                   <li><Link to="/terms">Terms & Condition</Link></li>
                   <li><Link to="/privacy">Privacy Policy</Link></li>
                 </ul>

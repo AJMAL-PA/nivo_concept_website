@@ -4,7 +4,7 @@ const cors = require('cors');
 const contactRoutes = require('./routes/contactRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const path = require('path');
-const connectDB = require('./config/db');
+const { connectDB, isLocalDB } = require('./config/db');
 const Project = require('./models/Project');
 const GalleryItem = require('./models/GalleryItem');
 const dbMock = require('./utils/db');
@@ -14,7 +14,11 @@ const PORT = process.env.PORT || 5000;
 
 // Connect to MongoDB
 connectDB().then(() => {
-  seedData();
+  if (!isLocalDB()) {
+    seedData();
+  } else {
+    dbMock.initializeLocalData();
+  }
 });
 
 async function seedData() {

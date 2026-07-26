@@ -612,19 +612,34 @@ const Admin = () => {
                   {/* Main Cover Image */}
                   <div className="col-md-6">
                     <label className="form-label font-semibold fs-12 uppercase tracking-wide">Main Cover Image Path / URL</label>
-                    <input 
-                      type="text" 
-                      className="form-control" 
-                      value={projectForm.img} 
-                      onChange={(e) => handleProjectChange('img', e.target.value)}
-                    />
-                    <span className="text-muted fs-10 d-block mt-1">Recommended: Landscape (16:10 or 16:9), e.g., 1280x800 px or 1920x1080 px.</span>
-                    <div className="mt-2">
-                      <label className="btn-main p-0 d-inline-flex align-items-center justify-content-center cursor-pointer" style={{ borderRadius: '50%', width: '36px', height: '36px' }} title="Upload Main Image">
-                        <i className="fa fa-upload fs-14"></i>
+                    <div style={{ position: 'relative' }}>
+                      <input 
+                        type="text" 
+                        className="form-control" 
+                        style={{ paddingRight: '45px' }}
+                        value={projectForm.img} 
+                        onChange={(e) => handleProjectChange('img', e.target.value)}
+                      />
+                      <label 
+                        className="btn-main p-0 d-inline-flex align-items-center justify-content-center cursor-pointer" 
+                        style={{ 
+                          position: 'absolute', 
+                          right: '6px', 
+                          top: '50%', 
+                          transform: 'translateY(-50%)', 
+                          borderRadius: '50%', 
+                          width: '32px', 
+                          height: '32px',
+                          zIndex: 5,
+                          marginBottom: 0
+                        }} 
+                        title="Upload Main Image"
+                      >
+                        <i className="fa fa-upload fs-12"></i>
                         <input type="file" onChange={(e) => handleFileUpload(e, 'project-main')} style={{ display: 'none' }} accept="image/*" />
                       </label>
                     </div>
+                    <span className="text-muted fs-10 d-block mt-1">Recommended: Landscape (16:10 or 16:9), e.g., 1280x800 px or 1920x1080 px.</span>
                   </div>
 
                   {/* Other Tags */}
@@ -679,19 +694,34 @@ const Admin = () => {
                   {/* Detail Gallery Images */}
                   <div className="col-12">
                     <label className="form-label font-semibold fs-12 uppercase tracking-wide">Gallery Images (comma-separated URLs)</label>
-                    <input 
-                      type="text" 
-                      className="form-control" 
-                      value={projectForm.images} 
-                      onChange={(e) => handleProjectChange('images', e.target.value)}
-                    />
-                    <span className="text-muted fs-10 d-block mt-1">Recommended: Landscape or square format (4:3, 3:2, or 1:1), e.g., 800x600 px or 800x800 px.</span>
-                    <div className="mt-2">
-                      <label className="btn-main p-0 d-inline-flex align-items-center justify-content-center cursor-pointer" style={{ borderRadius: '50%', width: '36px', height: '36px' }} title="Upload Add-on Image">
-                        <i className="fa fa-upload fs-14"></i>
+                    <div style={{ position: 'relative' }}>
+                      <input 
+                        type="text" 
+                        className="form-control" 
+                        style={{ paddingRight: '45px' }}
+                        value={projectForm.images} 
+                        onChange={(e) => handleProjectChange('images', e.target.value)}
+                      />
+                      <label 
+                        className="btn-main p-0 d-inline-flex align-items-center justify-content-center cursor-pointer" 
+                        style={{ 
+                          position: 'absolute', 
+                          right: '6px', 
+                          top: '50%', 
+                          transform: 'translateY(-50%)', 
+                          borderRadius: '50%', 
+                          width: '32px', 
+                          height: '32px',
+                          zIndex: 5,
+                          marginBottom: 0
+                        }} 
+                        title="Upload Add-on Image"
+                      >
+                        <i className="fa fa-upload fs-12"></i>
                         <input type="file" onChange={(e) => handleFileUpload(e, 'project-extra')} style={{ display: 'none' }} accept="image/*" />
                       </label>
                     </div>
+                    <span className="text-muted fs-10 d-block mt-1">Recommended: Landscape or square format (4:3, 3:2, or 1:1), e.g., 800x600 px or 800x800 px.</span>
                   </div>
 
                 </div>
@@ -752,20 +782,35 @@ const Admin = () => {
 
                   <div className="col-12">
                     <label className="form-label font-semibold fs-12 uppercase tracking-wide">Image Path / URL *</label>
-                    <input 
-                      type="text" 
-                      className="form-control" 
-                      required 
-                      value={galleryForm.img}
-                      onChange={(e) => setGalleryForm({ ...galleryForm, img: e.target.value })}
-                    />
-                    <span className="text-muted fs-10 d-block mt-1">Recommended: Landscape orientation (4:3 or 3:2), e.g., 800x600 px.</span>
-                    <div className="mt-2">
-                      <label className="btn-main p-0 d-inline-flex align-items-center justify-content-center cursor-pointer" style={{ borderRadius: '50%', width: '36px', height: '36px' }} title="Upload Gallery Image">
-                        <i className="fa fa-upload fs-14"></i>
+                    <div style={{ position: 'relative' }}>
+                      <input 
+                        type="text" 
+                        className="form-control" 
+                        style={{ paddingRight: '45px' }}
+                        required 
+                        value={galleryForm.img}
+                        onChange={(e) => setGalleryForm({ ...galleryForm, img: e.target.value })}
+                      />
+                      <label 
+                        className="btn-main p-0 d-inline-flex align-items-center justify-content-center cursor-pointer" 
+                        style={{ 
+                          position: 'absolute', 
+                          right: '6px', 
+                          top: '50%', 
+                          transform: 'translateY(-50%)', 
+                          borderRadius: '50%', 
+                          width: '32px', 
+                          height: '32px',
+                          zIndex: 5,
+                          marginBottom: 0
+                        }} 
+                        title="Upload Gallery Image"
+                      >
+                        <i className="fa fa-upload fs-12"></i>
                         <input type="file" onChange={(e) => handleFileUpload(e, 'gallery')} style={{ display: 'none' }} accept="image/*" />
                       </label>
                     </div>
+                    <span className="text-muted fs-10 d-block mt-1">Recommended: Landscape orientation (4:3 or 3:2), e.g., 800x600 px.</span>
                   </div>
                 </div>
 

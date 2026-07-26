@@ -188,7 +188,7 @@ const Construction = () => {
                 Whether you’re building a custom luxury villa, a commercial development, or starting a renovation, NIVO Concepts is here to bring your vision to life.
               </p>
               <div className="wow fadeInUp" data-wow-delay=".3s">
-                <Link to="/consultation" className="btn-main" style={{ textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, padding: '14px 32px' }}>
+                <Link to="/contact" className="btn-main" style={{ textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, padding: '14px 32px' }}>
                   Let’s Build Beautiful Spaces Together
                 </Link>
               </div>

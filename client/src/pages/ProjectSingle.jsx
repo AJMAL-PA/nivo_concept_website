@@ -141,7 +141,7 @@ const ProjectSingle = () => {
               <div className="bg-dark text-light rounded-1 p-4">
                 <h4 className="uppercase font-bold tracking-wider fs-15 mb-2 text-white">Start Your Project</h4>
                 <p className="fs-13 text-muted mb-4">Ready to transform your space? Get in touch with our team.</p>
-                <Link to="/consultation" className="btn-main fx-slide w-100 text-center py-2.5"><span>Free Consultation</span></Link>
+                <Link to="/contact" className="btn-main fx-slide w-100 text-center py-2.5"><span>Contact Us</span></Link>
               </div>
             </div>
           </div>

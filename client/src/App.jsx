@@ -17,7 +17,6 @@ import BlogSingle from './pages/BlogSingle';
 import FAQ from './pages/FAQ';
 import Testimonials from './pages/Testimonials';
 import Contact from './pages/Contact';
-import Consultation from './pages/Consultation';
 import Interiors from './pages/services/Interiors';
 import Construction from './pages/services/Construction';
 import ConsultationService from './pages/services/ConsultationService';
@@ -88,7 +87,6 @@ const App = () => {
             <Route path="/faq" element={<FAQ />} />
             <Route path="/testimonials" element={<Testimonials />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/consultation" element={<Consultation />} />
             {/* 404 fallback */}
             <Route path="*" element={<Home />} />
           </Routes>

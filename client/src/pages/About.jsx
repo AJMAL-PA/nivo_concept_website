@@ -41,7 +41,7 @@ const CountUp = ({ to, speed = 2000 }) => {
 const team = [
   { name: 'Lazim', role: 'CEO & Founder', img: '/images/team/lazim.jpg' },
   { name: 'Sinan Ali', role: 'Managing Partner & Chief Consultant', img: '/images/team/sinan.jpg' },
-  { name: 'Badaru Zaman', role: 'Chief Designer (Architect)', img: '/images/team/badaru.jpg' },
+  { name: 'Badaru Zaman', role: 'Chief Designer (Architect)', img: '/images/team/zaman.jpg' },
   { name: 'Athira', role: 'Admin', img: '/images/team/athira.jpg' },
   { name: 'Lamiya', role: 'Permission Drawing', img: '/images/team/lamiya.jpg' },
   { name: 'Fasna', role: '3D Visualizer', img: '/images/team/fasna.jpg' },
@@ -253,10 +253,10 @@ const About = () => {
                     <div className="bg-light rounded-1 overflow-hidden">
                       <div className="row g-0 align-items-center">
                         <div className="col-sm-6">
-                          <img 
-                            src={member.img} 
-                            style={{ height: '280px', objectFit: 'contain', objectPosition: 'center', width: '100%', display: 'block' }} 
-                            alt={member.name} 
+                          <img
+                            src={member.img}
+                            style={{ height: '280px', objectFit: 'cover', objectPosition: 'top', width: '100%', display: 'block' }}
+                            alt={member.name}
                           />
                         </div>
                         <div className="col-sm-6">
