@@ -52,6 +52,11 @@ const authenticateAdmin = (req, res, next) => {
   return res.status(401).json({ error: 'Unauthorized: Invalid admin credentials' });
 };
 
+// POST Verify Admin Credentials
+router.post('/admin/verify', authenticateAdmin, (req, res) => {
+  res.json({ success: true, message: 'Admin credentials valid' });
+});
+
 /* --- Image Upload Endpoint --- */
 router.post('/upload', upload.single('image'), async (req, res) => {
   if (!req.file) {

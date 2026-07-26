@@ -10,6 +10,9 @@ const api = axios.create({
 // export const sendContact = (data) => api.post('/contact', data);
 // export const sendConsultation = (data) => api.post('/consultation', data);
 
+// Admin Auth Endpoint
+export const verifyAdmin = (username, passcode) => api.post('/admin/verify', {}, { headers: { 'x-admin-username': username, 'x-admin-passcode': passcode } });
+
 // Project Endpoints
 export const fetchProjects = () => api.get('/projects');
 export const fetchProjectById = (id) => api.get(`/projects/${id}`);

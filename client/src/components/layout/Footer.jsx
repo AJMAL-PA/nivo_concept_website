@@ -266,7 +266,11 @@ const Footer = () => {
                 <ul>
                   <li><Link to="/projects">Projects</Link></li>
                   <li><Link to="/gallery">Gallery</Link></li>
+<<<<<<< HEAD
                   <li><Link to="/contact">Contact Us</Link></li>
+=======
+                  <li><Link to="/services/consultation-service">Consultation</Link></li>
+>>>>>>> 12eeef3cc636f4b0b1f6c8a94abe58f538ab6608
                   <li><Link to="/terms">Terms & Condition</Link></li>
                   <li><Link to="/privacy">Privacy Policy</Link></li>
                 </ul>

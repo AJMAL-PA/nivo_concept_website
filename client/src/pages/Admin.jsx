@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
+  verifyAdmin,
   fetchProjects, 
   createProject, 
   updateProject, 
@@ -51,16 +52,34 @@ const Admin = () => {
   });
 
   // Verify authentication credentials
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (username.trim() && passcode.trim()) {
-      localStorage.setItem('nivo_admin_username', username);
-      localStorage.setItem('nivo_admin_passcode', passcode);
-      setIsAuthenticated(true);
-      setErrorMsg('');
-      loadData();
-    } else {
+    const u = username.trim();
+    const p = passcode.trim();
+    if (!u || !p) {
       setErrorMsg('Please enter both a username and passcode');
+      return;
+    }
+    setLoading(true);
+    setErrorMsg('');
+    try {
+      await verifyAdmin(u, p);
+      localStorage.setItem('nivo_admin_username', u);
+      localStorage.setItem('nivo_admin_passcode', p);
+      setIsAuthenticated(true);
+      loadData();
+    } catch (err) {
+      console.error('Login error:', err);
+      setIsAuthenticated(false);
+      localStorage.removeItem('nivo_admin_username');
+      localStorage.removeItem('nivo_admin_passcode');
+      if (err.response && err.response.status === 401) {
+        setErrorMsg('Invalid admin credentials. (Default: username: nivoadmin, passcode: admin123)');
+      } else {
+        setErrorMsg('Authentication failed. Ensure the server is running on port 5000.');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -83,17 +102,31 @@ const Admin = () => {
       setErrorMsg('');
     } catch (err) {
       console.error(err);
-      setErrorMsg('Failed to load portfolio database. Verify credentials and server status.');
+      setErrorMsg('Failed to load portfolio database. Verify server status.');
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (username && passcode) {
-      setIsAuthenticated(true);
-      loadData();
-    }
+    const checkAuthOnLoad = async () => {
+      const savedUser = localStorage.getItem('nivo_admin_username');
+      const savedPass = localStorage.getItem('nivo_admin_passcode');
+      if (savedUser && savedPass) {
+        try {
+          await verifyAdmin(savedUser, savedPass);
+          setIsAuthenticated(true);
+          loadData();
+        } catch (err) {
+          console.error('Stored auth invalid:', err);
+          localStorage.removeItem('nivo_admin_username');
+          localStorage.removeItem('nivo_admin_passcode');
+          setIsAuthenticated(false);
+          setErrorMsg('Saved credentials invalid or expired. Please sign in again.');
+        }
+      }
+    };
+    checkAuthOnLoad();
   }, []);
 
   // Handle generic input change
@@ -168,7 +201,8 @@ const Admin = () => {
 
     try {
       if (editingProject) {
-        await updateProject(editingProject.id, payload, username, passcode);
+        const targetId = editingProject._id || editingProject.id;
+        await updateProject(targetId, payload, username, passcode);
         setSuccessMsg('Project updated successfully!');
       } else {
         await createProject(payload, username, passcode);
@@ -180,7 +214,11 @@ const Admin = () => {
       setTimeout(() => setSuccessMsg(''), 3000);
     } catch (err) {
       console.error(err);
-      setErrorMsg('Action failed. Verify admin passcode permissions.');
+      if (err.response && err.response.status === 401) {
+        setErrorMsg('Unauthorized: Invalid admin credentials. Please sign out and sign in with valid credentials (nivoadmin / admin123).');
+      } else {
+        setErrorMsg('Action failed. Verify server status and credentials.');
+      }
     } finally {
       setLoading(false);
     }
@@ -231,17 +269,22 @@ const Admin = () => {
   };
 
   // Delete Project
-  const handleDeleteProject = async (id) => {
+  const handleDeleteProject = async (idOrProj) => {
     if (!window.confirm('Are you sure you want to delete this project?')) return;
+    const targetId = typeof idOrProj === 'string' ? idOrProj : (idOrProj._id || idOrProj.id);
     setLoading(true);
     try {
-      await deleteProject(id, username, passcode);
+      await deleteProject(targetId, username, passcode);
       setSuccessMsg('Project deleted successfully!');
       loadData();
       setTimeout(() => setSuccessMsg(''), 3000);
     } catch (err) {
       console.error(err);
-      setErrorMsg('Failed to delete project.');
+      if (err.response && err.response.status === 401) {
+        setErrorMsg('Unauthorized: Invalid admin credentials. Please sign out and sign in with valid credentials.');
+      } else {
+        setErrorMsg('Failed to delete project.');
+      }
     } finally {
       setLoading(false);
     }
@@ -266,24 +309,33 @@ const Admin = () => {
       setTimeout(() => setSuccessMsg(''), 3000);
     } catch (err) {
       console.error(err);
-      setErrorMsg('Failed to add gallery item.');
+      if (err.response && err.response.status === 401) {
+        setErrorMsg('Unauthorized: Invalid admin credentials. Please sign out and sign in with valid credentials.');
+      } else {
+        setErrorMsg('Failed to add gallery item.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
   // Delete Gallery Item
-  const handleDeleteGallery = async (id) => {
+  const handleDeleteGallery = async (idOrItem) => {
     if (!window.confirm('Are you sure you want to delete this gallery item?')) return;
+    const targetId = typeof idOrItem === 'string' ? idOrItem : (idOrItem._id || idOrItem.id);
     setLoading(true);
     try {
-      await deleteGalleryItem(id, username, passcode);
+      await deleteGalleryItem(targetId, username, passcode);
       setSuccessMsg('Gallery item deleted successfully!');
       loadData();
       setTimeout(() => setSuccessMsg(''), 3000);
     } catch (err) {
       console.error(err);
-      setErrorMsg('Failed to delete gallery item.');
+      if (err.response && err.response.status === 401) {
+        setErrorMsg('Unauthorized: Invalid admin credentials. Please sign out and sign in with valid credentials.');
+      } else {
+        setErrorMsg('Failed to delete gallery item.');
+      }
     } finally {
       setLoading(false);
     }
@@ -330,10 +382,15 @@ const Admin = () => {
                 required
               />
             </div>
-            <button type="submit" className="btn-main w-100 py-3 mt-2">
-              Sign In
+            <button type="submit" className="btn-main w-100 py-3 mt-2" disabled={loading}>
+              {loading ? 'Verifying...' : 'Sign In'}
             </button>
           </form>
+          <div className="mt-4 text-center">
+            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+              Default credentials: <strong>nivoadmin</strong> / <strong>admin123</strong>
+            </span>
+          </div>
         </div>
       </main>
     );

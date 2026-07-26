@@ -76,8 +76,13 @@ const BlogSingle = () => {
               </div>
               <div className="bg-dark text-light rounded-1 p-4">
                 <h4>Start Your Project</h4>
+<<<<<<< HEAD
                 <p>Ready to create your perfect space? Get in touch with us today.</p>
                 <Link to="/contact" className="btn-main fx-slide"><span>Contact Us</span></Link>
+=======
+                <p>Ready to create your perfect space? Book a free consultation.</p>
+                <Link to="/contact" className="btn-main fx-slide"><span>Get In Touch</span></Link>
+>>>>>>> 12eeef3cc636f4b0b1f6c8a94abe58f538ab6608
               </div>
             </div>
           </div>
