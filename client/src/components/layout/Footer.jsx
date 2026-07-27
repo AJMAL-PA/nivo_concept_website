@@ -236,12 +236,6 @@ const Footer = () => {
               <div className="widget">
                 <img src="/images/nivo_concepts_logo.png" className="mb-4 footer-logo-img" alt="Nivo Concepts" style={{ height: '80px', width: 'auto', objectFit: 'contain', display: 'block', opacity: 1 }} />
                 
-                <h2 className="hs-5">Subscribe Now</h2>
-                <div className="subscribe-input-wrap">
-                  <i className="fa fa-envelope"></i>
-                  <input type="email" placeholder="Enter your Email" />
-                </div>
-                <button className="btn-subscribe">Subscribe</button>
               </div>
             </div>
 

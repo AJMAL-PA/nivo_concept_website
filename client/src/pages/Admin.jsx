@@ -74,7 +74,7 @@ const Admin = () => {
       localStorage.removeItem('nivo_admin_username');
       localStorage.removeItem('nivo_admin_passcode');
       if (err.response && err.response.status === 401) {
-        setErrorMsg('Invalid admin credentials. (Default: username: nivoadmin, passcode: admin123)');
+        setErrorMsg('Invalid admin credentials.');
       } else {
         setErrorMsg('Authentication failed. Ensure the server is running on port 5001.');
       }
@@ -215,7 +215,7 @@ const Admin = () => {
     } catch (err) {
       console.error(err);
       if (err.response && err.response.status === 401) {
-        setErrorMsg('Unauthorized: Invalid admin credentials. Please sign out and sign in with valid credentials (nivoadmin / admin123).');
+        setErrorMsg('Unauthorized: Invalid admin credentials. Please sign out and sign in with valid credentials .');
       } else {
         setErrorMsg('Action failed. Verify server status and credentials.');
       }
@@ -386,11 +386,7 @@ const Admin = () => {
               {loading ? 'Verifying...' : 'Sign In'}
             </button>
           </form>
-          <div className="mt-4 text-center">
-            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-              Default credentials: <strong>nivoadmin</strong> / <strong>admin123</strong>
-            </span>
-          </div>
+          
         </div>
       </main>
     );
