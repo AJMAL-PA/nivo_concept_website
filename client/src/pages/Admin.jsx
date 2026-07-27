@@ -76,7 +76,7 @@ const Admin = () => {
       if (err.response && err.response.status === 401) {
         setErrorMsg('Invalid admin credentials. (Default: username: nivoadmin, passcode: admin123)');
       } else {
-        setErrorMsg('Authentication failed. Ensure the server is running on port 5000.');
+        setErrorMsg('Authentication failed. Ensure the server is running on port 5001.');
       }
     } finally {
       setLoading(false);

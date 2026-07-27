@@ -10,7 +10,7 @@ const GalleryItem = require('./models/GalleryItem');
 const dbMock = require('./utils/db');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Connect to MongoDB
 connectDB().then(() => {
@@ -46,8 +46,26 @@ async function seedData() {
 }
 
 // Middleware
+const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
+  .split(',')
+  .map(url => url.trim());
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, server-to-server)
+    if (!origin) return callback(null, true);
+    
+    if (
+      allowedOrigins.includes(origin) ||
+      allowedOrigins.includes('*') ||
+      /\.vercel\.app$/.test(origin) ||
+      origin.startsWith('http://localhost:')
+    ) {
+      return callback(null, true);
+    }
+    
+    return callback(new Error('CORS Policy: Origin not allowed by CORS'));
+  },
   credentials: true
 }));
 app.use(express.json({ limit: '100mb' }));
