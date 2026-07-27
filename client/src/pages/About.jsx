@@ -59,6 +59,7 @@ const team = [
   { name: 'Ufaida', role: '3D Visualizer', img: '/images/team/ufaida.jpg' },
   { name: 'Sreejish', role: 'Project Manager', img: '/images/team/sreejish.jpg' },
   { name: 'Sameer', role: 'Detail Drawing', img: '/images/team/sameer.jpg' },
+  { name: 'Jumana', role: '3D visualiser', img: '/images/team/jumana .png' },
 ];
 
 const testimonials = [
