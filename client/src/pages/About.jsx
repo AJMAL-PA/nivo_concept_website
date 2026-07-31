@@ -42,6 +42,14 @@ const team = [
   { name: 'Lazim', role: 'CEO & Founder', img: '/images/team/lazim.jpg' },
   { name: 'Sinan Ali', role: 'Managing Partner & Chief Consultant', img: '/images/team/sinan.jpg' },
   { name: 'Badaru Zaman', role: 'Chief Designer (Architect)', img: '/images/team/zaman.jpg' },
+  { name: 'Fayas', role: 'Senior Architect', img: '/images/team/fayas.png' },
+  { name: 'Shahdiya', role: 'Junior 3D Visualiser', img: '/images/team/shahdiya.png' },
+  { name: 'Hanna', role: '2D Draft Person', img: '/images/team/hanna.png' },
+  { name: 'Ashil Majeed', role: 'Site Engineer', img: '/images/team/ashil.png' },
+  { name: 'Asif', role: 'Accountant', img: '/images/team/asif.png' },
+  { name: 'Naja', role: 'Sales Department', img: '/images/team/naja.png' },
+  { name: 'Niha', role: 'Graphic Designer', img: '/images/team/niha.png' },
+  { name: 'Febinshad', role: 'Digital Marketer', img: '/images/team/febinshad.png' },
   { name: 'Athira', role: 'Admin', img: '/images/team/athira.jpg' },
   { name: 'Lamiya', role: 'Permission Drawing', img: '/images/team/lamiya.jpg' },
   { name: 'Fasna', role: '3D Visualizer', img: '/images/team/fasna.jpg' },
@@ -51,6 +59,7 @@ const team = [
   { name: 'Ufaida', role: '3D Visualizer', img: '/images/team/ufaida.jpg' },
   { name: 'Sreejish', role: 'Project Manager', img: '/images/team/sreejish.jpg' },
   { name: 'Sameer', role: 'Detail Drawing', img: '/images/team/sameer.jpg' },
+  { name: 'Jumana', role: '3D visualiser', img: '/images/team/jumana .png' },
 ];
 
 const testimonials = [
@@ -84,12 +93,13 @@ const About = () => {
     let timer;
     if ($ && $.fn.owlCarousel) {
       timer = setTimeout(() => {
-        const $carousel = $('#team-carousel');
-        if ($carousel.length) {
-          if ($carousel.data('owl.carousel')) {
-            $carousel.owlCarousel('destroy');
+        // Team Carousel
+        const $teamCarousel = $('#team-carousel');
+        if ($teamCarousel.length) {
+          if ($teamCarousel.data('owl.carousel')) {
+            $teamCarousel.owlCarousel('destroy');
           }
-          $carousel.owlCarousel({
+          $teamCarousel.owlCarousel({
             center: false,
             loop: true,
             margin: 30,
@@ -117,6 +127,29 @@ const About = () => {
             });
           });
         }
+
+        // Testimonials Carousel
+        const $testimonialCarousel = $('#testimonials-carousel-slide');
+        if ($testimonialCarousel.length) {
+          if ($testimonialCarousel.data('owl.carousel')) {
+            $testimonialCarousel.owlCarousel('destroy');
+          }
+          $testimonialCarousel.owlCarousel({
+            loop: true,
+            margin: 30,
+            nav: false,
+            dots: true,
+            autoplay: true,
+            autoplayTimeout: 4000,
+            autoplayHoverPause: true,
+            smartSpeed: 800,
+            responsive: {
+              1000: { items: 3 },
+              600: { items: 2 },
+              0: { items: 1 }
+            }
+          });
+        }
       }, 150);
     }
 
@@ -124,9 +157,13 @@ const About = () => {
       clearTimeout(timer);
       const $ = window.jQuery;
       if ($ && $.fn.owlCarousel) {
-        const $carousel = $('#team-carousel');
-        if ($carousel.length && $carousel.data('owl.carousel')) {
-          $carousel.owlCarousel('destroy');
+        const $teamCarousel = $('#team-carousel');
+        if ($teamCarousel.length && $teamCarousel.data('owl.carousel')) {
+          $teamCarousel.owlCarousel('destroy');
+        }
+        const $testimonialCarousel = $('#testimonials-carousel-slide');
+        if ($testimonialCarousel.length && $testimonialCarousel.data('owl.carousel')) {
+          $testimonialCarousel.owlCarousel('destroy');
         }
       }
     };
@@ -183,7 +220,7 @@ const About = () => {
             {[
               { value: 1850, label: 'Satisfied Clients' },
               { value: 420, label: 'Projects Completed' },
-              { value: 15, label: 'Years of Experience' },
+              { value: 10, label: 'Years of Experience' },
             ].map((stat, i) => (
               <div key={i} className="col-md-4 col-sm-6 text-center">
                 <div className="de_count wow fadeInRight" data-wow-delay={`${i * 0.25}s`}>
@@ -203,19 +240,62 @@ const About = () => {
         <img src="/images/background/1.webp" className="jarallax-img" alt="" />
         <div className="sw-overlay op-6"></div>
         <div className="container relative z-2">
-          <div className="row g-4 justify-content-center">
-            <div className="col-md-4">
+          <div className="row justify-content-center text-center mb-4">
+            <div className="col-md-6">
               <div className="subtitle">Testimonials</div>
             </div>
-            <div className="col-md-7">
-              <div className="owl-single-dots owl-carousel owl-theme">
+          </div>
+          <div className="row">
+            <div className="col-lg-12">
+              <div id="testimonials-carousel-slide" className="owl-carousel owl-theme">
                 {testimonials.map((t, i) => (
-                  <div key={i} className="item">
-                    <span className="d-stars d-block mb-3">
-                      {[...Array(5)].map((_, s) => <i key={s} className="icofont-star"></i>)}
-                    </span>
-                    <h2 className="mb-4 wow fadeInUp">{t.quote}</h2>
-                    <span className="wow fadeInUp">{t.author}</span>
+                  <div key={i} className="item p-2">
+                    <div className="nivo-testimonial-card text-center" style={{ width: '100%', boxSizing: 'border-box' }}>
+                      <div className="d-flex flex-column align-items-center mb-3" style={{ width: '100%' }}>
+                        <div className="nivo-testimonial-stars mb-3">
+                          {[...Array(5)].map((_, s) => (
+                            <i key={s} className="fa-solid fa-star active-star" style={{ color: '#ffb606', fontSize: '16px' }}></i>
+                          ))}
+                        </div>
+                        <p style={{
+                          color: 'rgba(255, 255, 255, 0.9)',
+                          fontSize: '15px',
+                          lineHeight: '1.7',
+                          fontStyle: 'normal',
+                          marginBottom: '0',
+                          fontWeight: '400',
+                          width: '100%',
+                          textAlign: 'center',
+                          whiteSpace: 'normal',
+                          overflowWrap: 'break-word',
+                          wordBreak: 'break-word'
+                        }}>{t.quote}</p>
+                      </div>
+
+                      <div>
+                        <div style={{
+                          width: '40px',
+                          height: '1px',
+                          backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                          margin: '0 auto 20px auto'
+                        }}></div>
+
+                        <div className="d-flex flex-column align-items-center">
+                          <div className="d-flex align-items-center justify-content-center mb-2" style={{
+                            width: '50px',
+                            height: '50px',
+                            borderRadius: '50%',
+                            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                            border: '1px solid rgba(255, 255, 255, 0.15)',
+                            color: '#C3AF9B',
+                            fontSize: '20px'
+                          }}>
+                            <i className="fa-solid fa-user"></i>
+                          </div>
+                          <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff' }}>{t.author}</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
