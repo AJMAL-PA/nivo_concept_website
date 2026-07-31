@@ -12,6 +12,47 @@ const dbMock = require('./utils/db');
 const app = express();
 const PORT = process.env.PORT || 5001;
 
+// Allowed Origins for CORS
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:3000',
+  'http://localhost:5000',
+  'http://localhost:5001'
+].filter(Boolean);
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g., mobile apps, server-to-server, curl)
+    if (!origin) return callback(null, true);
+    
+    if (
+      allowedOrigins.includes(origin) ||
+      /\.vercel\.app$/.test(origin)
+    ) {
+      return callback(null, origin);
+    }
+    return callback(null, origin);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'x-admin-username',
+    'x-admin-passcode'
+  ],
+  optionsSuccessStatus: 200
+};
+
+// Apply CORS middleware & enable pre-flight for all routes
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ limit: '100mb', extended: true }));
+
 // Connect to MongoDB
 connectDB().then(() => {
   if (!isLocalDB()) {
@@ -45,14 +86,6 @@ async function seedData() {
   }
 }
 
-// Middleware
-app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
-  credentials: true
-}));
-app.use(express.json({ limit: '100mb' }));
-app.use(express.urlencoded({ limit: '100mb', extended: true }));
-
 // Serve static uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -70,3 +103,4 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
+

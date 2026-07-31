@@ -12,6 +12,87 @@ import {
   uploadImage 
 } from '../services/api';
 
+// Small Card Component for uploaded images with remove button
+const ImageCard = ({ label, url, onRemove }) => {
+  const [showPreview, setShowPreview] = useState(false);
+
+  return (
+    <div 
+      className="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-2 position-relative shadow-sm"
+      style={{ 
+        backgroundColor: '#25201b', 
+        border: '1px solid rgba(195, 175, 155, 0.4)',
+        color: '#ffffff',
+        fontSize: '12px',
+        fontWeight: 600,
+        letterSpacing: '0.02em',
+        transition: 'all 0.2s ease',
+        cursor: 'default'
+      }}
+      onMouseEnter={() => setShowPreview(true)}
+      onMouseLeave={() => setShowPreview(false)}
+    >
+      {url ? (
+        <img 
+          src={url} 
+          alt={label} 
+          style={{ 
+            width: '22px', 
+            height: '22px', 
+            objectFit: 'cover', 
+            borderRadius: '4px',
+            border: '1px solid rgba(255, 255, 255, 0.2)'
+          }} 
+          onError={(e) => { e.target.style.display = 'none'; }}
+        />
+      ) : (
+        <i className="fa fa-image text-muted fs-12"></i>
+      )}
+      <span className="text-lowercase">{label}</span>
+      <button 
+        type="button" 
+        onClick={onRemove}
+        className="ms-1 border-0 bg-transparent p-0 d-inline-flex align-items-center justify-content-center"
+        style={{ 
+          color: '#ff6b6b', 
+          fontSize: '16px', 
+          lineHeight: 1, 
+          cursor: 'pointer',
+          width: '18px',
+          height: '18px',
+          borderRadius: '50%',
+          transition: 'all 0.2s'
+        }}
+        title="Remove image"
+        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255, 107, 107, 0.2)'; }}
+        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+      >
+        &times;
+      </button>
+
+      {/* Hover preview tooltip */}
+      {showPreview && url && (
+        <div 
+          className="position-absolute shadow-lg rounded-2 overflow-hidden"
+          style={{ 
+            bottom: 'calc(100% + 6px)', 
+            left: '50%', 
+            transform: 'translateX(-50%)', 
+            zIndex: 1000, 
+            width: '140px', 
+            height: '90px', 
+            backgroundColor: '#14100e', 
+            border: '1px solid rgba(195, 175, 155, 0.5)',
+            pointerEvents: 'none'
+          }}
+        >
+          <img src={url} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Admin = () => {
   const [username, setUsername] = useState(() => localStorage.getItem('nivo_admin_username') || '');
   const [passcode, setPasscode] = useState(() => localStorage.getItem('nivo_admin_passcode') || '');
@@ -134,36 +215,45 @@ const Admin = () => {
     setProjectForm({ ...projectForm, [field]: value });
   };
 
-  // Handle file uploads
+  // Handle file uploads (supports single or multiple file selection)
   const handleFileUpload = async (e, type) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
 
     setLoading(true);
     setErrorMsg('');
     try {
-      const res = await uploadImage(file);
-      const uploadedUrl = res.data.url; // e.g. /uploads/filename.png
+      const uploadPromises = files.map(file => uploadImage(file));
+      const responses = await Promise.all(uploadPromises);
+      const uploadedUrls = responses.map(res => res.data.url);
       
       if (type === 'project-main') {
-        setProjectForm(prev => ({ ...prev, img: uploadedUrl }));
+        setProjectForm(prev => ({ ...prev, img: uploadedUrls[0] }));
       } else if (type === 'project-extra') {
         setProjectForm(prev => {
-          const current = prev.images.trim() ? prev.images.split(',').map(s => s.trim()) : [];
-          current.push(uploadedUrl);
-          return { ...prev, images: current.join(', ') };
+          const current = prev.images.trim() ? prev.images.split(',').map(s => s.trim()).filter(Boolean) : [];
+          const updated = [...current, ...uploadedUrls];
+          return { ...prev, images: updated.join(', ') };
         });
       } else if (type === 'gallery') {
-        setGalleryForm(prev => ({ ...prev, img: uploadedUrl }));
+        setGalleryForm(prev => ({ ...prev, img: uploadedUrls[0] }));
       }
-      setSuccessMsg('Image uploaded successfully!');
+      setSuccessMsg(`${uploadedUrls.length} image(s) uploaded successfully!`);
       setTimeout(() => setSuccessMsg(''), 3000);
     } catch (err) {
       console.error(err);
       setErrorMsg('Image upload failed. Please try again.');
     } finally {
       setLoading(false);
+      e.target.value = '';
     }
+  };
+
+  // Helper functions for gallery image list in project form
+  const removeGalleryImage = (indexToRemove) => {
+    const current = projectForm.images.trim() ? projectForm.images.split(',').map(s => s.trim()).filter(Boolean) : [];
+    const updated = current.filter((_, idx) => idx !== indexToRemove);
+    setProjectForm(prev => ({ ...prev, images: updated.join(', ') }));
   };
 
   // Project Submit Form
@@ -664,33 +754,36 @@ const Admin = () => {
 
                   {/* Main Cover Image */}
                   <div className="col-md-6">
-                    <label className="form-label font-semibold fs-12 uppercase tracking-wide">Main Cover Image Path / URL</label>
-                    <div style={{ position: 'relative' }}>
-                      <input 
-                        type="text" 
-                        className="form-control" 
-                        style={{ paddingRight: '45px' }}
-                        value={projectForm.img} 
-                        onChange={(e) => handleProjectChange('img', e.target.value)}
-                      />
-                      <label 
-                        className="btn-main p-0 d-inline-flex align-items-center justify-content-center cursor-pointer" 
-                        style={{ 
-                          position: 'absolute', 
-                          right: '6px', 
-                          top: '50%', 
-                          transform: 'translateY(-50%)', 
-                          borderRadius: '50%', 
-                          width: '32px', 
-                          height: '32px',
-                          zIndex: 5,
-                          marginBottom: 0
-                        }} 
-                        title="Upload Main Image"
-                      >
-                        <i className="fa fa-upload fs-12"></i>
-                        <input type="file" onChange={(e) => handleFileUpload(e, 'project-main')} style={{ display: 'none' }} accept="image/*" />
-                      </label>
+                    <label className="form-label font-semibold fs-12 uppercase tracking-wide">Main Cover Image</label>
+                    <div className="p-2 rounded-2" style={{ backgroundColor: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', minHeight: '45px' }}>
+                      {projectForm.img ? (
+                        <div className="d-flex align-items-center justify-content-between gap-2">
+                          <ImageCard 
+                            label="image 1" 
+                            url={projectForm.img} 
+                            onRemove={() => setProjectForm(prev => ({ ...prev, img: '' }))} 
+                          />
+                          <label 
+                            className="btn-cyber-outline fs-11 py-1 px-2 d-inline-flex align-items-center gap-1 cursor-pointer mb-0 text-nowrap"
+                            title="Change Image"
+                          >
+                            <i className="fa fa-upload fs-10"></i>
+                            <span>Change</span>
+                            <input type="file" onChange={(e) => handleFileUpload(e, 'project-main')} style={{ display: 'none' }} accept="image/*" />
+                          </label>
+                        </div>
+                      ) : (
+                        <div className="d-flex align-items-center">
+                          <label 
+                            className="btn-main py-2 px-3 fs-12 d-inline-flex align-items-center justify-content-center gap-2 cursor-pointer mb-0 text-nowrap w-100"
+                            title="Upload Main Image"
+                          >
+                            <i className="fa fa-upload fs-12"></i>
+                            <span>Upload Cover Image</span>
+                            <input type="file" onChange={(e) => handleFileUpload(e, 'project-main')} style={{ display: 'none' }} accept="image/*" />
+                          </label>
+                        </div>
+                      )}
                     </div>
                     <span className="text-muted fs-10 d-block mt-1">Recommended: Landscape (16:10 or 16:9), e.g., 1280x800 px or 1920x1080 px.</span>
                   </div>
@@ -746,35 +839,51 @@ const Admin = () => {
 
                   {/* Detail Gallery Images */}
                   <div className="col-12">
-                    <label className="form-label font-semibold fs-12 uppercase tracking-wide">Gallery Images (comma-separated URLs)</label>
-                    <div style={{ position: 'relative' }}>
-                      <input 
-                        type="text" 
-                        className="form-control" 
-                        style={{ paddingRight: '45px' }}
-                        value={projectForm.images} 
-                        onChange={(e) => handleProjectChange('images', e.target.value)}
-                      />
-                      <label 
-                        className="btn-main p-0 d-inline-flex align-items-center justify-content-center cursor-pointer" 
-                        style={{ 
-                          position: 'absolute', 
-                          right: '6px', 
-                          top: '50%', 
-                          transform: 'translateY(-50%)', 
-                          borderRadius: '50%', 
-                          width: '32px', 
-                          height: '32px',
-                          zIndex: 5,
-                          marginBottom: 0
-                        }} 
-                        title="Upload Add-on Image"
-                      >
-                        <i className="fa fa-upload fs-12"></i>
-                        <input type="file" onChange={(e) => handleFileUpload(e, 'project-extra')} style={{ display: 'none' }} accept="image/*" />
-                      </label>
-                    </div>
-                    <span className="text-muted fs-10 d-block mt-1">Recommended: Landscape or square format (4:3, 3:2, or 1:1), e.g., 800x600 px or 800x800 px.</span>
+                    {(() => {
+                      const galleryImages = projectForm.images
+                        ? projectForm.images.split(',').map(s => s.trim()).filter(Boolean)
+                        : [];
+                      return (
+                        <>
+                          <label className="form-label font-semibold fs-12 uppercase tracking-wide">
+                            Gallery Images {galleryImages.length > 0 && `(${galleryImages.length})`}
+                          </label>
+                          
+                          <div className="p-3 rounded-2" style={{ backgroundColor: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                            <div className="d-flex flex-wrap align-items-center gap-2">
+                              {galleryImages.length > 0 ? (
+                                galleryImages.map((imgUrl, idx) => (
+                                  <ImageCard 
+                                    key={idx}
+                                    label={`image ${idx + 1}`} 
+                                    url={imgUrl} 
+                                    onRemove={() => removeGalleryImage(idx)} 
+                                  />
+                                ))
+                              ) : (
+                                <span className="text-muted fs-12 me-2">No gallery images added yet.</span>
+                              )}
+
+                              <label 
+                                className="btn-main py-1.5 px-3 fs-12 d-inline-flex align-items-center gap-2 cursor-pointer mb-0 rounded-2 text-nowrap"
+                                title="Upload Image(s)"
+                              >
+                                <i className="fa fa-upload fs-11"></i>
+                                <span>Upload Images</span>
+                                <input 
+                                  type="file" 
+                                  multiple 
+                                  onChange={(e) => handleFileUpload(e, 'project-extra')} 
+                                  style={{ display: 'none' }} 
+                                  accept="image/*" 
+                                />
+                              </label>
+                            </div>
+                          </div>
+                          <span className="text-muted fs-10 d-block mt-1">Recommended: Landscape or square format (4:3, 3:2, or 1:1), e.g., 800x600 px.</span>
+                        </>
+                      );
+                    })()}
                   </div>
 
                 </div>
@@ -835,33 +944,43 @@ const Admin = () => {
 
                   <div className="col-12">
                     <label className="form-label font-semibold fs-12 uppercase tracking-wide">Image Path / URL *</label>
-                    <div style={{ position: 'relative' }}>
-                      <input 
-                        type="text" 
-                        className="form-control" 
-                        style={{ paddingRight: '45px' }}
-                        required 
-                        value={galleryForm.img}
-                        onChange={(e) => setGalleryForm({ ...galleryForm, img: e.target.value })}
-                      />
-                      <label 
-                        className="btn-main p-0 d-inline-flex align-items-center justify-content-center cursor-pointer" 
-                        style={{ 
-                          position: 'absolute', 
-                          right: '6px', 
-                          top: '50%', 
-                          transform: 'translateY(-50%)', 
-                          borderRadius: '50%', 
-                          width: '32px', 
-                          height: '32px',
-                          zIndex: 5,
-                          marginBottom: 0
-                        }} 
-                        title="Upload Gallery Image"
-                      >
-                        <i className="fa fa-upload fs-12"></i>
-                        <input type="file" onChange={(e) => handleFileUpload(e, 'gallery')} style={{ display: 'none' }} accept="image/*" />
-                      </label>
+                    <div className="p-2 rounded-2" style={{ backgroundColor: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', minHeight: '45px' }}>
+                      {galleryForm.img ? (
+                        <div className="d-flex align-items-center justify-content-between gap-2">
+                          <ImageCard 
+                            label="image 1" 
+                            url={galleryForm.img} 
+                            onRemove={() => setGalleryForm(prev => ({ ...prev, img: '' }))} 
+                          />
+                          <label 
+                            className="btn-cyber-outline fs-11 py-1 px-2 d-inline-flex align-items-center gap-1 cursor-pointer mb-0 text-nowrap"
+                            title="Change Image"
+                          >
+                            <i className="fa fa-upload fs-10"></i>
+                            <span>Change</span>
+                            <input type="file" onChange={(e) => handleFileUpload(e, 'gallery')} style={{ display: 'none' }} accept="image/*" />
+                          </label>
+                        </div>
+                      ) : (
+                        <div className="d-flex align-items-center gap-2">
+                          <input 
+                            type="text" 
+                            className="form-control fs-12" 
+                            placeholder="Paste image URL..."
+                            required 
+                            value={galleryForm.img}
+                            onChange={(e) => setGalleryForm({ ...galleryForm, img: e.target.value })}
+                          />
+                          <label 
+                            className="btn-main py-2 px-3 fs-12 d-inline-flex align-items-center gap-1 cursor-pointer mb-0 text-nowrap"
+                            title="Upload Gallery Image"
+                          >
+                            <i className="fa fa-upload fs-12"></i>
+                            <span>Upload</span>
+                            <input type="file" onChange={(e) => handleFileUpload(e, 'gallery')} style={{ display: 'none' }} accept="image/*" />
+                          </label>
+                        </div>
+                      )}
                     </div>
                     <span className="text-muted fs-10 d-block mt-1">Recommended: Landscape orientation (4:3 or 3:2), e.g., 800x600 px.</span>
                   </div>
