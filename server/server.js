@@ -42,8 +42,38 @@ async function seedData() {
 }
 
 // Middleware
+// Allowed origins for CORS (Local dev, Vercel production & preview deployments)
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://nivo-concept-website.vercel.app'
+];
+
+if (process.env.CLIENT_URL) {
+  process.env.CLIENT_URL.split(',').forEach(url => {
+    const trimmed = url.trim();
+    if (trimmed && !allowedOrigins.includes(trimmed)) {
+      allowedOrigins.push(trimmed);
+    }
+  });
+}
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
+    if (!origin) return callback(null, true);
+    
+    try {
+      const hostname = new URL(origin).hostname;
+      if (allowedOrigins.includes(origin) || hostname === 'localhost' || hostname.endsWith('.vercel.app')) {
+        return callback(null, true);
+      }
+    } catch (e) {
+      // Fall through to callback if URL parsing fails
+    }
+    
+    return callback(null, true);
+  },
   credentials: true
 }));
 app.use(express.json({ limit: '100mb' }));

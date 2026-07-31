@@ -183,7 +183,7 @@ const About = () => {
             {[
               { value: 1850, label: 'Satisfied Clients' },
               { value: 420, label: 'Projects Completed' },
-              { value: 15, label: 'Years of Experience' },
+              { value: 10, label: 'Years of Experience' },
             ].map((stat, i) => (
               <div key={i} className="col-md-4 col-sm-6 text-center">
                 <div className="de_count wow fadeInRight" data-wow-delay={`${i * 0.25}s`}>
