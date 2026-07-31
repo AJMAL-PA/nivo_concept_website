@@ -1,13 +1,19 @@
 const mongoose = require('mongoose');
 
+let useLocalDB = false;
+
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI);
     console.log(`MongoDB Connected: ${conn.connection.host}`);
+    useLocalDB = false;
   } catch (error) {
     console.error(`MongoDB Connection Error: ${error.message}`);
-    process.exit(1);
+    console.log('Falling back to local JSON database...');
+    useLocalDB = true;
   }
 };
 
-module.exports = connectDB;
+const isLocalDB = () => useLocalDB;
+
+module.exports = { connectDB, isLocalDB };

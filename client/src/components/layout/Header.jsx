@@ -428,7 +428,7 @@ const Header = () => {
         }
 
         /* Mobile hamburger */
-        .nivo-hamburger {
+        #menu-btn.nivo-hamburger {
           display: none;
           flex-direction: column;
           justify-content: center;
@@ -436,30 +436,37 @@ const Header = () => {
           gap: 5px;
           width: 40px;
           height: 40px;
-          background: rgba(175, 155, 130, 0.22);
-          border: 1px solid rgba(175, 155, 130, 0.40);
-          border-radius: 10px;
+          background: transparent !important;
+          border: none !important;
           cursor: pointer;
-          padding: 0;
+          padding: 0 !important;
+          box-shadow: none !important;
+          outline: none !important;
+          float: none !important;
+          margin: 0 !important;
         }
-        .nivo-hamburger span {
+        #menu-btn.nivo-hamburger::before {
+          content: none !important;
+          display: none !important;
+        }
+        #menu-btn.nivo-hamburger span {
           display: block;
-          width: 20px;
+          width: 22px;
           height: 2px;
-          background: #ffffff !important;
+          background: #C3AF9B !important; /* Theme brown */
           border-radius: 2px;
           transition: all 0.3s ease;
         }
 
-        /* Scrolled Header (Light theme background): Dark bars for contrast */
-        .nivo-header.scrolled .nivo-hamburger span {
-          background: rgba(60, 42, 28, 0.85) !important;
+        /* Scrolled Header: keep it theme brown */
+        .nivo-header.scrolled #menu-btn.nivo-hamburger span {
+          background: #C3AF9B !important;
         }
 
-        /* Dark Theme overrides: Always white bars */
-        [data-theme="dark"] .nivo-hamburger span,
-        [data-theme="dark"] .nivo-header.scrolled .nivo-hamburger span {
-          background: #ffffff !important;
+        /* Dark Theme overrides: keep it theme brown */
+        [data-theme="dark"] #menu-btn.nivo-hamburger span,
+        [data-theme="dark"] .nivo-header.scrolled #menu-btn.nivo-hamburger span {
+          background: #C3AF9B !important;
         }
 
         /* Mobile nav */
@@ -517,8 +524,8 @@ const Header = () => {
           .nivo-cta {
             display: none;
           }
-          .nivo-hamburger {
-            display: flex;
+          #menu-btn.nivo-hamburger {
+            display: flex !important;
           }
           .nivo-header {
             padding: 8px 16px !important;
@@ -628,7 +635,7 @@ const Header = () => {
         </ul>
 
         {/* Header Right Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           {/* Theme Switch Icon-Only Button */}
           <button
             onClick={toggleTheme}
@@ -659,19 +666,19 @@ const Header = () => {
             GET A QUOTE
             <span className="nivo-cta-arrow">↗</span>
           </Link>
-        </div>
 
-        {/* Mobile hamburger */}
-        <button
-          className="nivo-hamburger"
-          id="menu-btn"
-          aria-label="Open menu"
-          onClick={() => document.getElementById('nivo-mobile-nav').classList.add('open')}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
+          {/* Mobile hamburger */}
+          <button
+            className="nivo-hamburger"
+            id="menu-btn"
+            aria-label="Open menu"
+            onClick={() => document.getElementById('nivo-mobile-nav').classList.add('open')}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
       </header>
 
       {/* Mobile full-screen nav */}
