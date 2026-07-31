@@ -12,7 +12,7 @@ const BlogSingle = () => {
 
       {/* Page Header */}
       <section className="bg-dark text-light relative jarallax">
-        <img src="/images/background/luxury_interior_hero.png" className="jarallax-img" alt="Blog" />
+        <img src="/images/background/luxury_interior_hero.png" className="jarallax-img" alt="Blog" loading="lazy" />
         <div className="container relative z-2">
           <div className="row gy-4 gx-5 align-items-center">
             <div className="col-md-8">
@@ -36,11 +36,11 @@ const BlogSingle = () => {
           <div className="row g-4 gx-5">
             <div className="col-lg-8">
               <div className="relative overflow-hidden rounded-1 mb-4 wow scaleIn">
-                <img src="/images/blog/1.webp" className="w-100" alt="Smart layout planning" />
+                <img src="/images/blog/1.webp" className="w-100" alt="Smart layout planning" loading="lazy" />
               </div>
 
               <div className="d-flex align-items-center mb-4">
-                <img src="/images/testimonial/1.webp" className="w-40px circle me-3" alt="" />
+                <img src="/images/testimonial/1.webp" className="w-40px circle me-3" alt="" loading="lazy" />
                 <div>
                   <strong>Amelia Bright</strong>
                   <div className="fs-14 op-5"><i className="icofont-ui-calendar me-2"></i>10 Jan 2025</div>

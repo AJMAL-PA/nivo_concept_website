@@ -1,8 +1,34 @@
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import usePluginInit from '../../hooks/usePluginInit';
+import { fetchGallery } from '../../services/api';
+
+const fallbackShowcase = [
+  { img: '/images/projects-wide/2.webp', title: 'Residential Interiors', desc: 'Elegant homes designed around your lifestyle with premium finishes and timeless aesthetics.' },
+  { img: '/images/projects-wide/3.webp', title: 'Modular Kitchen Designs', desc: 'Functional kitchens with smart storage, modern layouts, and premium materials.' },
+  { img: '/images/projects-wide/1.webp', title: 'Commercial & Office Interiors', desc: 'Professional interiors that enhance productivity, customer experience, and brand identity.' }
+];
 
 const Interiors = () => {
   usePluginInit();
+  const [showcaseItems, setShowcaseItems] = useState(fallbackShowcase);
+
+  useEffect(() => {
+    const loadShowcase = async () => {
+      try {
+        const res = await fetchGallery();
+        const filtered = (res.data || []).filter(item => 
+          item.category && item.category.toLowerCase() === 'interiors'
+        );
+        if (filtered.length > 0) {
+          setShowcaseItems(filtered.slice(0, 3));
+        }
+      } catch (err) {
+        console.error('Error fetching gallery for showcase:', err);
+      }
+    };
+    loadShowcase();
+  }, []);
 
   const cards = [
     { title: 'Space Planning', desc: 'Efficient layout planning to maximize functionality, circulation, comfort, and storage while making the best use of every square foot.', icon: 'fa-ruler-combined', num: '01' },
@@ -175,18 +201,16 @@ const Interiors = () => {
             </div>
           </div>
           <div className="row g-4">
-            {[
-              { img: '/images/projects-wide/2.webp', title: 'Residential Interiors', desc: 'Elegant homes designed around your lifestyle with premium finishes and timeless aesthetics.' },
-              { img: '/images/projects-wide/3.webp', title: 'Modular Kitchen Designs', desc: 'Functional kitchens with smart storage, modern layouts, and premium materials.' },
-              { img: '/images/projects-wide/1.webp', title: 'Commercial & Office Interiors', desc: 'Professional interiors that enhance productivity, customer experience, and brand identity.' }
-            ].map((item, idx) => (
+            {showcaseItems.map((item, idx) => (
               <div key={idx} className="col-md-4 wow scaleIn" data-wow-delay={`${idx * 0.2}s`}>
                 <div className="hover relative overflow-hidden rounded-1 border border-light-subtle shadow-sm">
                   <img src={item.img} className="w-100 hover-scale-1-2" alt={item.title} style={{ aspectRatio: '16/10', objectFit: 'cover' }} />
                   <div className="gradient-edge-bottom h-100" style={{ background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0) 100%)', position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none' }}></div>
                   <div className="abs z-4 p-4 bottom-0 mb-0 text-light w-100">
                     <h3 className="fs-20 mb-1 font-semibold text-white" style={{ fontSize: '18px', fontWeight: 700 }}>{item.title}</h3>
-                    <p className="mb-0 fs-13 text-white-50" style={{ lineHeight: '1.4' }}>{item.desc}</p>
+                    <p className="mb-0 fs-13 text-white-50" style={{ lineHeight: '1.4' }}>
+                      {item.desc || (item.category ? `Premium ${item.category.toLowerCase()} design showcasing custom detailing and high-quality workmanship.` : 'Bespoke custom design and build solutions.')}
+                    </p>
                   </div>
                 </div>
               </div>

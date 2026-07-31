@@ -1,8 +1,34 @@
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import usePluginInit from '../../hooks/usePluginInit';
+import { fetchGallery } from '../../services/api';
+
+const fallbackShowcase = [
+  { img: '/images/projects-wide/4.webp', title: 'Custom Villa Conceptualization', category: 'Architectural' },
+  { img: '/images/projects-wide/5.webp', title: 'Modern Facade Elevation', category: 'Architectural' },
+  { img: '/images/projects-wide/6.webp', title: 'Steel Frame Headquarters Layout', category: 'Architectural' }
+];
 
 const ArchitecturalDesign = () => {
   usePluginInit();
+  const [showcaseItems, setShowcaseItems] = useState(fallbackShowcase);
+
+  useEffect(() => {
+    const loadShowcase = async () => {
+      try {
+        const res = await fetchGallery();
+        const filtered = (res.data || []).filter(item => 
+          item.category && item.category.toLowerCase() === 'architectural'
+        );
+        if (filtered.length > 0) {
+          setShowcaseItems(filtered.slice(0, 3));
+        }
+      } catch (err) {
+        console.error('Error fetching gallery for showcase:', err);
+      }
+    };
+    loadShowcase();
+  }, []);
 
   const cards = [
     { title: 'Blueprint Drafting', desc: 'Initial floor layouts, elevation cuts, site mapping, and comprehensive engineering drawings.', icon: 'fa-pencil-ruler', num: '01' },
@@ -132,17 +158,16 @@ const ArchitecturalDesign = () => {
             </div>
           </div>
           <div className="row g-4">
-            {[
-              { img: '/images/projects-wide/4.webp', title: 'Custom Villa Conceptualization' },
-              { img: '/images/projects-wide/5.webp', title: 'Modern Facade Elevation' },
-              { img: '/images/projects-wide/6.webp', title: 'Steel Frame Headquarters Layout' }
-            ].map((item, idx) => (
+            {showcaseItems.map((item, idx) => (
               <div key={idx} className="col-md-4 wow scaleIn" data-wow-delay={`${idx * 0.2}s`}>
-                <div className="hover relative overflow-hidden rounded-1">
+                <div className="hover relative overflow-hidden rounded-1 border border-light-subtle shadow-sm">
                   <img src={item.img} className="w-100 hover-scale-1-2" alt={item.title} style={{ aspectRatio: '16/10', objectFit: 'cover' }} />
-                  <div className="gradient-edge-bottom h-70"></div>
-                  <div className="abs z-4 p-4 bottom-0 mb-0 text-light">
-                    <h3 className="fs-20 mb-0 font-semibold" style={{ fontSize: '18px' }}>{item.title}</h3>
+                  <div className="gradient-edge-bottom h-100" style={{ background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0) 100%)', position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none' }}></div>
+                  <div className="abs z-4 p-4 bottom-0 mb-0 text-light w-100">
+                    <h3 className="fs-20 mb-1 font-semibold text-white" style={{ fontSize: '18px', fontWeight: 700 }}>{item.title}</h3>
+                    <p className="mb-0 fs-13 text-white-50" style={{ lineHeight: '1.4' }}>
+                      {item.desc || (item.category ? `Premium ${item.category.toLowerCase()} blueprint elevation design.` : 'Bespoke custom architectural design solutions.')}
+                    </p>
                   </div>
                 </div>
               </div>
