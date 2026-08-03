@@ -77,7 +77,7 @@ const ProjectSingle = () => {
 
       {/* Page Header */}
       <section className="bg-dark text-light relative jarallax">
-        <img src={project.img} className="jarallax-img" alt={project.title} />
+        <img src="/images/background/luxury_interior_hero.png" className="jarallax-img" alt={project.title} />
         <div className="container relative z-2">
           <div className="row gy-4 gx-5 align-items-center">
             <div className="col-md-8">
