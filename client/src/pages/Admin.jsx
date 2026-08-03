@@ -129,7 +129,8 @@ const Admin = () => {
   const [galleryForm, setGalleryForm] = useState({
     title: '',
     img: '',
-    category: 'Interiors'
+    category: 'Interiors',
+    urls: []
   });
 
   // Verify authentication credentials
@@ -236,7 +237,15 @@ const Admin = () => {
           return { ...prev, images: updated.join(', ') };
         });
       } else if (type === 'gallery') {
-        setGalleryForm(prev => ({ ...prev, img: uploadedUrls[0] }));
+        setGalleryForm(prev => {
+          const currentUrls = prev.urls || (prev.img ? [prev.img] : []);
+          const updated = [...currentUrls, ...uploadedUrls];
+          return {
+            ...prev,
+            img: updated[0] || '',
+            urls: updated
+          };
+        });
       }
       setSuccessMsg(`${uploadedUrls.length} image(s) uploaded successfully!`);
       setTimeout(() => setSuccessMsg(''), 3000);
@@ -305,9 +314,9 @@ const Admin = () => {
     } catch (err) {
       console.error(err);
       if (err.response && err.response.status === 401) {
-        setErrorMsg('Unauthorized: Invalid admin credentials. Please sign out and sign in with valid credentials .');
+        setErrorMsg('Unauthorized: Invalid admin credentials. Please sign out and sign in with valid credentials.');
       } else {
-        setErrorMsg('Action failed. Verify server status and credentials.');
+        setErrorMsg(err.response?.data?.error || err.message || 'Action failed. Verify server status and credentials.');
       }
     } finally {
       setLoading(false);
@@ -373,7 +382,7 @@ const Admin = () => {
       if (err.response && err.response.status === 401) {
         setErrorMsg('Unauthorized: Invalid admin credentials. Please sign out and sign in with valid credentials.');
       } else {
-        setErrorMsg('Failed to delete project.');
+        setErrorMsg(err.response?.data?.error || err.message || 'Failed to delete project.');
       }
     } finally {
       setLoading(false);
@@ -383,7 +392,11 @@ const Admin = () => {
   // Gallery Submit
   const handleGallerySubmit = async (e) => {
     e.preventDefault();
-    if (!galleryForm.img.trim()) {
+    const urlsToSave = (galleryForm.urls && galleryForm.urls.length > 0)
+      ? galleryForm.urls
+      : [galleryForm.img.trim()].filter(Boolean);
+
+    if (!urlsToSave.length) {
       setErrorMsg('Image path or upload is required');
       return;
     }
@@ -391,9 +404,16 @@ const Admin = () => {
     setLoading(true);
     setErrorMsg('');
     try {
-      await createGalleryItem(galleryForm, username, passcode);
-      setSuccessMsg('Gallery item added successfully!');
-      setGalleryForm({ title: '', img: '', category: 'Interiors' });
+      const promises = urlsToSave.map(imgUrl => 
+        createGalleryItem({
+          title: galleryForm.title,
+          category: galleryForm.category,
+          img: imgUrl
+        }, username, passcode)
+      );
+      await Promise.all(promises);
+      setSuccessMsg(`${urlsToSave.length} gallery item(s) added successfully!`);
+      setGalleryForm({ title: '', img: '', category: 'Interiors', urls: [] });
       setShowGalleryModal(false);
       loadData();
       setTimeout(() => setSuccessMsg(''), 3000);
@@ -402,7 +422,7 @@ const Admin = () => {
       if (err.response && err.response.status === 401) {
         setErrorMsg('Unauthorized: Invalid admin credentials. Please sign out and sign in with valid credentials.');
       } else {
-        setErrorMsg('Failed to add gallery item.');
+        setErrorMsg(err.response?.data?.error || err.message || 'Failed to add gallery item(s).');
       }
     } finally {
       setLoading(false);
@@ -424,7 +444,7 @@ const Admin = () => {
       if (err.response && err.response.status === 401) {
         setErrorMsg('Unauthorized: Invalid admin credentials. Please sign out and sign in with valid credentials.');
       } else {
-        setErrorMsg('Failed to delete gallery item.');
+        setErrorMsg(err.response?.data?.error || err.message || 'Failed to delete gallery item.');
       }
     } finally {
       setLoading(false);
@@ -605,7 +625,7 @@ const Admin = () => {
                       </thead>
                       <tbody>
                         {projectsList.map((proj) => (
-                           <tr key={proj.id} className="fs-14 border-bottom">
+                           <tr key={proj._id || proj.id} className="fs-14 border-bottom">
                              <td>
                                <img src={proj.img} alt={proj.title} style={{ width: '50px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
                              </td>
@@ -621,7 +641,7 @@ const Admin = () => {
                                  <button onClick={() => startEditProject(proj)} className="btn btn-cyber-outline btn-sm px-3 py-1 fs-11 uppercase font-bold" style={{ borderRadius: '4px' }}>
                                    Edit
                                  </button>
-                                 <button onClick={() => handleDeleteProject(proj.id)} className="btn btn-outline-danger btn-sm px-3 py-1 fs-11 uppercase font-bold" style={{ borderColor: 'rgba(255, 77, 79, 0.4)', color: '#ff4d4f', borderRadius: '4px' }}>
+                                 <button onClick={() => handleDeleteProject(proj)} className="btn btn-outline-danger btn-sm px-3 py-1 fs-11 uppercase font-bold" style={{ borderColor: 'rgba(255, 77, 79, 0.4)', color: '#ff4d4f', borderRadius: '4px' }}>
                                    Delete
                                  </button>
                                </div>
@@ -631,7 +651,7 @@ const Admin = () => {
                        </tbody>
                      </table>
                    </div>
-                 </div>
+                 </div> 
  
                </div>
              )}
@@ -653,7 +673,7 @@ const Admin = () => {
                    </div>
                    <div className="row g-3">
                      {galleryList.map((item) => (
-                       <div key={item.id} className="col-md-4 col-sm-6 d-flex">
+                       <div key={item._id || item.id} className="col-md-4 col-sm-6 d-flex">
                          <div className="cyber-metric-card p-3 text-center d-flex flex-column align-items-center justify-content-between h-100 w-100">
                            <div className="w-100">
                              <img src={item.img} alt={item.title} style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px' }} className="mb-3" />
@@ -664,7 +684,7 @@ const Admin = () => {
                                <span className="badge py-1.5 px-2.5 cyber-tag text-uppercase fs-9" style={{ display: 'inline-block' }}>{item.category}</span>
                              </div>
                              <button 
-                               onClick={() => handleDeleteGallery(item.id)} 
+                               onClick={() => handleDeleteGallery(item)} 
                                className="btn btn-outline-danger btn-sm" 
                                style={{ 
                                  borderColor: 'rgba(255, 77, 79, 0.4)', 
@@ -943,22 +963,30 @@ const Admin = () => {
                   </div>
 
                   <div className="col-12">
-                    <label className="form-label font-semibold fs-12 uppercase tracking-wide">Image Path / URL *</label>
-                    <div className="p-2 rounded-2" style={{ backgroundColor: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', minHeight: '45px' }}>
-                      {galleryForm.img ? (
-                        <div className="d-flex align-items-center justify-content-between gap-2">
-                          <ImageCard 
-                            label="image 1" 
-                            url={galleryForm.img} 
-                            onRemove={() => setGalleryForm(prev => ({ ...prev, img: '' }))} 
-                          />
+                    <label className="form-label font-semibold fs-12 uppercase tracking-wide">
+                      Image(s) Upload or URL * {galleryForm.urls && galleryForm.urls.length > 0 && `(${galleryForm.urls.length} images selected)`}
+                    </label>
+                    <div className="p-3 rounded-2" style={{ backgroundColor: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', minHeight: '45px' }}>
+                      {galleryForm.urls && galleryForm.urls.length > 0 ? (
+                        <div className="d-flex flex-wrap align-items-center gap-2">
+                          {galleryForm.urls.map((url, idx) => (
+                            <ImageCard 
+                              key={idx}
+                              label={`image ${idx + 1}`} 
+                              url={url} 
+                              onRemove={() => setGalleryForm(prev => {
+                                const updated = prev.urls.filter((_, i) => i !== idx);
+                                return { ...prev, urls: updated, img: updated[0] || '' };
+                              })} 
+                            />
+                          ))}
                           <label 
-                            className="btn-cyber-outline fs-11 py-1 px-2 d-inline-flex align-items-center gap-1 cursor-pointer mb-0 text-nowrap"
-                            title="Change Image"
+                            className="btn-main py-1.5 px-3 fs-12 d-inline-flex align-items-center gap-1 cursor-pointer mb-0 rounded-2 text-nowrap"
+                            title="Add More Images"
                           >
-                            <i className="fa fa-upload fs-10"></i>
-                            <span>Change</span>
-                            <input type="file" onChange={(e) => handleFileUpload(e, 'gallery')} style={{ display: 'none' }} accept="image/*" />
+                            <i className="fa fa-upload fs-11"></i>
+                            <span>Add More</span>
+                            <input type="file" multiple onChange={(e) => handleFileUpload(e, 'gallery')} style={{ display: 'none' }} accept="image/*" />
                           </label>
                         </div>
                       ) : (
@@ -967,30 +995,29 @@ const Admin = () => {
                             type="text" 
                             className="form-control fs-12" 
                             placeholder="Paste image URL..."
-                            required 
                             value={galleryForm.img}
-                            onChange={(e) => setGalleryForm({ ...galleryForm, img: e.target.value })}
+                            onChange={(e) => setGalleryForm({ ...galleryForm, img: e.target.value, urls: e.target.value ? [e.target.value] : [] })}
                           />
                           <label 
                             className="btn-main py-2 px-3 fs-12 d-inline-flex align-items-center gap-1 cursor-pointer mb-0 text-nowrap"
-                            title="Upload Gallery Image"
+                            title="Upload Gallery Images"
                           >
                             <i className="fa fa-upload fs-12"></i>
-                            <span>Upload</span>
-                            <input type="file" onChange={(e) => handleFileUpload(e, 'gallery')} style={{ display: 'none' }} accept="image/*" />
+                            <span>Upload Image(s)</span>
+                            <input type="file" multiple onChange={(e) => handleFileUpload(e, 'gallery')} style={{ display: 'none' }} accept="image/*" />
                           </label>
                         </div>
                       )}
                     </div>
-                    <span className="text-muted fs-10 d-block mt-1">Recommended: Landscape orientation (4:3 or 3:2), e.g., 800x600 px.</span>
+                    <span className="text-muted fs-10 d-block mt-1">Select multiple photos at once for batch uploading. No limits on image count.</span>
                   </div>
                 </div>
 
                 <div className="mt-4 d-flex gap-2">
                   <button type="submit" className="btn-main px-4 py-2 font-semibold uppercase tracking-wide" disabled={loading}>
-                    Add Image
+                    Add Image(s)
                   </button>
-                  <button type="button" onClick={() => { setShowGalleryModal(false); setGalleryForm({ title: '', img: '', category: 'Interiors' }); }} className="btn-cyber-outline px-4 py-2 font-semibold uppercase tracking-wide">
+                  <button type="button" onClick={() => { setShowGalleryModal(false); setGalleryForm({ title: '', img: '', category: 'Interiors', urls: [] }); }} className="btn-cyber-outline px-4 py-2 font-semibold uppercase tracking-wide">
                     Cancel
                   </button>
                 </div>

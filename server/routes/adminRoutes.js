@@ -14,13 +14,16 @@ const upload = multer({
   storage,
   limits: { fileSize: Infinity }, // No limit for image uploads
   fileFilter: (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png|webp|gif/;
-    const mimetype = filetypes.test(file.mimetype);
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    if (mimetype && extname) {
+    if (file.mimetype && file.mimetype.startsWith('image/')) {
       return cb(null, true);
     }
-    cb(new Error('Only images are allowed (jpeg, jpg, png, webp, gif)'));
+    const filetypes = /jpeg|jpg|png|webp|gif|avif|bmp|tiff|svg/;
+    const mimetype = filetypes.test(file.mimetype);
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    if (mimetype || extname) {
+      return cb(null, true);
+    }
+    cb(new Error('Only image files are allowed'));
   }
 });
 
