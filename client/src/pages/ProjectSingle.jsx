@@ -49,40 +49,26 @@ const ProjectSingle = () => {
     getProjectDetail();
   }, [id]);
 
-  if (loading) {
-    return (
-      <main style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-main)' }}>
-        <div className="text-center">
-          <div className="spinner-border text-primary" role="status"></div>
-          <p className="mt-3">Loading project details...</p>
-        </div>
-      </main>
-    );
-  }
-
-  if (!project) {
-    return (
-      <main style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-main)' }}>
-        <div className="text-center">
-          <h2>Project Not Found</h2>
-          <Link to="/projects" className="btn-main mt-3">Back to Projects</Link>
-        </div>
-      </main>
-    );
-  }
+  useEffect(() => {
+    if (!loading && window.jarallax) {
+      setTimeout(() => {
+        window.jarallax(document.querySelectorAll('.jarallax'), { speed: 0.6 });
+      }, 100);
+    }
+  }, [loading]);
 
   return (
     <main>
       <a href="#" id="back-to-top"></a>
 
-      {/* Page Header */}
+      {/* Page Header - Constant Hero Image matching Interiors page */}
       <section className="bg-dark text-light relative jarallax">
-        <img src="/images/background/luxury_interior_hero.png" className="jarallax-img" alt={project.title} />
+        <img src="/images/background/luxury_interior_hero.png" className="jarallax-img" alt={project ? project.title : 'Project Detail'} />
         <div className="container relative z-2">
           <div className="row gy-4 gx-5 align-items-center">
             <div className="col-md-8">
               <div className="spacer-double sm-hide"></div>
-              <h1 className="mb-3 wow fadeInUp" data-wow-delay=".2s">{project.title}</h1>
+              <h1 className="mb-3 wow fadeInUp" data-wow-delay=".2s">{project ? project.title : 'Project Detail'}</h1>
               <ul className="crumb wow fadeInUp">
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/projects">Projects</Link></li>
@@ -98,53 +84,65 @@ const ProjectSingle = () => {
       {/* Project Content */}
       <section className="px-md-5 px-lg-5">
         <div className="container">
-          <div className="row g-4">
-            <div className="col-lg-8">
-              <div className="row g-3">
-                <div className="col-12">
-                  <div className="relative overflow-hidden rounded-1 wow scaleIn">
-                    <img src={project.img} className="w-100" alt={project.title} style={{ maxHeight: '550px', objectFit: 'cover' }} />
-                  </div>
-                </div>
-                {/* Additional gallery images */}
-                {project.images && project.images.map((imgUrl, i) => (
-                  <div key={i} className="col-md-6">
+          {loading ? (
+            <div className="text-center py-5">
+              <div className="spinner-border text-primary" role="status"></div>
+              <p className="mt-3">Loading project details...</p>
+            </div>
+          ) : !project ? (
+            <div className="text-center py-5">
+              <h2>Project Not Found</h2>
+              <Link to="/projects" className="btn-main mt-3">Back to Projects</Link>
+            </div>
+          ) : (
+            <div className="row g-4">
+              <div className="col-lg-8">
+                <div className="row g-3">
+                  <div className="col-12">
                     <div className="relative overflow-hidden rounded-1 wow scaleIn">
-                      <img src={imgUrl} className="w-100" alt="" style={{ height: '280px', objectFit: 'cover' }} />
+                      <img src={project.img} className="w-100" alt={project.title} style={{ maxHeight: '550px', objectFit: 'cover' }} />
                     </div>
                   </div>
-                ))}
-              </div>
-
-              <div className="mt-5">
-                <div className="subtitle">Project Overview</div>
-                <h2 className="wow fadeInRight" data-wow-delay=".2s">{project.title}</h2>
-                <p className="fs-15" style={{ whiteSpace: 'pre-wrap' }}>{project.description}</p>
-              </div>
-            </div>
-
-            <div className="col-lg-4">
-              <div className="bg-light rounded-1 p-4 mb-4" style={{ borderColor: 'var(--border-color)' }}>
-                <h4 className="uppercase font-bold tracking-wider fs-15 mb-3">Project Details</h4>
-                {project.client && <div className="mb-2.5 fs-14"><strong>Client:</strong> {project.client}</div>}
-                {project.location && <div className="mb-2.5 fs-14"><strong>Location:</strong> {project.location}</div>}
-                {project.area && <div className="mb-2.5 fs-14"><strong>Area:</strong> {project.area}</div>}
-                {project.style && <div className="mb-2.5 fs-14"><strong>Style:</strong> {project.style}</div>}
-                {project.duration && <div className="mb-2.5 fs-14"><strong>Duration:</strong> {project.duration}</div>}
-                {project.year && <div className="mb-4 fs-14"><strong>Year:</strong> {project.year}</div>}
-                <div className="d-flex flex-wrap gap-2">
-                  {project.tags && project.tags.map((tag, i) => (
-                    <span key={i} className="bg-blur p-2 fs-11 text-uppercase font-semibold" style={{ color: 'var(--text-main)' }}>{tag}</span>
+                  {/* Additional gallery images */}
+                  {project.images && project.images.map((imgUrl, i) => (
+                    <div key={i} className="col-md-6">
+                      <div className="relative overflow-hidden rounded-1 wow scaleIn">
+                        <img src={imgUrl} className="w-100" alt="" style={{ height: '280px', objectFit: 'cover' }} />
+                      </div>
+                    </div>
                   ))}
                 </div>
+
+                <div className="mt-5">
+                  <div className="subtitle">Project Overview</div>
+                  <h2 className="wow fadeInRight" data-wow-delay=".2s">{project.title}</h2>
+                  <p className="fs-15" style={{ whiteSpace: 'pre-wrap' }}>{project.description}</p>
+                </div>
               </div>
-              <div className="bg-dark text-light rounded-1 p-4">
-                <h4 className="uppercase font-bold tracking-wider fs-15 mb-2 text-white">Start Your Project</h4>
-                <p className="fs-13 text-muted mb-4">Ready to transform your space? Get in touch with our team.</p>
-                <Link to="/contact" className="btn-main fx-slide w-100 text-center py-2.5"><span>Contact Us</span></Link>
+
+              <div className="col-lg-4">
+                <div className="bg-light rounded-1 p-4 mb-4" style={{ borderColor: 'var(--border-color)' }}>
+                  <h4 className="uppercase font-bold tracking-wider fs-15 mb-3">Project Details</h4>
+                  {project.client && <div className="mb-2.5 fs-14"><strong>Client:</strong> {project.client}</div>}
+                  {project.location && <div className="mb-2.5 fs-14"><strong>Location:</strong> {project.location}</div>}
+                  {project.area && <div className="mb-2.5 fs-14"><strong>Area:</strong> {project.area}</div>}
+                  {project.style && <div className="mb-2.5 fs-14"><strong>Style:</strong> {project.style}</div>}
+                  {project.duration && <div className="mb-2.5 fs-14"><strong>Duration:</strong> {project.duration}</div>}
+                  {project.year && <div className="mb-4 fs-14"><strong>Year:</strong> {project.year}</div>}
+                  <div className="d-flex flex-wrap gap-2">
+                    {project.tags && project.tags.map((tag, i) => (
+                      <span key={i} className="bg-blur p-2 fs-11 text-uppercase font-semibold" style={{ color: 'var(--text-main)' }}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
+                <div className="bg-dark text-light rounded-1 p-4">
+                  <h4 className="uppercase font-bold tracking-wider fs-15 mb-2 text-white">Start Your Project</h4>
+                  <p className="fs-13 text-muted mb-4">Ready to transform your space? Get in touch with our team.</p>
+                  <Link to="/contact" className="btn-main fx-slide w-100 text-center py-2.5"><span>Contact Us</span></Link>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
     </main>
