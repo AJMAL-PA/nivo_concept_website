@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+const mongoose = require('mongoose');
 const cloudinary = require('../config/cloudinary');
 const Project = require('../models/Project');
 const GalleryItem = require('../models/GalleryItem');
@@ -102,6 +103,9 @@ router.get('/projects/:id', async (req, res) => {
       }
       return res.json(project);
     }
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
     const project = await Project.findById(req.params.id);
     if (!project) {
       return res.status(404).json({ error: 'Project not found' });
@@ -198,6 +202,10 @@ router.put('/projects/:id', authenticateAdmin, async (req, res) => {
       return res.json(project);
     }
 
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+
     const project = await Project.findById(req.params.id);
     if (!project) {
       return res.status(404).json({ error: 'Project not found' });
@@ -234,6 +242,10 @@ router.delete('/projects/:id', authenticateAdmin, async (req, res) => {
       projects.splice(index, 1);
       dbMock.saveProjects(projects);
       return res.json({ message: 'Project deleted successfully' });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(404).json({ error: 'Project not found' });
     }
 
     const result = await Project.findByIdAndDelete(req.params.id);
@@ -313,6 +325,10 @@ router.delete('/gallery/:id', authenticateAdmin, async (req, res) => {
       gallery.splice(index, 1);
       dbMock.saveGallery(gallery);
       return res.json({ message: 'Gallery item deleted successfully' });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(404).json({ error: 'Gallery item not found' });
     }
 
     const result = await GalleryItem.findByIdAndDelete(req.params.id);

@@ -158,7 +158,7 @@ const Admin = () => {
       if (err.response && err.response.status === 401) {
         setErrorMsg('Invalid admin credentials.');
       } else {
-        setErrorMsg('Authentication failed. Ensure the server is running on port 5001.');
+        setErrorMsg('Authentication failed. Ensure the server is reachable and credentials are correct.');
       }
     } finally {
       setLoading(false);

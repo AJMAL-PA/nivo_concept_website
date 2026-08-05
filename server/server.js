@@ -53,13 +53,22 @@ app.options('*', cors(corsOptions));
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
 
-// Connect to MongoDB
-connectDB().then(() => {
-  if (!isLocalDB()) {
-    seedData();
-  } else {
-    dbMock.initializeLocalData();
+let hasSeeded = false;
+
+// Middleware to ensure DB connection before handling requests (critical for serverless environments)
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    if (!isLocalDB() && !hasSeeded) {
+      hasSeeded = true;
+      seedData().catch(err => console.error('Seed error:', err));
+    } else if (isLocalDB()) {
+      dbMock.initializeLocalData();
+    }
+  } catch (err) {
+    console.error('Database middleware connection error:', err);
   }
+  next();
 });
 
 async function seedData() {
@@ -95,12 +104,26 @@ app.use('/api', adminRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Intrio server is running' });
+  res.json({ 
+    status: 'ok', 
+    message: 'Intrio server is running',
+    database: isLocalDB() ? 'Local JSON' : 'MongoDB Atlas'
+  });
 });
 
-app.listen(PORT, () => {
-  console.log(`Intrio server running on port ${PORT}`);
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error('Global Error Handler:', err);
+  res.status(err.status || 500).json({
+    error: err.message || 'Internal Server Error'
+  });
 });
+
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Intrio server running on port ${PORT}`);
+  });
+}
 
 module.exports = app;
 

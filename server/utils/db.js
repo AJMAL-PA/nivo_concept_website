@@ -202,43 +202,67 @@ const defaultGallery = [
   }
 ];
 
+// In-memory state for read-only production fallback
+let memoryProjects = null;
+let memoryGallery = null;
+
 // Read File Helper
-const readFile = (filePath, defaultData) => {
+const readFile = (filePath, defaultData, memoryKey) => {
+  if (memoryKey === 'projects' && memoryProjects !== null) return memoryProjects;
+  if (memoryKey === 'gallery' && memoryGallery !== null) return memoryGallery;
+
   try {
     if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2), 'utf8');
+      try {
+        fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2), 'utf8');
+      } catch (e) {
+        // Read-only filesystem, use in-memory store
+      }
+      if (memoryKey === 'projects') memoryProjects = [...defaultData];
+      if (memoryKey === 'gallery') memoryGallery = [...defaultData];
       return defaultData;
     }
     const data = fs.readFileSync(filePath, 'utf8');
     const parsed = JSON.parse(data);
     if (!Array.isArray(parsed) || parsed.length === 0) {
-      fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2), 'utf8');
+      try {
+        fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2), 'utf8');
+      } catch (e) {}
+      if (memoryKey === 'projects') memoryProjects = [...defaultData];
+      if (memoryKey === 'gallery') memoryGallery = [...defaultData];
       return defaultData;
     }
+    if (memoryKey === 'projects') memoryProjects = parsed;
+    if (memoryKey === 'gallery') memoryGallery = parsed;
     return parsed;
   } catch (err) {
-    console.error(`Error reading database file at ${filePath}:`, err);
-    return defaultData;
+    console.error(`Error reading database file at ${filePath}:`, err.message);
+    if (memoryKey === 'projects') memoryProjects = memoryProjects || defaultData;
+    if (memoryKey === 'gallery') memoryGallery = memoryGallery || defaultData;
+    return memoryKey === 'projects' ? memoryProjects : memoryGallery;
   }
 };
 
 // Write File Helper
-const writeFile = (filePath, data) => {
+const writeFile = (filePath, data, memoryKey) => {
+  if (memoryKey === 'projects') memoryProjects = data;
+  if (memoryKey === 'gallery') memoryGallery = data;
+
   try {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
     return true;
   } catch (err) {
-    console.error(`Error writing database file at ${filePath}:`, err);
-    return false;
+    console.warn(`Read-only filesystem detected at ${filePath}. Stored update in-memory.`);
+    return true;
   }
 };
 
 // Database functions
-const getProjects = () => readFile(PROJECTS_FILE, defaultProjects);
-const saveProjects = (projects) => writeFile(PROJECTS_FILE, projects);
+const getProjects = () => readFile(PROJECTS_FILE, defaultProjects, 'projects');
+const saveProjects = (projects) => writeFile(PROJECTS_FILE, projects, 'projects');
 
-const getGallery = () => readFile(GALLERY_FILE, defaultGallery);
-const saveGallery = (gallery) => writeFile(GALLERY_FILE, gallery);
+const getGallery = () => readFile(GALLERY_FILE, defaultGallery, 'gallery');
+const saveGallery = (gallery) => writeFile(GALLERY_FILE, gallery, 'gallery');
 
 const initializeLocalData = () => {
   const projects = getProjects();
