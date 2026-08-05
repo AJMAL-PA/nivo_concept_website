@@ -105,6 +105,7 @@ const Admin = () => {
   const [projectsList, setProjectsList] = useState([]);
   const [galleryList, setGalleryList] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
@@ -371,6 +372,7 @@ const Admin = () => {
   const handleDeleteProject = async (idOrProj) => {
     if (!window.confirm('Are you sure you want to delete this project?')) return;
     const targetId = typeof idOrProj === 'string' ? idOrProj : (idOrProj._id || idOrProj.id);
+    setDeletingId(targetId);
     setLoading(true);
     try {
       await deleteProject(targetId, username, passcode);
@@ -385,6 +387,7 @@ const Admin = () => {
         setErrorMsg(err.response?.data?.error || err.message || 'Failed to delete project.');
       }
     } finally {
+      setDeletingId(null);
       setLoading(false);
     }
   };
@@ -433,6 +436,7 @@ const Admin = () => {
   const handleDeleteGallery = async (idOrItem) => {
     if (!window.confirm('Are you sure you want to delete this gallery item?')) return;
     const targetId = typeof idOrItem === 'string' ? idOrItem : (idOrItem._id || idOrItem.id);
+    setDeletingId(targetId);
     setLoading(true);
     try {
       await deleteGalleryItem(targetId, username, passcode);
@@ -447,6 +451,7 @@ const Admin = () => {
         setErrorMsg(err.response?.data?.error || err.message || 'Failed to delete gallery item.');
       }
     } finally {
+      setDeletingId(null);
       setLoading(false);
     }
   };
@@ -638,11 +643,23 @@ const Admin = () => {
                              <td>{proj.year || '-'}</td>
                              <td>
                                <div className="d-flex gap-2">
-                                 <button onClick={() => startEditProject(proj)} className="btn btn-cyber-outline btn-sm px-3 py-1 fs-11 uppercase font-bold" style={{ borderRadius: '4px' }}>
+                                 <button onClick={() => startEditProject(proj)} disabled={deletingId === (proj._id || proj.id)} className="btn btn-cyber-outline btn-sm px-3 py-1 fs-11 uppercase font-bold" style={{ borderRadius: '4px' }}>
                                    Edit
                                  </button>
-                                 <button onClick={() => handleDeleteProject(proj)} className="btn btn-outline-danger btn-sm px-3 py-1 fs-11 uppercase font-bold" style={{ borderColor: 'rgba(255, 77, 79, 0.4)', color: '#ff4d4f', borderRadius: '4px' }}>
-                                   Delete
+                                 <button 
+                                   onClick={() => handleDeleteProject(proj)} 
+                                   disabled={deletingId === (proj._id || proj.id)}
+                                   className="btn btn-outline-danger btn-sm px-3 py-1 fs-11 uppercase font-bold d-inline-flex align-items-center gap-1.5" 
+                                   style={{ borderColor: 'rgba(255, 77, 79, 0.4)', color: '#ff4d4f', borderRadius: '4px' }}
+                                 >
+                                   {deletingId === (proj._id || proj.id) ? (
+                                     <>
+                                       <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" style={{ width: '11px', height: '11px' }}></span>
+                                       <span>Deleting...</span>
+                                     </>
+                                   ) : (
+                                     'Delete'
+                                   )}
                                  </button>
                                </div>
                              </td>
@@ -685,7 +702,8 @@ const Admin = () => {
                              </div>
                              <button 
                                onClick={() => handleDeleteGallery(item)} 
-                               className="btn btn-outline-danger btn-sm" 
+                               disabled={deletingId === (item._id || item.id)}
+                               className="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-1.5" 
                                style={{ 
                                  borderColor: 'rgba(255, 77, 79, 0.4)', 
                                  color: '#ff4d4f', 
@@ -699,7 +717,14 @@ const Admin = () => {
                                  padding: '6px 12px'
                                }}
                              >
-                               Delete Item
+                               {deletingId === (item._id || item.id) ? (
+                                 <>
+                                   <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" style={{ width: '11px', height: '11px' }}></span>
+                                   <span>Deleting...</span>
+                                 </>
+                               ) : (
+                                 'Delete Item'
+                               )}
                              </button>
                            </div>
                          </div>
